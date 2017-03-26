@@ -1,4 +1,4 @@
-//apply from: "../gradle/bintray_push.gradle"
+apply from: "../gradle/bintray_push.gradle"
 apply from: "../gradle/lib_module.gradle"
 
 android {

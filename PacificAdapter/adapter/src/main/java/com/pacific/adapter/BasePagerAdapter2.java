@@ -23,7 +23,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
-import android.widget.RadioGroup;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -317,17 +316,6 @@ public abstract class BasePagerAdapter2<T extends Item, H extends ViewHolder>
     @Override
     public CompoundButton.OnCheckedChangeListener getOnCheckedChangeListener(@LayoutRes int layout) {
         return provider.getOnCheckedChangeListener(layout);
-    }
-
-    @Override
-    public void addGroupOnCheckedChangeListener(@LayoutRes int layout,
-                                                RadioGroup.OnCheckedChangeListener listener) {
-        provider.addGroupOnCheckedChangeListener(layout, listener);
-    }
-
-    @Override
-    public RadioGroup.OnCheckedChangeListener getGroupOnCheckedChangeListener(@LayoutRes int layout) {
-        return provider.getGroupOnCheckedChangeListener(layout);
     }
 
     /**

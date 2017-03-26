@@ -21,7 +21,7 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled true
+            minifyEnabled false
             shrinkResources false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
@@ -82,6 +82,4 @@ dependencies {
     compile "com.google.dagger:dagger-android-support:$rootProject.ext.dagger2"
     annotationProcessor "com.google.dagger:dagger-compiler:$rootProject.ext.dagger2"
     annotationProcessor "com.google.dagger:dagger-android-processor:$rootProject.ext.dagger2"
-    //    provided "org.glassfish:javax.annotation:3.2-b06"
-    //    provided "javax.annotation:jsr250-api:1.0"
 }

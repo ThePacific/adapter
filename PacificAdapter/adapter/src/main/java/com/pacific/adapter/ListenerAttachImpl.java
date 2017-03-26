@@ -16,11 +16,9 @@
 
 package com.pacific.adapter;
 
-import android.support.annotation.IdRes;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.CompoundButton;
-import android.widget.RadioGroup;
 
 final class ListenerAttachImpl implements ListenerAttach {
     /**
@@ -43,6 +41,7 @@ final class ListenerAttachImpl implements ListenerAttach {
      *
      * @param viewId view id
      */
+    @Override
     public void attachOnClickListener(int viewId) {
         int layout = holder.getItem().getLayout();
         final View.OnClickListener listener = provider.getOnClickListener(layout);
@@ -62,6 +61,7 @@ final class ListenerAttachImpl implements ListenerAttach {
      *
      * @param viewId view id
      */
+    @Override
     public void attachOnTouchListener(int viewId) {
         int layout = holder.getItem().getLayout();
         final View.OnTouchListener listener = provider.getOnTouchListener(layout);
@@ -81,6 +81,7 @@ final class ListenerAttachImpl implements ListenerAttach {
      *
      * @param viewId view id
      */
+    @Override
     public void attachOnLongClickListener(int viewId) {
         int layout = holder.getItem().getLayout();
         final View.OnLongClickListener listener = provider.getOnLongClickListener(layout);
@@ -100,6 +101,7 @@ final class ListenerAttachImpl implements ListenerAttach {
      *
      * @param viewId CompoundButton view id
      */
+    @Override
     public void attachOnCheckedChangeListener(int viewId) {
         int layout = holder.getItem().getLayout();
         final CompoundButton.OnCheckedChangeListener listener = provider
@@ -111,26 +113,6 @@ final class ListenerAttachImpl implements ListenerAttach {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 buttonView.setTag(R.integer.adapter_holder, holder);
                 listener.onCheckedChanged(buttonView, isChecked);
-            }
-        });
-    }
-
-    /**
-     * set RadioGroup.OnCheckedChangeListener for RadioGroup
-     *
-     * @param viewId RadioGroup view id
-     */
-    public void attachGroupOnCheckedChangeListener(int viewId) {
-        int layout = holder.getItem().getLayout();
-        final RadioGroup.OnCheckedChangeListener listener = provider
-                .getGroupOnCheckedChangeListener(layout);
-        if (listener == null) return;
-        RadioGroup view = AdapterUtil.findView(holder.itemView, viewId);
-        view.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
-                group.setTag(R.integer.adapter_holder, holder);
-                listener.onCheckedChanged(group, checkedId);
             }
         });
     }

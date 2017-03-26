@@ -44,12 +44,4 @@ interface ListenerAttach {
      * @param viewId CompoundButton view id
      */
     void attachOnCheckedChangeListener(int viewId);
-
-
-    /**
-     * set RadioGroup.OnCheckedChangeListener for RadioGroup
-     *
-     * @param viewId RadioGroup view id
-     */
-    void attachGroupOnCheckedChangeListener(int viewId);
 }

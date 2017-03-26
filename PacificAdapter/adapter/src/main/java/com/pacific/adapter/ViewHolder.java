@@ -170,14 +170,4 @@ public class ViewHolder extends RecyclerView.ViewHolder implements ListenerAttac
     public void attachOnCheckedChangeListener(int viewId) {
         listenerAttach.attachOnCheckedChangeListener(viewId);
     }
-
-    /**
-     * set RadioGroup.OnCheckedChangeListener for RadioGroup
-     *
-     * @param viewId RadioGroup view id
-     */
-    @Override
-    public void attachGroupOnCheckedChangeListener(int viewId) {
-        listenerAttach.attachGroupOnCheckedChangeListener(viewId);
-    }
 }

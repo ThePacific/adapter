@@ -21,7 +21,6 @@ import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
 import android.view.View.OnTouchListener;
 import android.widget.CompoundButton.OnCheckedChangeListener;
-import android.widget.RadioGroup;
 
 public interface ListenerProvider {
 
@@ -93,21 +92,4 @@ public interface ListenerProvider {
      * @return
      */
     OnCheckedChangeListener getOnCheckedChangeListener(@LayoutRes int layout);
-
-    /**
-     * add RadioGroup.OnCheckedChangeListener
-     *
-     * @param layout   item layout resource id
-     * @param listener
-     */
-    void addGroupOnCheckedChangeListener(@LayoutRes int layout,
-                                         RadioGroup.OnCheckedChangeListener listener);
-
-    /**
-     * get RadioGroup.OnCheckedChangeListener
-     *
-     * @param layout item layout resource id
-     * @return
-     */
-    RadioGroup.OnCheckedChangeListener getGroupOnCheckedChangeListener(@LayoutRes int layout);
 }

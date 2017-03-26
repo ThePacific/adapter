@@ -20,7 +20,6 @@ import android.support.annotation.LayoutRes;
 import android.util.SparseArray;
 import android.view.View;
 import android.widget.CompoundButton;
-import android.widget.RadioGroup;
 
 public final class ListenerProviderImpl implements ListenerProvider {
     /**
@@ -44,11 +43,6 @@ public final class ListenerProviderImpl implements ListenerProvider {
     private SparseArray<CompoundButton.OnCheckedChangeListener> onCheckedChangeListeners;
 
     /**
-     * RadioGroup.OnCheckedChangeListener array
-     */
-    private SparseArray<RadioGroup.OnCheckedChangeListener> onGroupCheckedChangeListeners;
-
-    /**
      * clear all listener
      */
     @Override
@@ -64,9 +58,6 @@ public final class ListenerProviderImpl implements ListenerProvider {
         }
         if (onCheckedChangeListeners != null) {
             onCheckedChangeListeners.clear();
-        }
-        if (onGroupCheckedChangeListeners != null) {
-            onGroupCheckedChangeListeners.clear();
         }
     }
 
@@ -179,35 +170,6 @@ public final class ListenerProviderImpl implements ListenerProvider {
     public CompoundButton.OnCheckedChangeListener getOnCheckedChangeListener(@LayoutRes int layout) {
         if (onCheckedChangeListeners != null) {
             return onCheckedChangeListeners.get(layout);
-        }
-        return null;
-    }
-
-    /**
-     * add RadioGroup.OnCheckedChangeListener
-     *
-     * @param layout   item layout resource id
-     * @param listener
-     */
-    @Override
-    public void addGroupOnCheckedChangeListener(@LayoutRes int layout,
-                                                RadioGroup.OnCheckedChangeListener listener) {
-        if (onGroupCheckedChangeListeners == null) {
-            onGroupCheckedChangeListeners = new SparseArray<>();
-        }
-        onGroupCheckedChangeListeners.put(layout, listener);
-    }
-
-    /**
-     * get RadioGroup.OnCheckedChangeListener
-     *
-     * @param layout item layout resource id
-     * @return
-     */
-    @Override
-    public RadioGroup.OnCheckedChangeListener getGroupOnCheckedChangeListener(@LayoutRes int layout) {
-        if (onGroupCheckedChangeListeners != null) {
-            onGroupCheckedChangeListeners.get(layout);
         }
         return null;
     }

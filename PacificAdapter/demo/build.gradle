@@ -14,4 +14,15 @@ android {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile project(':adapter')}
+    compile project(':adapter')
+    compile 'com.google.dagger:dagger-android-support:2.10-rc4'
+    compile 'com.android.support.constraint:constraint-layout:1.0.2'
+    annotationProcessor 'com.google.dagger:dagger-compiler:2.10-rc4'
+    annotationProcessor 'com.google.dagger:dagger-android-processor:2.10-rc4'
+}
+
+gradle.projectsEvaluated {
+    tasks.withType(JavaCompile) {
+        options.compilerArgs << "-Xmaxerrs" << "500"
+    }
+}
