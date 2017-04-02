@@ -1,523 +1,115 @@
-# Adapter
+## Adapter
 
-+A quick adapter library for ListView,GridView,Spinner,ViewPager,and RecyclerView.
-+[ ![Download](https://api.bintray.com/packages/thepacific/maven/adapter/images/download.svg) ](https://bintray.com/thepacific/maven/adapter/_latestVersion)
-[![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-Adapter-green.svg?style=true)](https://android-arsenal.com/details/1/3449)
-
-+[中文教程](http://www.jianshu.com/p/f18f77255952)
-
-![](https://github.com/ThePacific/QuickAdapter/blob/master/art/exam.gif)
++A quick adapter library for RecyclerView, GridView, ListView, ViewPager, Spinner. It abstracts the boilerplate of item view types, item layouts, viewholders, span sizes , and more, in order to simplify building complex screens with multiple view types. [1.x](https://github.com/thepacific/adapter/blob/master/README-old.md) is deprecated and please upgrade to 2.x
 
 ### Features
-+ Support multiple view types
-+ Support DataBinding
-+ No ViewHolder any more
-+ Easy to use and simple to expand
-
-### Fully Configured Store
-Let's start by looking at what a fully configured Store looks like. We will then walk through simpler examples showing each piece:
-```java
-Store<ArticleAsset, Integer> articleStore = StoreBuilder.<Integer, BufferedSource, ArticleAsset>parsedWithKey()
-                .fetcher(articleId -> api.getArticleAsBufferedSource(articleId))  //OkHttp responseBody.source()
-                .persister(FileSystemPersister.create(FileSystemFactory.create(context.getFilesDir()),pathResolver))
-                .parser(GsonParserFactory.createSourceParser(gson, ArticleAsset.Article.class))
-                .open();
-	      
-```
-
-With the above setup you have:
-+ In Memory Caching for rotation
-+ Disk caching for when users are offline
-+ Parsing through streaming API to limit memory consumption 
-+ Rich API to ask for data whether you want cached/new or a stream of future data updates.
-
-And now for the details:
-
-### Creating a Store
-
-You create a Store using a builder. The only requirement is to include a `.Fetcher<ReturnType,KeyType>` that returns an Observable<ReturnType> and has a single method `fetch(key)`
-
-
-``` java
-        Store<ArticleAsset, Integer> store = StoreBuilder.<ArticleAsset,Integer>key()
-                .fetcher(articleId -> api.getArticle(articleId))  //OkHttp responseBody.source()
-                .open();
-```
-Stores use generic keys as identifiers for data. A key can be any value object that properly implements toString and equals and hashCode. When your Fetcher function is called, it will be passed a particular Key value. Similarly, the key will be used as a primary identifier within caches (Make sure to have a proper hashCode!!) 
-
-### Our Key implementation - Barcodes
-For convenience we included our own key implementation called a BarCode. Barcode has two fields `String key and String type`
-``` java
-BarCode barcode = new BarCode("Article", "42");
-```
-When using a Barcode as your key, you can use a StoreBuilder convenience method
-``` java
- Store<ArticleAsset, Integer> store = StoreBuilder.<ArticleAsset>barcode()
-                .fetcher(articleBarcode -> api.getAsset(articleBarcode.getKey(),articleBarcode.getType()))
-                .open();
-```
-
-
-
-### Public Interface - Get, Fetch, Stream, GetRefreshing
-
-```java
-Observable<Article> article = store.get(barCode);
-```
-
-The first time you subscribe to `store.get(barCode)`, the response will be stored in an in-memory cache. All subsequent calls to `store.get(barCode)` with the same Key will retrieve the cached version of the data, minimizing unnecessary data calls. This prevents your app from fetching fresh data over the network (or from another external data source) in situations when doing so would unnecessarily waste bandwidth and battery. A great use case is any time your views are recreated after a rotation, they will be able to request the cached data from your Store. Having this data available can help you avoid the need to retain this in the view layer.
-
-
-So far our Store’s data flow looks like this:
-![Simple Store Flow](https://github.com/nytm/Store/blob/master/Images/store-1.jpg)
-
-
-By default, 100 items will be cached in memory for 24 hours. You may pass in your own instance of a Guava Cache to override the default policy.
-
-
-### Busting through the cache
-
-Alternatively you can call `store.fetch(barCode)` to get an Observable that skips the memory (and optional disk cache).
-
-
-Fresh data call will look like: `store.fetch()`
-![Simple Store Flow](https://github.com/nytm/Store/blob/master/Images/store-2.jpg)
-
-
-In the New York Times app, overnight background updates use `fetch` to make sure that calls to `store.get()` will not have to hit the network during normal usage. Another good use case for `fetch` is when a user wants to pull to refresh.
-
-
-Calls to both `fetch()` and `get()` emit one value and then call `onCompleted()` or throw an error.
-
-
-### Stream
-For real-time updates, you may also call `store.stream()` which returns an Observable that emits each time a new item is added to the Store. You can think of stream as an Event Bus-like feature that allows you to know when any new network hits happen for a particular Store. You can leverage the Rx operator `filter()` to only subscribe to a subset of emissions.
-
-### Get Refreshing
-There is another special way to subscribe to a Store: getRefreshing(key). Get Refreshing will subscribe to get() which returns a single response, but unlike Get, Get Refreshing will stay subscribed. Anytime you call store.clear(key) anyone subscribed to getRefreshing(key) will resubscribe and force a new network response.
-
-
-### Inflight Debouncer
-
-To prevent duplicative requests for the same data, Store offers an inflight debouncer. If the same request is made within a minute of a previous identical request, the same response will be returned. This is useful for situations when your app needs to make many async calls for the same data at startup or for when users are obsessively pulling to refresh. As an example, The New York Times news app asynchronously calls `ConfigStore.get()` from 12 different places on startup. The first call blocks while all others wait for the data to arrive. We have seen a dramatic decrease in the app's the data usage after implementing this in flight logic.
-
-
-### Adding a Parser
-
-Since it is rare for data to arrive from the network in the format that your views need, Stores can delegate to a parser by using a `StoreBuilder.<BarCode, BufferedSource, Article>parsedWithKey()
-
-```java
-Store<Article,Integer> store = StoreBuilder.<Integer, BufferedSource, Article>parsedWithKey()
-        .fetcher(articleId -> api.getArticle(articleId)) 
-        .parser(source -> {
-          try (InputStreamReader reader = new InputStreamReader(source.inputStream())) {
-            return gson.fromJson(reader, Article.class);
-          } catch (IOException e) {
-            throw new RuntimeException(e);
-          }
-        })
-        .open();
-```
-
-Our updated data flow now looks like this:
-
-`store.get()` -> ![Simple Store Flow](https://github.com/nytm/Store/blob/master/Images/store-3.jpg)
-
-
-
-### Middleware - GsonSourceParser
-
-There are also separate middleware libraries with parsers to help in cases where your fetcher is a Reader, BufferedSource or String and your parser is Gson:
-- GsonReaderParser
-- GsonSourceParser
-- GsonStringParser
-
-These can be accessed via a Factory class (GsonParserFactory).
-
-Our example can now be rewritten as:
-```java
-Store<Article,Integer> store = StoreBuilder.<Integer, BufferedSource, Article>parsedWithKey()
-        .fetcher(articleId -> api.getArticle(articleId)) 
-                .parser(GsonParserFactory.createSourceParser(gson, Article.class))
-                .open();
-```
-
-In some cases you may need to parse a top level JSONArray, in which case you can provide a TypeToken.
-```java
-Store<List<Article>,Integer> store = StoreBuilder.<Integer, BufferedSource, List<Article>>parsedWithKey()
-        .fetcher(articleId -> api.getArticles()) 
-                .parser(GsonParserFactory.createSourceParser(gson, new TypeToken<List<Article>>() {}))
-                .open();
-		
-		
-```
-
-Similarly we have a middleware artifact for Moshi & Jackson too!
-
-
-### Disk Caching
-
-Stores can enable disk caching by passing a Persister into the builder. Whenever a new network request is made, the Store will first write to the disk cache and then read from the disk cache.
-
-
-Now our data flow looks like:
-`store.get()` -> ![Simple Store Flow](https://github.com/nytm/Store/blob/master/Images/store-5.jpg)
-
-
-
- Ideally, data will be streamed from network to disk using either a BufferedSource or Reader as your network raw type (rather than String).
-
-```java
-Store<Article,Integer> store = StoreBuilder.<Integer, BufferedSource, Article>parsedWithKey()
-        .fetcher(articleId -> api.getArticles()) 
-           .persister(new Persister<BufferedSource>() {
-             @Override
-             public Observable<BufferedSource> read(Integer key) {
-               if (dataIsCached) {
-                 return Observable.fromCallable(() -> userImplementedCache.get(key));
-               } else {
-                 return Observable.empty();
-               }
-             }
-       
-             @Override
-             public Observable<Boolean> write(BarCode barCode, BufferedSource source) {
-               userImplementedCache.save(key, source);
-               return Observable.just(true);
-             }
-           })
-           .parser(GsonParserFactory.createSourceParser(gson, Article.class))
-           .open();
-```
-
-Stores don’t care how you’re storing or retrieving your data from disk. As a result, you can use Stores with object storage or any database (Realm, SQLite, CouchDB, Firebase etc). The only requirement is that data must be the same type when stored and retrieved as it was when received from your Fetcher. Technically there is nothing stopping you from implementing an in memory cache for the “persister” implementation and instead have two levels of in memory caching--one with inflated and one with deflated models, allowing for sharing of the “persister” cache data between stores.
-
-
-**Note**: When using a Parser and a disk cache, the Parser will be called AFTER fetching from disk and not between the network and disk. This allows your persister to work on the network stream directly.
-
-
-If using SQLite we recommend working with SqlBrite. If you are not using SqlBrite, an Observable can be created rather simply with `Observable.fromCallable(() -> getDBValue())`
-
-### Middleware - SourcePersister & FileSystem
-
-We've found the fastest form of persistence is streaming network responses directly to disk. As a result, we have included a separate library with a reactive FileSystem which depends on Okio BufferedSources. We have also included a FileSystemPersister which will give you disk caching and works beautifully with GsonSourceParser. When using the FileSystemPersister you must pass in a `PathResolver` which will tell the file system how to name the paths to cache entries. 
-
-Now back to our first example:
-
-```java
-Store<Article,Integer> store = StoreBuilder.<Integer, BufferedSource, Article>parsedWithKey()
-               .fetcher(articleId -> api.getArticles(articleId)) 
-               .persister(FileSystemPersister.create(FileSystemFactory.create(context.getFilesDir()),pathResolver))
-               .parser(GsonParserFactory.createSourceParser(gson, String.class))
-               .open();
-```
-
-As mentioned, the above builder is how we work with network operations at the New York Times. With the above setup you have:
-+ Memory caching with Guava Cache
-+ Disk caching with FileSystem (you can reuse the same file system implementation for all stores)
-+ Parsing from a BufferedSource to a <T> (Article in our case) with Gson
-+ In-flight request management
-+ Ability to get cached data or bust through your caches (get vs. fresh)
-+ Ability to listen for any new emissions from network (stream)
-+ Ability to be notified and resubscribed when caches are cleared (helpful for times when you need to do a post request and update another screen, such as with `getRefreshing`)
-
-We recommend using the above builder setup for most Stores. The SourcePersister implementation has a tiny memory footprint because it will stream bytes from network to disk and then from disk to parser. The streaming nature of Stores allows us to download dozens of 1mb+ json responses without worrying about OOM on low-memory devices. As mentioned above, Stores allow us to do things like calling `configStore.get()` a dozen times asynchronously before our Main Activity finishes loading without blocking the main thread or flooding our network.
-
-### RecordProvider
-If you'd like your Store to know about disk data staleness, you can have your `Persister` implement `RecordProvider`.  After doing so you can configure your Store to work in one of two ways:
-
-```java
-store = StoreBuilder.<BufferedSource>barcode()
-                .fetcher(fetcher)
-                .persister(persister)
-                .refreshOnStale()
-                .open();
-		
-```		
-
-`refreshOnStale` will backfill the disk cache anytime a record is stale. The user will still get the stale record returned to them.
-
-Or alternatively:
-
-```java
-        store = StoreBuilder.<BufferedSource>barcode()
-                .fetcher(fetcher)
-                .persister(persister)
-                .networkBeforeStale()
-                .open();
-```		
-`networkBeforeStale` - Store will try to get network source when disk data is stale. If the network source throws an error or is empty, stale disk data will be returned.
-
-
-### Subclassing a Store
-
-We can also subclass a Store implementation (RealStore<T>):
-
-```java
-public class SampleStore extends RealStore<String, BarCode> {
-    public SampleStore(Fetcher<String, BarCode> fetcher, Persister<String, BarCode> persister) {
-        super(fetcher, persister);
-    }
-}
-
-Subclassing is useful when you’d like to inject Store dependencies or add a few helper methods to a store:
-
-```java
-public class SampleStore extends RealStore<String, BarCode> {
-   @Inject
-   public SampleStore(Fetcher<String, BarCode> fetcher, Persister<String, BarCode> persister) {
-        super(fetcher, persister);
-    }
-}
-```
-
-
-### Artifacts
-Note: Release is in Sync with current state of master (not develop) branch
-
-**CurrentVersion = 2.0.3**
-
-+ **Cache** Cache extracted from Guava (keeps method count to a minimum)
-
-	```groovy
-	compile 'com.nytimes.android:cache:CurrentVersion'
-	```
-+ **Store** This contains only Store classes and has a dependecy on RxJava + the above cache.  
-
-	```groovy
-	compile 'com.nytimes.android:store:CurrentVersion'
-	```
-+ **Middleware** Sample Gson parsers, (feel free to create more and open PRs) 
-
-    ```groovy
-    compile 'com.nytimes.android:middleware:CurrentVersion'
-    ```
-+ **Middleware-Jackson** Sample Jackon parsers, (feel free to create more and open PRs)
-
-    ```groovy
-    compile 'com.nytimes.android:middleware:-jackson:CurrentVersion'
-    ```
-+ **Middleware-Moshi** Sample Moshi parsers, (feel free to create more and open PRs)
-
-    ```groovy
-    compile 'com.nytimes.android:middleware-moshi:CurrentVersion'
-    ```
-+ **File System** Persistence Library built using OKIO Source/Sink + Middleware for streaming from Network to FileSystem 
-
-	```groovy
-	compile 'com.nytimes.android:filesystem:CurrentVersion'
-	```
-**RxJava2**
-
-There is an experimental RxJava2 Branch as well.  
-feature/rx2 which has artifacts, use at your own risk for :-)
-   
-```
-    com.nytimes.android:store2:0.0.1-SNAPSHOT
-    
-    com.nytimes.android:cache:0.0.1-SNAPSHOT
-    
-    com.nytimes.android:middleware2:0.0.1-SNAPSHOT
-    
-    com.nytimes.android:filesystem2:0.0.1-SNAPSHOT
-```
-
-### Sample Project
-
-See the app for example usage of Store. Alternatively, the Wiki contains a set of recipes for common use cases
-+ Simple Example: Retrofit + Store
-+ Complex Example: BufferedSource from Retrofit (Can be OKHTTP too) + our FileSystem + our GsonSourceParser
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-## Gradle
++ Support DataBinding.
++ Multiple view types with No ViewHolder
++ Simple, flexible 
+
+### Setup
 ```groovy
-compile 'com.github.thepacific:adapter:2.0.0'
+compile "com.android.support:recyclerview-v7:{lastest version}"
 ```
-## Usage
 
-  
-#### Single layout
-* Just override convert()
+### Items
 ```java
-adapter = new Adapter<ExploreBean>(context, R.layout.item) {
-            @Override
-            protected void convert(final AdapterHelper helper, ExploreBean exploreBean) {
-                final int position = helper.getPosition();
-                helper
-                        .setText(R.id.tv_explore_name, "__Index: " + String.valueOf(position))
-                        .setText(R.id.tv_explore_desc, exploreBean.getDescription())
-                        .getItemView().setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        clickSnack(position);
-                    }
-                });
-            }
-        };      
+It will come soon
 ```
 
-#### Multiple view types layout
-* Need to override convert(), getItemViewType(), and getLayoutResId()
+#### Multiple view types
+```groovy
+It will come soon
+```
+
+#### DataBinding
 ```java
-adapter = new Adapter<ExploreBean>(context, R.layout.item, R.layout.item0, R.layout.item1) {
-            @Override
-            protected void convert(final AdapterHelper helper, ExploreBean exploreBean) {
-                // RecyclerViewHelper uses helper.getAdapterPosition()
-                final int position = helper.getPosition();
-                if (position % 3 == 0) {
-                    helper.setText(R.id.tv_explore_name, "__Index: " + String.valueOf(position));
-                } else if (position % 3 == 1) {
-                    helper.setImageResource(R.id.img_explore_icon, exploreBean.getIconResId());
-                } else {
-                    helper.getItemView().setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            clickSnack(position);
-                        }
-                    });
-                }
-            }
-
-            /**
-             * Must be overridden, when you have more than one item layout.
-             * No need to be overridden, when you only have one item layout.
-             */
-            @Override
-            public int getItemViewType(int position) {
-                if (position % 3 == 0) {
-                    return 0;
-                } else if (position % 3 == 1) {
-                    return 1;
-                } else {
-                    return 2;
-                }
-            }
-
-            /**
-             * Get layoutResId from view type  @see #getItemViewType(int position) return value.
-             * Must be overridden, when you have more than one item layout.
-             * No need to be overridden, when you only have one item layout.
-             */
-            @Override
-            public int getLayoutResId(int viewType) {
-                if (viewType == 0) {
-                    return R.layout.item;
-                } else if (viewType == 1) {
-                    return R.layout.item0;
-                } else {
-                    return R.layout.item1;
-                }
-            }
-        };
+It will come soon
 ```
-For more features, you can extend their Base Adapter
 
-## ExpandableListView
-* ExpandableAdapterHelper and ExpandableAdapter for ExpandableListView
-* Need to override getChildren(),convertGroupView() and convertChildView()
+#### Attach Listeners
+For now , it supports to attach OnClickListener, OnLongClickListener, OnTouchListener, OnCheckedChangeListener to items. The Adapter level API:
+Here's the demo:
 ```java
-adapter = new ExpandableAdapter<MenuBean, ExploreBean>(context, R.layout.item_group, R.layout.item_child) {
-            @Override
-            protected List<ExploreBean> getChildren(int groupPosition) {
-                return get(groupPosition).getExploreBeanList();
-            }
+adapter.addOnClickListener(R.layout.item, new View.OnClickListener() {
+    @Override
+    public void onClick(View v) {
+        //get ViewHolder
+        ViewHolder holder = AdapterUtil.getHolder(v);
 
-            @Override
-            protected void convertGroupView(final boolean isExpanded, final ExpandableAdapterHelper helper, MenuBean item) {
-                helper.setImageResource(R.id.img_explore_icon, item.getIconResId())
-                        .setText(R.id.tv_explore_name, item.getDescription())
-                        .getItemView().setTag("Example");
-            }
+        //find view in ItemView
+        TextView textName = AdapterUtil.findView(holder.itemView, R.id.text_name);
 
-            @Override
-            protected void convertChildView(boolean isLastChild, final ExpandableAdapterHelper helper, ExploreBean item) {
-                helper.getItemView().setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        clickSnack(helper.getGroupPosition(), helper.getChildPosition());
-                    }
-                });
-                helper.getItemView().setTag("hello world");
-            }
-        };
+        //get Item
+        Item item = holder.getItem();
+
+        //get adapter data size
+        int size = holder.getSize();
+
+        holder.isFirstItem();
+        holder.isLastItem();
+
+        //Note: !!!
+        //GetCurrentPosition() works for ListView,GridView, ViewPager, Spinner
+        //and RecyclerView, but GetAdapterPosition() only works for RecyclerView. Why?
+        //Because ViewHolder extends RecyclerView.ViewHolder and RecyclerView.ViewHolder
+        //has nothing to do with ListView, GridView, ViewPager and Spinner.
+        //So don't use GetAdapterPosition() to get adapter position when you are using
+        //ListView, GridView, ViewPager, Spinner, or you will always get 0
+
+        int position = holder.getCurrentPosition();//works for all adapter views
+        int position = holder.getAdapterPosition();//works for RecyclerView
+    }
+});
 ```
-For more features, you can extend its Base Adapter
-
-## ViewPager
-* ViewPagerAdapter, FragmentPagerAdapter2, and FragmentStatePagerAdapter2 for ViewPager
-
-#### With layout
-* Just override convert()
+And more:
 ```java
-adapter = new ViewPagerAdapter<String>(context,R.layout.pager_view) {
-            @Override
-            protected void convert(PagerAdapterHelper helper, String item) {
-                helper.setBackgroundRes(R.id.img_view, R.drawable.exa);
-            }
-        };
+/**
+ * add OnClickListener
+ *
+ * @param layout   item layout resource id
+ * @param listener
+ */
+void addOnClickListener(@LayoutRes int layout, OnClickListener listener);
+
+/**
+ * add OnTouchListener
+ *
+ * @param layout   item layout resource id
+ * @param listener
+ */
+void addOnTouchListener(@LayoutRes int layout, OnTouchListener listener);
+
+/**
+ * add OnLongClickListener
+ *
+ * @param layout   item layout resource id
+ * @param listener
+ */
+void addOnLongClickListener(@LayoutRes int layout, OnLongClickListener listener);
+
+/**
+ * add CompoundButton.OnCheckedChangeListener
+ *
+ * @param layout   item layout resource id
+ * @param listener
+ */
+void addOnCheckedChangeListener(@LayoutRes int layout, OnCheckedChangeListener listener);
 ```
+Why we need layoutId parameter ? Because we may have the same viewId in different view types.
 
-#### Without layout and create view from Java code
-
-* Need to override convert() and createView()
+### Expand
 ```java
-adapter = new ViewPagerAdapter<String>(context) {
-            @Override
-            protected void convert(PagerAdapterHelper helper, String item) {
-                helper.setBackgroundRes(R.id.img_view, R.drawable.exa);
-            }
-
-            // Just override createView()
-            @Override
-            protected View createView(ViewGroup container, int position) {
-                FrameLayout fl = new FrameLayout(context);
-                ImageView imageView = new ImageView(context);
-                FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(480, 480, Gravity.CENTER);
-                imageView.setId(R.id.img_view);
-                fl.addView(imageView);
-                imageView.setLayoutParams(lp);
-                // Don't add fl to container, it does in helper
-                return fl;
-            }
-        };
+It will come soon
 ```
-For more features, you can extend its Base Adapter
 
-## Others
-* onEmptyData() and onHasData() callback, when data size is 0. Use to display and hide empty tip view.
-
-## Dependencies
+### Dependencies
 ```groovy
 compile "com.android.support:recyclerview-v7:$rootProject.ext.support"
+provided "com.android.databinding:adapters:$rootProject.ext.dataBinding"
+provided "com.android.databinding:library:$rootProject.ext.dataBinding"
+provided "com.android.databinding:baseLibrary:$rootProject.ext.dataBindingBaseLibrary"
 ```
 
-## License  
+### License  
 [The MIT License ](https://opensource.org/licenses/MIT)
