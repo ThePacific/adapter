@@ -28,8 +28,8 @@ It will come soon
 ```
 
 #### Attach Listeners
-For now , it supports to attach OnClickListener, OnLongClickListener, OnTouchListener, OnCheckedChangeListener to items. The Adapter level API:
-Here's the demo:
+For now , it supports to attach OnClickListener, OnLongClickListener, OnTouchListener, OnCheckedChangeListener to items. At the Adapter level API, here's the demo:
+
 ```java
 adapter.addOnClickListener(R.layout.item, new View.OnClickListener() {
     @Override
@@ -62,6 +62,7 @@ adapter.addOnClickListener(R.layout.item, new View.OnClickListener() {
     }
 });
 ```
+
 And more:
 ```java
 /**
