@@ -17,15 +17,8 @@
 package com.pacific.adapter;
 
 import java.util.List;
-import java.util.concurrent.atomic.AtomicLong;
 
 public interface RecyclerItem<T extends ViewHolder> extends Item<T> {
-
-    /**
-     * for DiffUtil
-     */
-    AtomicLong ID_COUNTER = new AtomicLong(0);
-
     /**
      * bind pay loads
      *
@@ -56,16 +49,4 @@ public interface RecyclerItem<T extends ViewHolder> extends Item<T> {
      * @param holder
      */
     void onViewDetachedFromWindow(T holder);
-
-    /**
-     * isRecyclable callback
-     *
-     * @return
-     */
-    boolean isRecyclable();
-
-    /**
-     * @return item id
-     */
-    long diffId();
 }

@@ -18,12 +18,13 @@ package com.pacific.adapter;
 
 import android.support.annotation.LayoutRes;
 
-public interface Item<T extends ViewHolder> {
+import java.util.concurrent.atomic.AtomicLong;
 
+public interface Item<T extends ViewHolder> {
     /**
-     * @return item view type
+     * for stable id
      */
-    int getViewType();
+    AtomicLong ID_COUNTER = new AtomicLong(0);
 
     /**
      * @return item view layout resource id
@@ -44,4 +45,9 @@ public interface Item<T extends ViewHolder> {
      * @param holder view holder
      */
     void unbind(T holder);
+
+    /**
+     * @return item id
+     */
+    long diffId();
 }

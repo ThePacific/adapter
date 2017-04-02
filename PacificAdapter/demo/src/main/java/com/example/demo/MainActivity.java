@@ -2,47 +2,37 @@ package com.example.demo;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
-import android.widget.ListView;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.widget.Toast;
 
 import com.example.demo.entity.Item;
-import com.example.demo.entity.ItemDataBinding;
-import com.pacific.adapter.AbsAdapter;
 import com.pacific.adapter.AdapterUtil;
-import com.pacific.adapter.ViewHolder;
+import com.pacific.adapter.RecyclerAdapter;
+import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    ListView listView;
-    AbsAdapter adapter;
+    RecyclerView recyclerView;
+    RecyclerAdapter adapter;
     Toast toast;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        listView = (ListView) findViewById(R.id.lv);
-        adapter = new AbsAdapter();
-        adapter.addOnClickListener(R.layout.item_data_binding, new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ViewHolder holder = AdapterUtil.getHolder(v);
-                if (toast != null) {
-                    toast.cancel();
-                }
-                toast = Toast.makeText(
-                        MainActivity.this,
-                        String.valueOf(holder.getCurrentPosition()),
-                        Toast.LENGTH_LONG);
-                toast.show();
-            }
-        });
-        listView.setAdapter(adapter);
-        loadItem2();
+        recyclerView = (RecyclerView) findViewById(R.id.lv);
+        adapter = new RecyclerAdapter();
+        recyclerView.addItemDecoration(
+                new HorizontalDividerItemDecoration.Builder(this)
+                        .size(2)
+                        .colorResId(R.color.colorAccent)
+                        .build());
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(adapter);
+        loadItem();
     }
 
     private void loadItem() {
@@ -50,14 +40,6 @@ public class MainActivity extends AppCompatActivity {
         for (int i = 0; i < 30; i++) {
             list.add(new Item("item index is : " + i));
         }
-        adapter.addAll(AdapterUtil.toItems(list));
-    }
-
-    private void loadItem2() {
-        List<ItemDataBinding> list = new ArrayList<>();
-        for (int i = 0; i < 30; i++) {
-            list.add(new ItemDataBinding("item index is : " + i));
-        }
-        adapter.addAll(AdapterUtil.toItems(list));
+        adapter.addAll(AdapterUtil.toRecyclerItems(list));
     }
 }

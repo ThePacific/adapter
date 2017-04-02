@@ -1,5 +1,7 @@
 package com.example.demo.entity;
 
+import android.util.Log;
+
 import com.example.demo.R;
 import com.example.demo.databinding.ItemDataBindingBinding;
 import com.pacific.adapter.SimpleItem;
@@ -20,7 +22,8 @@ public class ItemDataBinding extends SimpleItem {
     @Override
     public void bind(ViewHolder holder) {
         ItemDataBindingBinding binding = holder.binding();
-        binding.text.setText(title);
-        holder.attachOnClickListener(R.id.text);
+        binding.textName.setText(title);
+        holder.attachOnClickListener(R.id.text_name);
+        Log.e("___________","do");
     }
 }

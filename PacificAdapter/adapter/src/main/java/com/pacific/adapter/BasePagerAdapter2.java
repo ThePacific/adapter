@@ -34,12 +34,39 @@ import java.util.Queue;
  */
 public abstract class BasePagerAdapter2<T extends Item, H extends ViewHolder>
         extends PagerAdapter implements DataIO<T>, ListenerProvider {
+    /**
+     * layout inflater
+     */
     protected LayoutInflater inflater;
+
+    /**
+     * data set
+     */
     protected final ArrayList<T> data;
+
+    /**
+     * cache views
+     */
     protected Queue<View> cacheViews;
+
+    /**
+     * current position
+     */
     protected int currentPosition = -1;
+
+    /**
+     * current target
+     */
     protected View currentTarget;
+
+    /**
+     * data set change callback
+     */
     protected OnDataSetChanged onDataSetChanged;
+
+    /**
+     * listeners provider
+     */
     protected ListenerProviderImpl provider;
 
     public BasePagerAdapter2() {
@@ -58,11 +85,6 @@ public abstract class BasePagerAdapter2<T extends Item, H extends ViewHolder>
             data.clear();
             notifyDataSetChanged();
         }
-    }
-
-    @Override
-    public int size() {
-        return data.size();
     }
 
     @Override
@@ -191,7 +213,7 @@ public abstract class BasePagerAdapter2<T extends Item, H extends ViewHolder>
 
     @Override
     public int getCount() {
-        return size();
+        return data.size();
     }
 
     @Override
@@ -215,7 +237,7 @@ public abstract class BasePagerAdapter2<T extends Item, H extends ViewHolder>
             holder = (H) convertView.getTag(R.integer.adapter_holder);
         }
         holder.setCurrentPosition(position);
-        holder.setSize(size());
+        holder.setSize(getCount());
         holder.setCurrentItem(item);
         item.bind(holder);
         container.addView(convertView);
@@ -245,7 +267,7 @@ public abstract class BasePagerAdapter2<T extends Item, H extends ViewHolder>
     @Override
     public void notifyDataSetChanged() {
         super.notifyDataSetChanged();
-        if (size() <= 0) {
+        if (getCount() == 0) {
             if (onDataSetChanged != null) {
                 onDataSetChanged.onEmptyData();
             }

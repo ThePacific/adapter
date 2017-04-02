@@ -18,6 +18,7 @@ package com.pacific.adapter;
 
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
+import android.util.SparseIntArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,11 +35,32 @@ import java.util.List;
  */
 public abstract class BaseAbsAdapter<T extends Item, H extends ViewHolder>
         extends BaseAdapter implements DataIO<T>, ListenerProvider {
+    /**
+     * layout inflater
+     */
     protected LayoutInflater inflater;
+
+    /**
+     * data set
+     */
     protected final ArrayList<T> data;
+
+    /**
+     * view type count
+     */
     protected final int viewTypeCount;
+
+    /**
+     * data set change callback
+     */
     protected OnDataSetChanged onDataSetChanged;
+
+    /**
+     * listeners provider
+     */
     protected ListenerProviderImpl provider;
+
+    protected final SparseIntArray typeArray;
 
     /**
      * default 1 view type
@@ -55,11 +77,12 @@ public abstract class BaseAbsAdapter<T extends Item, H extends ViewHolder>
         this.data = data == null ? new ArrayList<T>() : new ArrayList<>(data);
         this.provider = new ListenerProviderImpl();
         this.viewTypeCount = viewTypeCount;
+        this.typeArray = new SparseIntArray();
     }
 
     @Override
     public int getCount() {
-        return size();
+        return data.size();
     }
 
     @Override
@@ -68,13 +91,24 @@ public abstract class BaseAbsAdapter<T extends Item, H extends ViewHolder>
     }
 
     @Override
-    public long getItemId(int position) {
-        return position;
+    public final long getItemId(int position) {
+        return getItem(position).diffId();
+    }
+
+    @Override
+    public final boolean hasStableIds() {
+        return true;
     }
 
     @Override
     public int getItemViewType(int position) {
-        return get(position).getViewType();
+        int keyValue = get(position).getLayout();
+        int typeValue = typeArray.get(keyValue, -1);
+        if (typeValue == -1) {
+            typeValue = typeArray.size();
+            typeArray.put(keyValue, typeValue);
+        }
+        return typeValue;
     }
 
     @Override
@@ -97,7 +131,7 @@ public abstract class BaseAbsAdapter<T extends Item, H extends ViewHolder>
             holder = (H) convertView.getTag(R.integer.adapter_holder);
         }
         holder.setCurrentPosition(position);
-        holder.setSize(size());
+        holder.setSize(getCount());
         holder.setCurrentItem(item);
         item.bind(holder);
         return convertView;
@@ -114,11 +148,6 @@ public abstract class BaseAbsAdapter<T extends Item, H extends ViewHolder>
             data.clear();
             notifyDataSetChanged();
         }
-    }
-
-    @Override
-    public int size() {
-        return data.size();
     }
 
     @Override
@@ -248,7 +277,7 @@ public abstract class BaseAbsAdapter<T extends Item, H extends ViewHolder>
     @Override
     public void notifyDataSetChanged() {
         super.notifyDataSetChanged();
-        if (size() <= 0) {
+        if (getCount() == 0) {
             if (onDataSetChanged != null) {
                 onDataSetChanged.onEmptyData();
             }
@@ -257,11 +286,6 @@ public abstract class BaseAbsAdapter<T extends Item, H extends ViewHolder>
                 onDataSetChanged.onHasData();
             }
         }
-    }
-
-    @Override
-    public boolean hasStableIds() {
-        return true;
     }
 
     public OnDataSetChanged getOnDataSetChanged() {

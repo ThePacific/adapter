@@ -37,8 +37,7 @@ public final class RecyclerAdapter extends BaseRecyclerAdapter<RecyclerItem, Vie
             inflater = LayoutInflater.from(parent.getContext());
         }
         return new ViewHolder(
-                inflater.inflate(get(flagPosition).getLayout(), parent, false),
-                this) {
-        };
+                inflater.inflate(viewType, parent, false),
+                this);
     }
 }

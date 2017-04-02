@@ -28,12 +28,6 @@ import java.util.List;
  * @param <T> type of data
  */
 public interface DataIO<T> {
-
-    /**
-     * @return size of adapter
-     */
-    int size();
-
     /**
      * clean data
      */
@@ -127,6 +121,11 @@ public interface DataIO<T> {
      */
     void replace(T oldElement, T newElement);
 
+    /**
+     * replace special item
+     * @param index
+     * @param element
+     */
     void replaceAt(int index, T element);
 
     /**

@@ -18,8 +18,6 @@ package com.pacific.adapter;
 
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
-import android.support.v7.util.DiffUtil;
-import android.support.v7.util.ListUpdateCallback;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.Adapter;
 import android.view.LayoutInflater;
@@ -33,11 +31,24 @@ import java.util.List;
 
 public abstract class BaseRecyclerAdapter<T extends RecyclerItem, H extends ViewHolder>
         extends Adapter<H> implements DataIO<T>, ListenerProvider {
-
+    /**
+     * layout inflater
+     */
     protected LayoutInflater inflater;
+
+    /**
+     * data set
+     */
     protected final ArrayList<T> data;
-    protected int flagPosition = -1;
+
+    /**
+     * data set change callback
+     */
     protected OnDataSetChanged onDataSetChanged;
+
+    /**
+     * listeners provider
+     */
     protected ListenerProviderImpl provider;
 
     public BaseRecyclerAdapter() {
@@ -47,12 +58,12 @@ public abstract class BaseRecyclerAdapter<T extends RecyclerItem, H extends View
     public BaseRecyclerAdapter(List<T> data) {
         this.data = data == null ? new ArrayList<T>() : new ArrayList<>(data);
         this.provider = new ListenerProviderImpl();
+        this.setHasStableIds(true);
     }
 
     @Override
     public int getItemViewType(int position) {
-        flagPosition = position;
-        return get(position).getViewType();
+        return get(position).getLayout();
     }
 
     @Override
@@ -64,8 +75,7 @@ public abstract class BaseRecyclerAdapter<T extends RecyclerItem, H extends View
     public void onViewRecycled(H holder) {
         int position = holder.getAdapterPosition();
         if (position != RecyclerView.NO_POSITION) {
-            H helper = (H) holder.itemView.getTag(R.integer.adapter_holder);
-            get(position).unbind(helper);
+            get(position).unbind(holder);
             return;
         }
         super.onViewRecycled(holder);
@@ -75,8 +85,7 @@ public abstract class BaseRecyclerAdapter<T extends RecyclerItem, H extends View
     public void onViewAttachedToWindow(H holder) {
         int position = holder.getAdapterPosition();
         if (position != RecyclerView.NO_POSITION) {
-            H helper = (H) holder.itemView.getTag(R.integer.adapter_holder);
-            get(position).onViewAttachedToWindow(helper);
+            get(position).onViewAttachedToWindow(holder);
             return;
         }
     }
@@ -85,41 +94,36 @@ public abstract class BaseRecyclerAdapter<T extends RecyclerItem, H extends View
     public void onViewDetachedFromWindow(H holder) {
         int position = holder.getAdapterPosition();
         if (position != RecyclerView.NO_POSITION) {
-            H helper = (H) holder.itemView.getTag(R.integer.adapter_holder);
-            get(position).onViewDetachedFromWindow(helper);
+            get(position).onViewDetachedFromWindow(holder);
             return;
         }
     }
 
     @Override
-    public boolean onFailedToRecycleView(H holder) {
-        int position = holder.getAdapterPosition();
-        if (position != RecyclerView.NO_POSITION) {
-            return get(position).isRecyclable();
-        }
-        return super.onFailedToRecycleView(holder);
-    }
-
-    @Override
     public void onBindViewHolder(H holder, int position) {
+        T item = get(position);
+        holder.setCurrentPosition(position);
+        holder.setSize(getItemCount());
+        holder.setCurrentItem(item);
+        item.bind(holder);
     }
 
     @Override
     public void onBindViewHolder(H holder, int position, List<Object> payloads) {
-        T item = get(position);
-        holder.setCurrentPosition(position);
-        holder.setSize(size());
-        holder.setCurrentItem(item);
-        if (payloads.isEmpty()) {
-            item.bind(holder);
+        if (payloads == null || payloads.isEmpty()) {
+            super.onBindViewHolder(holder, position, payloads);
         } else {
+            T item = get(position);
+            holder.setCurrentPosition(position);
+            holder.setSize(getItemCount());
+            holder.setCurrentItem(item);
             item.bindPayloads(holder, payloads);
         }
     }
 
     @Override
     public int getItemCount() {
-        return size();
+        return data.size();
     }
 
     public OnDataSetChanged getOnDataSetChanged() {
@@ -131,7 +135,7 @@ public abstract class BaseRecyclerAdapter<T extends RecyclerItem, H extends View
     }
 
     private void onDataSetChanged() {
-        if (size() <= 0) {
+        if (getItemCount() == 0) {
             if (onDataSetChanged != null) {
                 onDataSetChanged.onEmptyData();
             }
@@ -143,18 +147,13 @@ public abstract class BaseRecyclerAdapter<T extends RecyclerItem, H extends View
     }
 
     @Override
-    public int size() {
-        return data.size();
-    }
-
-    @Override
     public boolean isEmpty() {
         return data.isEmpty();
     }
 
     @Override
     public void clear() {
-        if (data.size() > 0) {
+        if (getItemCount() > 0) {
             data.clear();
             notifyDataSetChanged();
             onDataSetChanged();
@@ -163,7 +162,7 @@ public abstract class BaseRecyclerAdapter<T extends RecyclerItem, H extends View
 
     @Override
     public void add(T element) {
-        final int size = data.size();
+        final int size = getItemCount();
         if (data.add(element)) {
             notifyItemInserted(size);
             onDataSetChanged();
@@ -191,9 +190,9 @@ public abstract class BaseRecyclerAdapter<T extends RecyclerItem, H extends View
 
     @Override
     public void add(int index, T element) {
-        final int size = data.size();
+        final int size = getItemCount();
         data.add(index, element);
-        if (data.size() > size) {
+        if (getItemCount() > size) {
             notifyItemInserted(index);
             onDataSetChanged();
         }
@@ -201,7 +200,7 @@ public abstract class BaseRecyclerAdapter<T extends RecyclerItem, H extends View
 
     @Override
     public void addAll(@NonNull List<T> list) {
-        final int size = data.size();
+        final int size = getItemCount();
         if (data.addAll(list)) {
             notifyItemRangeInserted(size, list.size());
             onDataSetChanged();
@@ -218,7 +217,7 @@ public abstract class BaseRecyclerAdapter<T extends RecyclerItem, H extends View
 
     @Override
     public void removeAll(@NonNull List<T> list) {
-        final int size = data.size();
+        final int size = getItemCount();
         List<Integer> indexes = new ArrayList<>();
         for (T item : list) indexes.add(data.indexOf(item));
         if (data.removeAll(list)) {
@@ -233,7 +232,7 @@ public abstract class BaseRecyclerAdapter<T extends RecyclerItem, H extends View
 
     @Override
     public void retainAll(@NonNull List<T> list) {
-        final int size = data.size();
+        final int size = getItemCount();
         List<Integer> indexes = new ArrayList<>();
         for (T item : list) indexes.add(data.indexOf(item));
         if (data.retainAll(list)) {
@@ -273,18 +272,8 @@ public abstract class BaseRecyclerAdapter<T extends RecyclerItem, H extends View
 
     @Override
     public void replaceAll(@NonNull List<T> list) {
-        if (data.size() == 0) {
-            addAll(list);
-            return;
-        }
-        if (list == null || list.size() == 0) {
-            clear();
-            return;
-        }
-        DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(new UpdatingCallback(list));
         data.clear();
-        data.addAll(list);
-        diffResult.dispatchUpdatesTo(listUpdateCallback);
+        addAll(list);
         onDataSetChanged();
     }
 
@@ -310,7 +299,7 @@ public abstract class BaseRecyclerAdapter<T extends RecyclerItem, H extends View
 
     @Override
     public List<T> subList(int fromIndex, int toIndex) {
-        if (fromIndex < 0 || toIndex >= data.size()) {
+        if (fromIndex < 0 || toIndex >= getItemCount()) {
             return Collections.emptyList();
         }
         return data.subList(fromIndex, toIndex);
@@ -362,61 +351,14 @@ public abstract class BaseRecyclerAdapter<T extends RecyclerItem, H extends View
         return provider.getOnCheckedChangeListener(layout);
     }
 
-    private ListUpdateCallback listUpdateCallback = new ListUpdateCallback() {
-        @Override
-        public void onInserted(int position, int count) {
-            notifyItemRangeInserted(position, count);
-        }
+    @Override
+    public final void setHasStableIds(boolean hasStableIds) {
+        if (!hasStableIds) throw new AssertionError("hasStableIds = false");
+        super.setHasStableIds(true);
+    }
 
-        @Override
-        public void onRemoved(int position, int count) {
-            notifyItemRangeRemoved(position, count);
-        }
-
-        @Override
-        public void onMoved(int fromPosition, int toPosition) {
-            notifyItemMoved(fromPosition, toPosition);
-        }
-
-        @Override
-        public void onChanged(int position, int count, Object payload) {
-            notifyItemRangeChanged(position, count);
-        }
-    };
-
-    private class UpdatingCallback extends DiffUtil.Callback {
-
-        private List<T> newList;
-
-        UpdatingCallback(List<T> newList) {
-            this.newList = newList;
-        }
-
-        @Override
-        public int getOldListSize() {
-            return data.size();
-        }
-
-        @Override
-        public int getNewListSize() {
-            return newList.size();
-        }
-
-        @Override
-        public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
-            T oldItem = data.get(oldItemPosition);
-            T newItem = newList.get(newItemPosition);
-            if (oldItem.getLayout() != newItem.getLayout()) {
-                return false;
-            }
-            return oldItem.diffId() == newItem.diffId();
-        }
-
-        @Override
-        public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
-            T oldItem = data.get(oldItemPosition);
-            T newItem = newList.get(newItemPosition);
-            return oldItem.equals(newItem);
-        }
+    @Override
+    public final long getItemId(int position) {
+        return get(position).diffId();
     }
 }

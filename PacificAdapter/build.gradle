@@ -23,8 +23,8 @@ task clean(type: Delete) {
 
 ext {
     compile = 25
-    buildTools = "25.0.2"
-    support = "25.3.0"
+    buildTools = "26.0.0-rc1"
+    support = "25.3.1"
     min = "9"
     target = "25"
     versionCode = 8

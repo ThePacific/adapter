@@ -76,7 +76,7 @@ public final class DefaultBinding {
      *
      * @param viewId TextView id
      * @param value  text
-     * @return SimpleViewHolder itself
+     * @return DefaultBinding itself
      */
     public DefaultBinding setText(int viewId, CharSequence value) {
         TextView view = findView(viewId);
@@ -89,7 +89,7 @@ public final class DefaultBinding {
      *
      * @param viewId    TextView id
      * @param stringRes text resource id
-     * @return SimpleViewHolder itself
+     * @return DefaultBinding itself
      */
     public DefaultBinding setText(int viewId, @StringRes int stringRes) {
         TextView view = findView(viewId);
@@ -102,7 +102,7 @@ public final class DefaultBinding {
      *
      * @param viewId   ImageView id
      * @param imageRes drawable resource id
-     * @return SimpleViewHolder itself
+     * @return DefaultBinding itself
      */
     public DefaultBinding setImageResource(int viewId, @DrawableRes int imageRes) {
         ImageView view = findView(viewId);
@@ -115,7 +115,7 @@ public final class DefaultBinding {
      *
      * @param viewId view Id
      * @param color  color int value , note : not color resource id
-     * @return SimpleViewHolder itself
+     * @return DefaultBinding itself
      */
     public DefaultBinding setBackgroundColor(int viewId, @ColorInt int color) {
         View view = findView(viewId);
@@ -128,7 +128,7 @@ public final class DefaultBinding {
      *
      * @param viewId        view id
      * @param backgroundRes drawable resource id
-     * @return SimpleViewHolder itself
+     * @return DefaultBinding itself
      */
     public DefaultBinding setBackgroundRes(int viewId, @DrawableRes int backgroundRes) {
         View view = findView(viewId);
@@ -141,7 +141,7 @@ public final class DefaultBinding {
      *
      * @param viewId    TextView id
      * @param textColor color int value , note : not color resource id
-     * @return SimpleViewHolder itself
+     * @return DefaultBinding itself
      */
     public DefaultBinding setTextColor(int viewId, @ColorInt int textColor) {
         TextView view = findView(viewId);
@@ -154,7 +154,7 @@ public final class DefaultBinding {
      *
      * @param viewId       TextView id
      * @param textColorRes color resource id
-     * @return SimpleViewHolder itself
+     * @return DefaultBinding itself
      */
     public DefaultBinding setTextColorRes(int viewId, @ColorRes int textColorRes) {
         TextView view = findView(viewId);
@@ -171,7 +171,7 @@ public final class DefaultBinding {
      *
      * @param viewId   ImageView id
      * @param drawable drawable
-     * @return SimpleViewHolder itself
+     * @return DefaultBinding itself
      */
     public DefaultBinding setImageDrawable(int viewId, Drawable drawable) {
         ImageView view = findView(viewId);
@@ -184,7 +184,7 @@ public final class DefaultBinding {
      *
      * @param viewId ImageView id
      * @param bitmap bitmap
-     * @return SimpleViewHolder itself
+     * @return DefaultBinding itself
      */
     public DefaultBinding setImageBitmap(int viewId, Bitmap bitmap) {
         ImageView view = findView(viewId);
@@ -197,7 +197,7 @@ public final class DefaultBinding {
      *
      * @param viewId view id
      * @param value  alpha value , from 0.0 to 1.0
-     * @return SimpleViewHolder itself
+     * @return DefaultBinding itself
      */
     public DefaultBinding setAlpha(int viewId, @FloatRange(from = 0.0, to = 1.0) float value) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
@@ -216,7 +216,7 @@ public final class DefaultBinding {
      *
      * @param viewId     view id
      * @param visibility View.VISIBLE, View.GONE,View.INVISIBLE
-     * @return SimpleViewHolder itself
+     * @return DefaultBinding itself
      */
     public DefaultBinding setVisible(int viewId, int visibility) {
         View view = findView(viewId);
@@ -229,7 +229,7 @@ public final class DefaultBinding {
      *
      * @param viewId   view id
      * @param typeface TypeFace
-     * @return SimpleViewHolder itself
+     * @return DefaultBinding itself
      */
     public DefaultBinding setTypeface(int viewId, Typeface typeface) {
         TextView view = findView(viewId);
@@ -243,7 +243,7 @@ public final class DefaultBinding {
      *
      * @param viewIds  view ids for multiple TextViews
      * @param typeface TypeFace
-     * @return SimpleViewHolder itself
+     * @return DefaultBinding itself
      */
     public DefaultBinding setTypeface(Typeface typeface, int... viewIds) {
         for (int viewId : viewIds) {
@@ -259,7 +259,7 @@ public final class DefaultBinding {
      *
      * @param viewId   Progress view id
      * @param progress value
-     * @return SimpleViewHolder itself
+     * @return DefaultBinding itself
      */
     public DefaultBinding setProgress(int viewId, int progress) {
         ProgressBar view = findView(viewId);
@@ -273,7 +273,7 @@ public final class DefaultBinding {
      * @param viewId   Progress view id
      * @param progress value
      * @param max      max value
-     * @return SimpleViewHolder itself
+     * @return DefaultBinding itself
      */
     public DefaultBinding setProgress(int viewId, int progress, int max) {
         ProgressBar view = findView(viewId);
@@ -287,7 +287,7 @@ public final class DefaultBinding {
      *
      * @param viewId progress view id
      * @param max    max value
-     * @return SimpleViewHolder itself
+     * @return DefaultBinding itself
      */
     public DefaultBinding setMax(int viewId, int max) {
         ProgressBar view = findView(viewId);
@@ -300,7 +300,7 @@ public final class DefaultBinding {
      *
      * @param viewId RatingBar view id
      * @param rating value
-     * @return SimpleViewHolder itself
+     * @return DefaultBinding itself
      */
     public DefaultBinding setRating(int viewId, float rating) {
         RatingBar view = findView(viewId);
@@ -314,7 +314,7 @@ public final class DefaultBinding {
      * @param viewId RatingBar view id
      * @param rating value
      * @param max    max value
-     * @return SimpleViewHolder itself
+     * @return DefaultBinding itself
      */
     public DefaultBinding setRating(int viewId, float rating, int max) {
         RatingBar view = findView(viewId);
@@ -328,7 +328,7 @@ public final class DefaultBinding {
      *
      * @param viewId view id
      * @param tag    tag value
-     * @return SimpleViewHolder itself
+     * @return DefaultBinding itself
      */
     public DefaultBinding setTag(int viewId, Object tag) {
         View view = findView(viewId);
@@ -342,7 +342,7 @@ public final class DefaultBinding {
      * @param viewId view id
      * @param key    tag key
      * @param tag    tag value
-     * @return SimpleViewHolder itself
+     * @return DefaultBinding itself
      */
     public DefaultBinding setTag(int viewId, int key, Object tag) {
         View view = findView(viewId);
@@ -355,7 +355,7 @@ public final class DefaultBinding {
      *
      * @param viewId  CheckBox id
      * @param checked check state
-     * @return SimpleViewHolder itself
+     * @return DefaultBinding itself
      */
     public DefaultBinding setChecked(int viewId, boolean checked) {
         View view = findView(viewId);
