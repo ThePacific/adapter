@@ -17,6 +17,7 @@
 package com.pacific.adapter;
 
 import android.databinding.DataBindingUtil;
+import android.support.annotation.IdRes;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
@@ -137,7 +138,7 @@ public class ViewHolder extends RecyclerView.ViewHolder implements ListenerAttac
      * @param viewId view id
      */
     @Override
-    public void attachOnClickListener(int viewId) {
+    public void attachOnClickListener(@IdRes int viewId) {
         listenerAttach.attachOnClickListener(viewId);
     }
 
@@ -147,7 +148,7 @@ public class ViewHolder extends RecyclerView.ViewHolder implements ListenerAttac
      * @param viewId view id
      */
     @Override
-    public void attachOnTouchListener(int viewId) {
+    public void attachOnTouchListener(@IdRes int viewId) {
         listenerAttach.attachOnTouchListener(viewId);
     }
 
@@ -157,7 +158,7 @@ public class ViewHolder extends RecyclerView.ViewHolder implements ListenerAttac
      * @param viewId view id
      */
     @Override
-    public void attachOnLongClickListener(int viewId) {
+    public void attachOnLongClickListener(@IdRes int viewId) {
         listenerAttach.attachOnLongClickListener(viewId);
     }
 
@@ -167,7 +168,12 @@ public class ViewHolder extends RecyclerView.ViewHolder implements ListenerAttac
      * @param viewId CompoundButton view id
      */
     @Override
-    public void attachOnCheckedChangeListener(int viewId) {
+    public void attachOnCheckedChangeListener(@IdRes int viewId) {
         listenerAttach.attachOnCheckedChangeListener(viewId);
+    }
+
+    @Override
+    public void attachImageLoader(@IdRes int viewId) {
+        listenerAttach.attachImageLoader(viewId);
     }
 }

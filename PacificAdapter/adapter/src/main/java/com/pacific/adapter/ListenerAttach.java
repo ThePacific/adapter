@@ -16,32 +16,41 @@
 
 package com.pacific.adapter;
 
+import android.support.annotation.IdRes;
+
 interface ListenerAttach {
     /**
      * attach OnClickListener for view
      *
      * @param viewId view id
      */
-    void attachOnClickListener(int viewId);
+    void attachOnClickListener(@IdRes int viewId);
 
     /**
      * attach OnTouchListener for view
      *
      * @param viewId view id
      */
-    void attachOnTouchListener(int viewId);
+    void attachOnTouchListener(@IdRes int viewId);
 
     /**
      * attach OnLongClickListener for view
      *
      * @param viewId view id
      */
-    void attachOnLongClickListener(int viewId);
+    void attachOnLongClickListener(@IdRes int viewId);
 
     /**
      * attach CompoundButton.OnCheckedChangeListener for CompoundButton
      *
      * @param viewId CompoundButton view id
      */
-    void attachOnCheckedChangeListener(int viewId);
+    void attachOnCheckedChangeListener(@IdRes int viewId);
+
+    /**
+     * load image
+     *
+     * @param viewId
+     */
+    void attachImageLoader(@IdRes int viewId);
 }

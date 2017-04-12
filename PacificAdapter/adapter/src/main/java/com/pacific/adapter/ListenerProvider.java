@@ -92,4 +92,18 @@ public interface ListenerProvider {
      * @return
      */
     OnCheckedChangeListener getOnCheckedChangeListener(@LayoutRes int layout);
+
+    /**
+     * add image loader to load image
+     *
+     * @param imageLoader
+     */
+    void addImageLoader(ImageLoader imageLoader);
+
+    /**
+     * get ImageLoader
+     *
+     * @return
+     */
+    ImageLoader getImageLoader();
 }

@@ -16,9 +16,11 @@
 
 package com.pacific.adapter;
 
+import android.support.annotation.IdRes;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.CompoundButton;
+import android.widget.ImageView;
 
 final class ListenerAttachImpl implements ListenerAttach {
     /**
@@ -42,7 +44,7 @@ final class ListenerAttachImpl implements ListenerAttach {
      * @param viewId view id
      */
     @Override
-    public void attachOnClickListener(int viewId) {
+    public void attachOnClickListener(@IdRes int viewId) {
         int layout = holder.getItem().getLayout();
         final View.OnClickListener listener = provider.getOnClickListener(layout);
         if (listener == null) return;
@@ -62,7 +64,7 @@ final class ListenerAttachImpl implements ListenerAttach {
      * @param viewId view id
      */
     @Override
-    public void attachOnTouchListener(int viewId) {
+    public void attachOnTouchListener(@IdRes int viewId) {
         int layout = holder.getItem().getLayout();
         final View.OnTouchListener listener = provider.getOnTouchListener(layout);
         if (listener == null) return;
@@ -82,7 +84,7 @@ final class ListenerAttachImpl implements ListenerAttach {
      * @param viewId view id
      */
     @Override
-    public void attachOnLongClickListener(int viewId) {
+    public void attachOnLongClickListener(@IdRes int viewId) {
         int layout = holder.getItem().getLayout();
         final View.OnLongClickListener listener = provider.getOnLongClickListener(layout);
         if (listener == null) return;
@@ -102,7 +104,7 @@ final class ListenerAttachImpl implements ListenerAttach {
      * @param viewId CompoundButton view id
      */
     @Override
-    public void attachOnCheckedChangeListener(int viewId) {
+    public void attachOnCheckedChangeListener(@IdRes int viewId) {
         int layout = holder.getItem().getLayout();
         final CompoundButton.OnCheckedChangeListener listener = provider
                 .getOnCheckedChangeListener(layout);
@@ -115,5 +117,17 @@ final class ListenerAttachImpl implements ListenerAttach {
                 listener.onCheckedChanged(buttonView, isChecked);
             }
         });
+    }
+
+    /**
+     * load image
+     *
+     * @param viewId
+     */
+    @Override
+    public void attachImageLoader(@IdRes int viewId) {
+        ImageLoader imageLoader = provider.getImageLoader();
+        ImageView imageView = AdapterUtil.findView(holder.itemView, viewId);
+        imageLoader.load(imageView, holder);
     }
 }

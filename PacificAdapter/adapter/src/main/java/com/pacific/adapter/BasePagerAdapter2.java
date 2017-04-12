@@ -340,6 +340,16 @@ public abstract class BasePagerAdapter2<T extends Item, H extends ViewHolder>
         return provider.getOnCheckedChangeListener(layout);
     }
 
+    @Override
+    public void addImageLoader(ImageLoader imageLoader) {
+        provider.addImageLoader(imageLoader);
+    }
+
+    @Override
+    public ImageLoader getImageLoader() {
+        return provider.getImageLoader();
+    }
+
     /**
      * create ViewHolder
      *

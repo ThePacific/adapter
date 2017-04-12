@@ -42,6 +42,8 @@ public final class ListenerProviderImpl implements ListenerProvider {
      */
     private SparseArray<CompoundButton.OnCheckedChangeListener> onCheckedChangeListeners;
 
+    private ImageLoader imageLoader;
+
     /**
      * clear all listener
      */
@@ -172,5 +174,25 @@ public final class ListenerProviderImpl implements ListenerProvider {
             return onCheckedChangeListeners.get(layout);
         }
         return null;
+    }
+
+    /**
+     * add image loader to load image
+     *
+     * @param imageLoader
+     */
+    @Override
+    public void addImageLoader(ImageLoader imageLoader) {
+        this.imageLoader = imageLoader;
+    }
+
+    /**
+     * get ImageLoader
+     *
+     * @return
+     */
+    @Override
+    public ImageLoader getImageLoader() {
+        return this.imageLoader;
     }
 }

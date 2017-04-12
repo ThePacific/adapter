@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="item_padding">16dp</dimen>
+    <dimen name="image_width">48dp</dimen>
+
+    <dimen name="font_name">16sp</dimen>
+    <dimen name="font_desc">14sp</dimen>
+</resources>

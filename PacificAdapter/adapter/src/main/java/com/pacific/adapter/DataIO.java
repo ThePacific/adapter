@@ -21,9 +21,7 @@ import android.support.annotation.NonNull;
 import java.util.List;
 
 /**
- * insert,remove,replace,get data for adapter
- * <p>
- * implemented by adapters
+ * insert,remove,replace,get data
  *
  * @param <T> type of data
  */
@@ -123,6 +121,7 @@ public interface DataIO<T> {
 
     /**
      * replace special item
+     *
      * @param index
      * @param element
      */

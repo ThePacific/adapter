@@ -343,6 +343,26 @@ public abstract class BaseAbsAdapter<T extends Item, H extends ViewHolder>
     }
 
     /**
+     * add image loader to load image
+     *
+     * @param imageLoader
+     */
+    @Override
+    public void addImageLoader(ImageLoader imageLoader) {
+        provider.addImageLoader(imageLoader);
+    }
+
+    /**
+     * get ImageLoader
+     *
+     * @return
+     */
+    @Override
+    public ImageLoader getImageLoader() {
+        return provider.getImageLoader();
+    }
+
+    /**
      * create ViewHolder
      *
      * @param convertView item view

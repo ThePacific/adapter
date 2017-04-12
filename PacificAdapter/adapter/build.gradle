@@ -13,5 +13,5 @@ dependencies {
     compile "com.android.support:support-v4:$rootProject.ext.support"
     provided "com.android.databinding:adapters:$rootProject.ext.dataBinding"
     provided "com.android.databinding:library:$rootProject.ext.dataBinding"
-    provided "com.android.databinding:baseLibrary:2.4.0-alpha3"
+    provided "com.android.databinding:baseLibrary:2.4.0-alpha5"
 }

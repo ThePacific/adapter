@@ -352,6 +352,16 @@ public abstract class BaseRecyclerAdapter<T extends RecyclerItem, H extends View
     }
 
     @Override
+    public void addImageLoader(ImageLoader imageLoader) {
+        provider.addImageLoader(imageLoader);
+    }
+
+    @Override
+    public ImageLoader getImageLoader() {
+        return provider.getImageLoader();
+    }
+
+    @Override
     public final void setHasStableIds(boolean hasStableIds) {
         if (!hasStableIds) throw new AssertionError("hasStableIds = false");
         super.setHasStableIds(true);
