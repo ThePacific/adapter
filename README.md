@@ -105,9 +105,9 @@ adapter.setOnClickListener(new View.OnClickListener() {
 });
 
 adapter.setImageLoader((imageView, holder) -> {
-    Item item = holder.getItem();
+    YourItem item = holder.getItem();
     Glide.with(this)
-                .load(((Cartoon) item).imageUrl())
+                .load(item.imageUrl())
                 .fitCenter()
                 .into(imageView);
 });
