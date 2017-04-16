@@ -57,8 +57,8 @@ public class YourItem extends SimpleItem {
         //Without DataBinding, just use DefaultBinding
         DefaultBinding binding = holder.binding();
 
-        //With DataBinding, use the layout generated Binding instead of DefaultBinding
-        LayoutGeneratedBinding = holder.binding();
+        //With DataBinding, use layout generated Binding instead of DefaultBinding
+        LayoutGeneratedBinding binding = holder.binding();
     }
 }
 ```
