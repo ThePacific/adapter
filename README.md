@@ -5,8 +5,8 @@ A quick adapter library for RecyclerView, GridView, ListView, ViewPager, Spinner
 
 # Features
 + Support DataBinding.
-+ Multiple view types with No ViewHolder
-+ Simple, flexible 
++ Multiple view types without any ViewHolder
++ Simple, flexible
 
 # Setup
 ```groovy
@@ -14,9 +14,7 @@ compile 'com.github.thepacific:adapter:2.0.1'
 ```
 
 # Items
-[SimpleItem]() and [Item]() is used in GridView, ListView, Spinner, ViewPager. [SimpleRecylcerItem]() and [RecylcerItem]() is used in RecyclerView.Items abstracts the boilerplate of item view types, item layouts, viewholders, span sizes , and more.
-
-Just extend [SimpleItem]() or [SimpleRecylcerItem](). Optionally, you can implement [Item]() or [RecylcerItem](). 
+Extend [SimpleItem]() or [SimpleRecylcerItem](). Optionally, you may implement [Item]() or [RecylcerItem](). 
 
 ```java
 public class YourItem extends SimpleItem {
@@ -63,8 +61,8 @@ public class YourItem extends SimpleItem {
 }
 ```
 
-# Add listeners
-Add OnClickListener, OnLongClickListener, OnTouchListener, OnCheckedChangeListener and ImageLoader:
+# Listeners
+Set OnClickListener, OnLongClickListener, OnTouchListener, OnCheckedChangeListener and ImageLoader:
 
 ```java
 RecyclerAdapter adapter = new RecyclerAdapter(); //RecyclerView
@@ -111,14 +109,10 @@ adapter.setOnDataSetChanged(OnDataSetChanged onDataSetChanged);
 
 //data set changed callback , it's useful to show or hide empty view
 public interface OnDataSetChanged {
-    /**
-     * called when data size is 0
-     */
+    //called when data size is 0
     void onEmptyData();
 
-    /**
-     * called when data size larger than 0
-     */
+    //called when data size larger than 0
     void onHasData();
 }
 ```
