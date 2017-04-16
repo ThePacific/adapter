@@ -103,6 +103,14 @@ adapter.setOnClickListener(new View.OnClickListener() {
         int position = holder.getAdapterPosition();
     }
 });
+
+adapter.setImageLoader((imageView, holder) -> {
+    Item item = holder.getItem();
+    Glide.with(this)
+                .load(((Cartoon) item).imageUrl())
+                .fitCenter()
+                .into(imageView);
+});
 ```
 
 # Others
