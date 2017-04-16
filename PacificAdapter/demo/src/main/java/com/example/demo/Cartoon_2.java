@@ -27,6 +27,8 @@ public abstract class Cartoon_2 extends SimpleItem {
         holder.attachImageLoader(R.id.img_header);
         holder.attachImageLoader(R.id.img_header_right);
         holder.attachImageLoader(R.id.img_header_right_right);
+        holder.attachOnClickListener(R.id.layout_root);
+        // and so on ......
     }
 
     public static Builder builder() {

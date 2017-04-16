@@ -2,6 +2,8 @@ package com.example.demo;
 
 import com.google.auto.value.AutoValue;
 import com.pacific.adapter.DefaultBinding;
+import com.pacific.adapter.PagerAdapter2;
+import com.pacific.adapter.RecyclerAdapter;
 import com.pacific.adapter.SimpleItem;
 import com.pacific.adapter.ViewHolder;
 
@@ -25,6 +27,10 @@ public abstract class Cartoon extends SimpleItem {
         binding.setText(R.id.text_name, name());
         binding.setText(R.id.text_desc, description());
         holder.attachImageLoader(R.id.img_header);
+        holder.attachOnClickListener(R.id.layout_root);
+        holder.attachOnClickListener(R.id.layout_root);
+        PagerAdapter2 adapter2 =new PagerAdapter2();
+        RecyclerAdapter adapter = new RecyclerAdapter();
     }
 
     public static Builder builder() {

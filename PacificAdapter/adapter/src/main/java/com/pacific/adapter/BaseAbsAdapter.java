@@ -102,13 +102,13 @@ public abstract class BaseAbsAdapter<T extends Item, H extends ViewHolder>
 
     @Override
     public int getItemViewType(int position) {
-        int keyValue = get(position).getLayout();
-        int typeValue = typeArray.get(keyValue, -1);
-        if (typeValue == -1) {
-            typeValue = typeArray.size();
-            typeArray.put(keyValue, typeValue);
+        int key = get(position).getLayout();
+        int value = typeArray.get(key, -1);
+        if (value == -1) {
+            value = typeArray.size();
+            typeArray.put(key, value);
         }
-        return typeValue;
+        return value;
     }
 
     @Override

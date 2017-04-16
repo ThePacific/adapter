@@ -127,6 +127,7 @@ final class ListenerAttachImpl implements ListenerAttach {
     @Override
     public void attachImageLoader(@IdRes int viewId) {
         ImageLoader imageLoader = provider.getImageLoader();
+        if (imageLoader == null) return;
         ImageView imageView = AdapterUtil.findView(holder.itemView, viewId);
         imageLoader.load(imageView, holder);
     }

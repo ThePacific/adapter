@@ -26,6 +26,7 @@ public abstract class Cartoon_1 extends SimpleItem {
         binding.setText(R.id.text_desc, description());
         holder.attachImageLoader(R.id.img_header);
         holder.attachImageLoader(R.id.img_header_right);
+        holder.attachOnClickListener(R.id.layout_root);
     }
 
     public static Builder builder() {

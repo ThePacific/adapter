@@ -2,15 +2,19 @@ package com.example.demo;
 
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.demo.databinding.FragmentListViewBinding;
 import com.pacific.adapter.AbsAdapter;
+import com.pacific.adapter.AdapterUtil;
 import com.pacific.adapter.Item;
+import com.pacific.adapter.ViewHolder;
 import com.trello.rxlifecycle2.android.FragmentEvent;
 import com.trello.rxlifecycle2.components.support.RxFragment;
 
@@ -25,6 +29,7 @@ public class ListViewFragment extends RxFragment {
 
     FragmentListViewBinding binding;
     AbsAdapter adapter;
+    Toast toast;
 
     public ListViewFragment() {
     }
@@ -61,6 +66,18 @@ public class ListViewFragment extends RxFragment {
                         .fitCenter()
                         .into(iv);
             }
+        });
+        adapter.addOnClickListener(R.layout.item_cartoon, v -> {
+            ViewHolder holder = AdapterUtil.getHolder(v);
+            toast(holder.getCurrentPosition());
+        });
+        adapter.addOnClickListener(R.layout.item_cartoon_1, v -> {
+            ViewHolder holder = AdapterUtil.getHolder(v);
+            toast(holder.getCurrentPosition());
+        });
+        adapter.addOnClickListener(R.layout.item_cartoon_2, v -> {
+            ViewHolder holder = AdapterUtil.getHolder(v);
+            toast(holder.getCurrentPosition());
         });
     }
 
@@ -100,19 +117,19 @@ public class ListViewFragment extends RxFragment {
                     for (int i = 0; i < imageUrls.length; i++) {
                         if (i % 3 == 0) {
                             items.add(Cartoon.builder()
-                                    .name("Layout Type 1")
+                                    .name("Type1, position:" + i)
                                     .description("Use Java 8 language features")
                                     .imageUrl(imageUrls[i])
                                     .build());
                         } else if (i % 3 == 1) {
                             items.add(Cartoon_1.builder()
-                                    .name("Layout Type 2")
+                                    .name("Type2, position:" + i)
                                     .description("Use Java 8 language features")
                                     .imageUrl(imageUrls[i])
                                     .build());
                         } else {
                             items.add(Cartoon_2.builder()
-                                    .name("Layout Type 3")
+                                    .name("Type3, position:" + i)
                                     .description("Use Java 8 language features")
                                     .imageUrl(imageUrls[i])
                                     .build());
@@ -123,5 +140,14 @@ public class ListViewFragment extends RxFragment {
                 .compose(this.bindUntilEvent(FragmentEvent.DESTROY))
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(items -> adapter.addAll(items));
+    }
+
+    void toast(int index) {
+        String text = "position:" + index;
+        if (toast != null) {
+            toast.cancel();
+        }
+        toast = Toast.makeText(getContext(), text, Toast.LENGTH_SHORT);
+        toast.show();
     }
 }

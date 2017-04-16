@@ -4,7 +4,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.4.0-alpha5'
+        classpath 'com.android.tools.build:gradle:2.4.0-alpha6'
         classpath 'com.github.dcendents:android-maven-gradle-plugin:1.5'
         classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.3'
         classpath "org.jfrog.buildinfo:build-info-extractor-gradle:4.4.14"
@@ -27,12 +27,12 @@ ext {
     support = "25.3.1"
     min = "9"
     target = "25"
-    versionCode = 8
+    versionCode = 9
     versionName = "2.0.0"
     dataBinding = "1.3.1"
     constraint = "1.0.2"
     okhttp3 = "3.6.0"
-    okio = "1.11.0"
+    okio = "1.12.0"
     retrofit2 = "2.2.0"
     gson = "2.8.0"
     rxjava = "2.0.7"
