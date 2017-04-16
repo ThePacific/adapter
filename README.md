@@ -3,6 +3,8 @@ A quick adapter library for RecyclerView, GridView, ListView, ViewPager, Spinner
 
 [ ![Download](https://api.bintray.com/packages/thepacific/maven/adapter/images/download.svg) ](https://bintray.com/thepacific/maven/adapter/_latestVersion)[![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-Adapter-green.svg?style=true)](https://android-arsenal.com/details/1/3449)
 
+![](https://github.com/ThePacific/QuickAdapter/blob/master/art/exam.gif)
+
 # Features
 + Support DataBinding.
 + Multiple view types without any ViewHolder
@@ -13,7 +15,7 @@ A quick adapter library for RecyclerView, GridView, ListView, ViewPager, Spinner
 compile 'com.github.thepacific:adapter:2.0.1'
 ```
 
-# Items
+# Item
 Extend [SimpleItem]() or [SimpleRecylcerItem](). Optionally, you may implement [Item]() or [RecylcerItem](). 
 
 ```java
