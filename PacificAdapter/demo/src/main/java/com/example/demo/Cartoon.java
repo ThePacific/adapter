@@ -28,9 +28,9 @@ public abstract class Cartoon extends SimpleItem {
         binding.setText(R.id.text_desc, description());
         holder.attachImageLoader(R.id.img_header);
         holder.attachOnClickListener(R.id.layout_root);
-        holder.attachOnClickListener(R.id.layout_root);
-        PagerAdapter2 adapter2 =new PagerAdapter2();
-        RecyclerAdapter adapter = new RecyclerAdapter();
+        holder.attachOnLongClickListener(R.id.layout_root);
+        holder.attachOnTouchListener(R.id.layout_root);
+        holder.attachOnCheckedChangeListener(R.id.layout_root);
     }
 
     public static Builder builder() {

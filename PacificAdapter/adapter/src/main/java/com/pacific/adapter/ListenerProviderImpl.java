@@ -16,173 +16,119 @@
 
 package com.pacific.adapter;
 
-import android.support.annotation.LayoutRes;
-import android.util.SparseArray;
 import android.view.View;
 import android.widget.CompoundButton;
 
 public final class ListenerProviderImpl implements ListenerProvider {
     /**
-     * OnClickListener array
+     * OnClickListener
      */
-    private SparseArray<View.OnClickListener> onClickListeners;
+    private View.OnClickListener onClickListener;
 
     /**
-     * OnTouchListener array
+     * OnTouchListener
      */
-    private SparseArray<View.OnTouchListener> onTouchListeners;
+    private View.OnTouchListener onTouchListener;
 
     /**
-     * OnLongClickListener array
+     * OnLongClickListener
      */
-    private SparseArray<View.OnLongClickListener> onLongClickListeners;
+    private View.OnLongClickListener onLongClickListener;
 
     /**
-     * CompoundButton.OnCheckedChangeListener array
+     * CompoundButton.OnCheckedChangeListener
      */
-    private SparseArray<CompoundButton.OnCheckedChangeListener> onCheckedChangeListeners;
+    private CompoundButton.OnCheckedChangeListener onCheckedChangeListener;
 
     private ImageLoader imageLoader;
 
     /**
-     * clear all listener
-     */
-    @Override
-    public void clearListeners() {
-        if (onClickListeners != null) {
-            onClickListeners.clear();
-        }
-        if (onTouchListeners != null) {
-            onTouchListeners.clear();
-        }
-        if (onLongClickListeners != null) {
-            onLongClickListeners.clear();
-        }
-        if (onCheckedChangeListeners != null) {
-            onCheckedChangeListeners.clear();
-        }
-    }
-
-    /**
-     * add OnClickListener
+     * set OnClickListener
      *
-     * @param layout   item layout resource id
      * @param listener
      */
     @Override
-    public void addOnClickListener(@LayoutRes int layout, View.OnClickListener listener) {
-        if (onClickListeners == null) {
-            onClickListeners = new SparseArray<>();
-        }
-        onClickListeners.put(layout, listener);
+    public void setOnClickListener(View.OnClickListener listener) {
+        this.onClickListener = listener;
     }
 
     /**
      * get OnClickListener
      *
-     * @param layout item layout resource id
      * @return
      */
     @Override
-    public View.OnClickListener getOnClickListener(@LayoutRes int layout) {
-        if (onClickListeners != null) {
-            return onClickListeners.get(layout);
-        }
-        return null;
+    public View.OnClickListener getOnClickListener() {
+        return this.onClickListener;
     }
 
     /**
-     * add OnTouchListener
+     * set OnTouchListener
      *
-     * @param layout   item layout resource id
      * @param listener
      */
     @Override
-    public void addOnTouchListener(@LayoutRes int layout, View.OnTouchListener listener) {
-        if (onTouchListeners == null) {
-            onTouchListeners = new SparseArray<>();
-        }
-        onTouchListeners.put(layout, listener);
+    public void setOnTouchListener(View.OnTouchListener listener) {
+        this.onTouchListener = listener;
     }
 
     /**
      * get OnTouchListeners
      *
-     * @param layout item layout resource id
      * @return
      */
     @Override
-    public View.OnTouchListener getOnTouchListener(@LayoutRes int layout) {
-        if (onTouchListeners != null) {
-            return onTouchListeners.get(layout);
-        }
-        return null;
+    public View.OnTouchListener getOnTouchListener() {
+        return this.onTouchListener;
     }
 
     /**
-     * add OnLongClickListener
+     * set OnLongClickListener
      *
-     * @param layout   item layout resource id
      * @param listener
      */
     @Override
-    public void addOnLongClickListener(@LayoutRes int layout, View.OnLongClickListener listener) {
-        if (onLongClickListeners == null) {
-            onLongClickListeners = new SparseArray<>();
-        }
-        onLongClickListeners.put(layout, listener);
+    public void setOnLongClickListener(View.OnLongClickListener listener) {
+        this.onLongClickListener = listener;
     }
 
     /**
      * get OnLongClickListener
      *
-     * @param layout item layout resource id
      * @return
      */
     @Override
-    public View.OnLongClickListener getOnLongClickListener(@LayoutRes int layout) {
-        if (onLongClickListeners != null) {
-            return onLongClickListeners.get(layout);
-        }
-        return null;
+    public View.OnLongClickListener getOnLongClickListener() {
+        return this.onLongClickListener;
     }
 
     /**
-     * add CompoundButton.OnCheckedChangeListener
+     * set CompoundButton.OnCheckedChangeListener
      *
-     * @param layout   item layout resource id
      * @param listener
      */
     @Override
-    public void addOnCheckedChangeListener(@LayoutRes int layout,
-                                           CompoundButton.OnCheckedChangeListener listener) {
-        if (onCheckedChangeListeners == null) {
-            onCheckedChangeListeners = new SparseArray<>();
-        }
-        onCheckedChangeListeners.put(layout, listener);
+    public void setOnCheckedChangeListener(CompoundButton.OnCheckedChangeListener listener) {
+        this.onCheckedChangeListener = listener;
     }
 
     /**
      * get CompoundButton.OnCheckedChangeListener
      *
-     * @param layout item layout resource id
      * @return
      */
     @Override
-    public CompoundButton.OnCheckedChangeListener getOnCheckedChangeListener(@LayoutRes int layout) {
-        if (onCheckedChangeListeners != null) {
-            return onCheckedChangeListeners.get(layout);
-        }
-        return null;
+    public CompoundButton.OnCheckedChangeListener getOnCheckedChangeListener() {
+        return this.onCheckedChangeListener;
     }
 
     /**
-     * add image loader to load image
+     * set image loader to load image
      *
      * @param imageLoader
      */
     @Override
-    public void addImageLoader(ImageLoader imageLoader) {
+    public void setImageLoader(ImageLoader imageLoader) {
         this.imageLoader = imageLoader;
     }
 

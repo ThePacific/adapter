@@ -45,15 +45,14 @@ final class ListenerAttachImpl implements ListenerAttach {
      */
     @Override
     public void attachOnClickListener(@IdRes int viewId) {
-        int layout = holder.getItem().getLayout();
-        final View.OnClickListener listener = provider.getOnClickListener(layout);
-        if (listener == null) return;
+        final View.OnClickListener l = provider.getOnClickListener();
+        if (l == null) return;
         View view = AdapterUtil.findView(holder.itemView, viewId);
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 v.setTag(R.integer.adapter_holder, holder);
-                listener.onClick(v);
+                l.onClick(v);
             }
         });
     }
@@ -65,15 +64,14 @@ final class ListenerAttachImpl implements ListenerAttach {
      */
     @Override
     public void attachOnTouchListener(@IdRes int viewId) {
-        int layout = holder.getItem().getLayout();
-        final View.OnTouchListener listener = provider.getOnTouchListener(layout);
-        if (listener == null) return;
+        final View.OnTouchListener l = provider.getOnTouchListener();
+        if (l == null) return;
         View view = AdapterUtil.findView(holder.itemView, viewId);
         view.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 v.setTag(R.integer.adapter_holder, holder);
-                return listener.onTouch(v, event);
+                return l.onTouch(v, event);
             }
         });
     }
@@ -85,15 +83,14 @@ final class ListenerAttachImpl implements ListenerAttach {
      */
     @Override
     public void attachOnLongClickListener(@IdRes int viewId) {
-        int layout = holder.getItem().getLayout();
-        final View.OnLongClickListener listener = provider.getOnLongClickListener(layout);
-        if (listener == null) return;
+        final View.OnLongClickListener l = provider.getOnLongClickListener();
+        if (l == null) return;
         View view = AdapterUtil.findView(holder.itemView, viewId);
         view.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
                 v.setTag(R.integer.adapter_holder, holder);
-                return listener.onLongClick(v);
+                return l.onLongClick(v);
             }
         });
     }
@@ -105,16 +102,14 @@ final class ListenerAttachImpl implements ListenerAttach {
      */
     @Override
     public void attachOnCheckedChangeListener(@IdRes int viewId) {
-        int layout = holder.getItem().getLayout();
-        final CompoundButton.OnCheckedChangeListener listener = provider
-                .getOnCheckedChangeListener(layout);
-        if (listener == null) return;
+        final CompoundButton.OnCheckedChangeListener l = provider.getOnCheckedChangeListener();
+        if (l == null) return;
         CompoundButton view = AdapterUtil.findView(holder.itemView, viewId);
         view.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 buttonView.setTag(R.integer.adapter_holder, holder);
-                listener.onCheckedChanged(buttonView, isChecked);
+                l.onCheckedChanged(buttonView, isChecked);
             }
         });
     }
@@ -126,9 +121,9 @@ final class ListenerAttachImpl implements ListenerAttach {
      */
     @Override
     public void attachImageLoader(@IdRes int viewId) {
-        ImageLoader imageLoader = provider.getImageLoader();
-        if (imageLoader == null) return;
-        ImageView imageView = AdapterUtil.findView(holder.itemView, viewId);
-        imageLoader.load(imageView, holder);
+        ImageLoader loader = provider.getImageLoader();
+        if (loader == null) return;
+        ImageView view = AdapterUtil.findView(holder.itemView, viewId);
+        loader.load(view, holder);
     }
 }

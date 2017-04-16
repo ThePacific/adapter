@@ -1,25 +1,28 @@
-## Adapter
+# Adapter
+A quick adapter library for RecyclerView, GridView, ListView, ViewPager, Spinner. It abstracts the boilerplate of item view types, item layouts, viewholders, span sizes , and more, in order to simplify building complex screens with multiple view types. [1.x](https://github.com/thepacific/adapter/blob/master/README-old.md) is deprecated and please upgrade to 2.x
 
-A quick adapter library for RecyclerView, GridView, ListView, ViewPager, Spinner. It abstracts the boilerplate of item view types, item layouts, viewholders, span sizes , and more, in order to simplify building complex screens with multiple view types. [1.x](https://github.com/thepacific/adapter/blob/master/README-old.md) is deprecated and please upgrade to 2.x[ ![2.x Download](https://api.bintray.com/packages/thepacific/maven/adapter/images/download.svg) ](https://bintray.com/thepacific/maven/adapter/_latestVersion)
+[ ![Download](https://api.bintray.com/packages/thepacific/maven/adapter/images/download.svg) ](https://bintray.com/thepacific/maven/adapter/_latestVersion)[![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-Adapter-green.svg?style=true)](https://android-arsenal.com/details/1/3449)
 
-### Features
+# Features
 + Support DataBinding.
 + Multiple view types with No ViewHolder
 + Simple, flexible 
 
-### Setup
+# Setup
 ```groovy
 compile 'com.github.thepacific:adapter:2.0.1'
 ```
 
-### Items
-Extend  SimpleRecylcerItem or RecylcerItem in RecyclerView
+# Items
+[SimpleItem]() and [Item]() is used in GridView, ListView, Spinner, ViewPager. [SimpleRecylcerItem]() and [RecylcerItem]() is used in RecyclerView.Items abstracts the boilerplate of item view types, item layouts, viewholders, span sizes , and more.
 
-And extend SimpleItem or Item in GridView, ListView, ViewPager, Spinner
+Just extend [SimpleItem]() or [SimpleRecylcerItem](). Optionally, you can implement [Item]() or [RecylcerItem](). 
 
-//it looks like below:
 ```java
-public class YourItem extends SimpleItem { // or extend SimpleRecylcerItem
+public class YourItem extends SimpleItem {
+    String name;
+    String description;
+    String imageUrl;
 
     @Override
     public int getLayout() {
@@ -28,69 +31,54 @@ public class YourItem extends SimpleItem { // or extend SimpleRecylcerItem
 
     @Override
     public void bind(ViewHolder holder) {
-        // bind data
+        //bind data
+        DefaultBinding binding = holder.binding();
+        binding.setText(R.id.text_name, name);
+        binding.setText(R.id.text_desc, description);
+
+        //attach listeners or load image
+        holder.attachImageLoader(R.id.img_header);
+        holder.attachOnClickListener(R.id.layout_root);
+
+        //holder.attachOnLongClickListener(viewId);
+        //holder.attachOnTouchListener(viewId);
+        //holder.attachOnCheckedChangeListener(viewId);
     }
 
     //You may override any other method
 }
 ```
 
-#### Multiple view types
-GridView, ListView, Spinner:
+# DataBinding
 ```java
-
-//Just point out how many view type you have is ok
-//You don't need to do any other thing
-AbsAdapter adapter = new AbsAdapter(int viewTypeCount);
-
-```
-ViewPager:
-```java
-
-//Just like below
-PagerAdapter2 adapter2 =new PagerAdapter2();
-
-```
-
-RecyclerView:
-```java
-
-//Just like below
-RecyclerAdapter adapter = new RecyclerAdapter();
-
-```
-
-#### DataBinding
-```java
-public class YourItem extends SimpleItem {// or extend SimpleRecylcerItem
+public class YourItem extends SimpleItem {
     @Override
     public void bind(ViewHolder holder) {
-        // if you don't use DataBinding , just use the DefaultBinding instead of layout generated Binding
-        DefaultBinding binding = holder.binding(); 
+        //Without DataBinding, just use DefaultBinding
+        DefaultBinding binding = holder.binding();
 
-        // if you use DataBinding, just use the layout generated Binding
+        //With DataBinding, use the layout generated Binding instead of DefaultBinding
         LayoutGeneratedBinding = holder.binding();
-        
     }
 }
 ```
 
-#### Add listeners and image loader
+# Add listeners
 Add OnClickListener, OnLongClickListener, OnTouchListener, OnCheckedChangeListener and ImageLoader:
 
 ```java
-void addOnClickListener(@LayoutRes int layout, OnClickListener listener);
+RecyclerAdapter adapter = new RecyclerAdapter(); //RecyclerView
+AbsAdapter adapter = new AbsAdapter(int viewTypeCount);//GridView, ListView, Spinner
+PagerAdapter2 adapter2 =new PagerAdapter2();//ViewPager
 
-void addOnTouchListener(@LayoutRes int layout, OnTouchListener listener);
+//set listeners or ImageLoader
+adapter.setOnClickListener(OnClickListener listener);
+adapter.setOnTouchListener(OnTouchListener listener);
+adapter.setOnLongClickListener(OnLongClickListener listener);
+adapter.setOnCheckedChangeListener(OnCheckedChangeListener listener);
+adapter.setImageLoader(ImageLoader imageLoader);
 
-void addOnLongClickListener(@LayoutRes int layout, OnLongClickListener listener);
-
-void addOnCheckedChangeListener(@LayoutRes int layout, OnCheckedChangeListener listener);
-
-void addImageLoader(ImageLoader imageLoader);
-
-//it looks like below:
-adapter.addOnClickListener(R.layout.item, new View.OnClickListener() {
+adapter.setOnClickListener(new View.OnClickListener() {
     @Override
     public void onClick(View v) {
         //get ViewHolder
@@ -108,65 +96,32 @@ adapter.addOnClickListener(R.layout.item, new View.OnClickListener() {
         holder.isFirstItem();
         holder.isLastItem();
 
-        //Note: !!!
-        //GetCurrentPosition() works for ListView,GridView, ViewPager, Spinner
-        //and RecyclerView, but GetAdapterPosition() only works for RecyclerView. Why?
-        //Because ViewHolder extends RecyclerView.ViewHolder and RecyclerView.ViewHolder
-        //has nothing to do with ListView, GridView, ViewPager and Spinner.
-        //So don't use GetAdapterPosition() when you are using ListView, GridView,
-        //ViewPager, Spinner, or you will always get -0
-
-        int position = holder.getCurrentPosition();//for all adapter views
-        int position = holder.getAdapterPosition();//only for RecyclerView
+        //for ListView,GridView, ViewPager, Spinner and RecyclerView
+        int position = holder.getCurrentPosition();
+         
+        //only for RecyclerView
+        int position = holder.getAdapterPosition();
     }
 });
-
 ```
-Why we need layoutId parameter ? Because we may have the same viewId in different view types.
 
-#### Attach listeners and image loader
-Attach listeners and image loader from ViewHolder. Just do it in Item.bind(holder) method
-
+# Others
 ```java
-    void attachOnClickListener(@IdRes int viewId);
+adapter.setOnDataSetChanged(OnDataSetChanged onDataSetChanged);
 
-    void attachOnTouchListener(@IdRes int viewId);
+//data set changed callback , it's useful to show or hide empty view
+public interface OnDataSetChanged {
+    /**
+     * called when data size is 0
+     */
+    void onEmptyData();
 
-    void attachOnLongClickListener(@IdRes int viewId);
-
-    void attachOnCheckedChangeListener(@IdRes int viewId);
-
-    void attachImageLoader(@IdRes int viewId);
-```
-
-//it looks like below:
-
-public class YourItem extends SimpleItem {// or extend SimpleRecylcerItem
-
-    @Override
-    public void bind(ViewHolder holder) {
-        DefaultBinding binding = holder.binding();
-        binding.setText(R.id.text_name, name());
-        binding.setText(R.id.text_desc, description());
-        holder.attachImageLoader(R.id.img_header);
-        holder.attachOnClickListener(R.id.layout_root);
-        // and so on ......
-    }
+    /**
+     * called when data size larger than 0
+     */
+    void onHasData();
 }
-
 ```
 
-### Expand
-
-Extend Item, RecyclerItem and Base***Adapter by yourself, just like the SimpleItem, SimpleRecylerItem and ***Adapter do.
-
-### Dependencies
-```groovy
-compile "com.android.support:recyclerview-v7:$rootProject.ext.support"
-provided "com.android.databinding:adapters:$rootProject.ext.dataBinding"
-provided "com.android.databinding:library:$rootProject.ext.dataBinding"
-provided "com.android.databinding:baseLibrary:$rootProject.ext.dataBindingBaseLibrary"
-```
-
-### License  
+# License  
 [The MIT License ](https://opensource.org/licenses/MIT)

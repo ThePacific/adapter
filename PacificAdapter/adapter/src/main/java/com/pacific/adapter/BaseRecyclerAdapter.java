@@ -16,7 +16,6 @@
 
 package com.pacific.adapter;
 
-import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.Adapter;
@@ -306,56 +305,60 @@ public abstract class BaseRecyclerAdapter<T extends RecyclerItem, H extends View
     }
 
     @Override
-    public void clearListeners() {
-        provider.clearListeners();
+    public void setOnClickListener(View.OnClickListener listener) {
+        provider.setOnClickListener(listener);
     }
 
     @Override
-    public void addOnClickListener(@LayoutRes int layout, View.OnClickListener listener) {
-        provider.addOnClickListener(layout, listener);
+    public View.OnClickListener getOnClickListener() {
+        return provider.getOnClickListener();
     }
 
     @Override
-    public View.OnClickListener getOnClickListener(@LayoutRes int layout) {
-        return provider.getOnClickListener(layout);
+    public void setOnTouchListener(View.OnTouchListener listener) {
+        provider.setOnTouchListener(listener);
     }
 
     @Override
-    public void addOnTouchListener(@LayoutRes int layout, View.OnTouchListener listener) {
-        provider.addOnTouchListener(layout, listener);
+    public View.OnTouchListener getOnTouchListener() {
+        return provider.getOnTouchListener();
     }
 
     @Override
-    public View.OnTouchListener getOnTouchListener(@LayoutRes int layout) {
-        return provider.getOnTouchListener(layout);
+    public void setOnLongClickListener(View.OnLongClickListener listener) {
+        provider.setOnLongClickListener(listener);
     }
 
     @Override
-    public void addOnLongClickListener(@LayoutRes int layout, View.OnLongClickListener listener) {
-        provider.addOnLongClickListener(layout, listener);
+    public View.OnLongClickListener getOnLongClickListener() {
+        return provider.getOnLongClickListener();
     }
 
     @Override
-    public View.OnLongClickListener getOnLongClickListener(@LayoutRes int layout) {
-        return provider.getOnLongClickListener(layout);
+    public void setOnCheckedChangeListener(CompoundButton.OnCheckedChangeListener listener) {
+        provider.setOnCheckedChangeListener(listener);
     }
 
     @Override
-    public void addOnCheckedChangeListener(@LayoutRes int layout,
-                                           CompoundButton.OnCheckedChangeListener listener) {
-        provider.addOnCheckedChangeListener(layout, listener);
+    public CompoundButton.OnCheckedChangeListener getOnCheckedChangeListener() {
+        return provider.getOnCheckedChangeListener();
     }
 
+    /**
+     * add image loader to load image
+     *
+     * @param imageLoader
+     */
     @Override
-    public CompoundButton.OnCheckedChangeListener getOnCheckedChangeListener(@LayoutRes int layout) {
-        return provider.getOnCheckedChangeListener(layout);
+    public void setImageLoader(ImageLoader imageLoader) {
+        provider.setImageLoader(imageLoader);
     }
 
-    @Override
-    public void addImageLoader(ImageLoader imageLoader) {
-        provider.addImageLoader(imageLoader);
-    }
-
+    /**
+     * get ImageLoader
+     *
+     * @return
+     */
     @Override
     public ImageLoader getImageLoader() {
         return provider.getImageLoader();

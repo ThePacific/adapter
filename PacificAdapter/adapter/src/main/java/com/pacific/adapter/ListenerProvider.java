@@ -16,89 +16,74 @@
 
 package com.pacific.adapter;
 
-import android.support.annotation.LayoutRes;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
 import android.view.View.OnTouchListener;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 
 public interface ListenerProvider {
-
     /**
-     * clear all listener
-     */
-    void clearListeners();
-
-    /**
-     * add OnClickListener
+     * set OnClickListener
      *
-     * @param layout   item layout resource id
      * @param listener
      */
-    void addOnClickListener(@LayoutRes int layout, OnClickListener listener);
+    void setOnClickListener(OnClickListener listener);
 
     /**
      * get OnClickListener
      *
-     * @param layout item layout resource id
      * @return
      */
-    OnClickListener getOnClickListener(@LayoutRes int layout);
+    OnClickListener getOnClickListener();
 
     /**
-     * add OnTouchListener
+     * set OnTouchListener
      *
-     * @param layout   item layout resource id
      * @param listener
      */
-    void addOnTouchListener(@LayoutRes int layout, OnTouchListener listener);
+    void setOnTouchListener(OnTouchListener listener);
 
     /**
      * get OnTouchListeners
      *
-     * @param layout item layout resource id
      * @return
      */
-    OnTouchListener getOnTouchListener(@LayoutRes int layout);
+    OnTouchListener getOnTouchListener();
 
     /**
-     * add OnLongClickListener
+     * set OnLongClickListener
      *
-     * @param layout   item layout resource id
      * @param listener
      */
-    void addOnLongClickListener(@LayoutRes int layout, OnLongClickListener listener);
+    void setOnLongClickListener(OnLongClickListener listener);
 
     /**
      * get OnLongClickListener
      *
-     * @param layout item layout resource id
      * @return
      */
-    OnLongClickListener getOnLongClickListener(@LayoutRes int layout);
+    OnLongClickListener getOnLongClickListener();
 
     /**
-     * add CompoundButton.OnCheckedChangeListener
+     * set CompoundButton.OnCheckedChangeListener
      *
-     * @param layout   item layout resource id
      * @param listener
      */
-    void addOnCheckedChangeListener(@LayoutRes int layout, OnCheckedChangeListener listener);
+    void setOnCheckedChangeListener(OnCheckedChangeListener listener);
 
     /**
      * get CompoundButton.OnCheckedChangeListener
      *
-     * @param layout item layout resource id
      * @return
      */
-    OnCheckedChangeListener getOnCheckedChangeListener(@LayoutRes int layout);
+    OnCheckedChangeListener getOnCheckedChangeListener();
 
     /**
-     * add image loader to load image
+     * set image loader to load image
      *
      * @param imageLoader
      */
-    void addImageLoader(ImageLoader imageLoader);
+    void setImageLoader(ImageLoader imageLoader);
 
     /**
      * get ImageLoader

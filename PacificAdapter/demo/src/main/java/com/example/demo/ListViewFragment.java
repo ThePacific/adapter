@@ -2,7 +2,6 @@ package com.example.demo;
 
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -47,7 +46,7 @@ public class ListViewFragment extends RxFragment {
         if (getArguments() != null) {
         }
         adapter = new AbsAdapter(3);
-        adapter.addImageLoader((iv, holder) -> {
+        adapter.setImageLoader((iv, holder) -> {
             Item item = holder.getItem();
             if (item instanceof Cartoon) {
                 Glide.with(this)
@@ -67,16 +66,18 @@ public class ListViewFragment extends RxFragment {
                         .into(iv);
             }
         });
-        adapter.addOnClickListener(R.layout.item_cartoon, v -> {
+        adapter.setOnClickListener(v -> {
             ViewHolder holder = AdapterUtil.getHolder(v);
-            toast(holder.getCurrentPosition());
-        });
-        adapter.addOnClickListener(R.layout.item_cartoon_1, v -> {
-            ViewHolder holder = AdapterUtil.getHolder(v);
-            toast(holder.getCurrentPosition());
-        });
-        adapter.addOnClickListener(R.layout.item_cartoon_2, v -> {
-            ViewHolder holder = AdapterUtil.getHolder(v);
+            switch (holder.getItem().getLayout()) {
+                case R.layout.item_cartoon:
+                    break;
+                case R.layout.item_cartoon_1:
+                    break;
+                case R.layout.item_cartoon_2:
+                    break;
+                default:
+                    break;
+            }
             toast(holder.getCurrentPosition());
         });
     }

@@ -1,7 +1,6 @@
 ## Adapter
-A quick adapter library for ListView, GridView, RecyclerView, ViewPager, and ExpandableListView on Android. Multiple view types is supported for ListView, GrideView, and RecyclerView.
+1.x is deprecated and please upgrade to [2.x](https://github.com/thepacific/adapter/blob/master/README.md)
 
-[ ![Download](https://api.bintray.com/packages/thepacific/maven/adapter/images/download.svg) ](https://bintray.com/thepacific/maven/adapter/_latestVersion)
 [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-Adapter-green.svg?style=true)](https://android-arsenal.com/details/1/3449)
 
 [中文教程](http://www.jianshu.com/p/f18f77255952)
@@ -37,7 +36,7 @@ A quick adapter library for ListView, GridView, RecyclerView, ViewPager, and Exp
 
 ## Gradle
 ```groovy
-compile 'com.github.thepacific:adapter:{lastest version}'
+compile 'com.github.thepacific:adapter:1.0.7'
 ```
 
 ## RecyclerView, ListView, Spinner and GrideView
