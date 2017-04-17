@@ -5,7 +5,7 @@
 
 [中文教程](http://www.jianshu.com/p/f18f77255952)
 
-![](https://github.com/ThePacific/QuickAdapter/blob/master/art/exam.gif)
+![](https://github.com/thepacific/adapter/blob/master/art/exam.gif)
 
 ## Features
 * Based on template type

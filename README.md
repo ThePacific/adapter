@@ -3,7 +3,7 @@ A quick adapter library for RecyclerView, GridView, ListView, ViewPager, Spinner
 
 [ ![Download](https://api.bintray.com/packages/thepacific/maven/adapter/images/download.svg) ](https://bintray.com/thepacific/maven/adapter/_latestVersion)[![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-Adapter-green.svg?style=true)](https://android-arsenal.com/details/1/3449)
 
-![](https://github.com/ThePacific/QuickAdapter/blob/master/art/exam.gif)
+![](https://github.com/thepacific/adapter/blob/master/art/exam.gif)
 
 # Features
 + Support DataBinding.
