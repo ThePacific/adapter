@@ -18,8 +18,7 @@ package com.pacific.adapter;
 
 import java.util.List;
 
-public abstract class SimpleRecyclerItem implements RecyclerItem<ViewHolder> {
-    private final long diffId = ID_COUNTER.incrementAndGet();
+public abstract class SimpleRecyclerItem extends SimpleItem implements RecyclerItem<ViewHolder> {
 
     @Override
     public void bindPayloads(ViewHolder holder, List<Object> payloads) {
@@ -36,14 +35,5 @@ public abstract class SimpleRecyclerItem implements RecyclerItem<ViewHolder> {
 
     @Override
     public void onViewDetachedFromWindow(ViewHolder holder) {
-    }
-
-    @Override
-    public void unbind(ViewHolder holder) {
-    }
-
-    @Override
-    public long diffId() {
-        return diffId;
     }
 }
