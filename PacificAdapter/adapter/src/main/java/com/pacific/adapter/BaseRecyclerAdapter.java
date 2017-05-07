@@ -57,7 +57,6 @@ public abstract class BaseRecyclerAdapter<T extends RecyclerItem, H extends View
     public BaseRecyclerAdapter(List<T> data) {
         this.data = data == null ? new ArrayList<T>() : new ArrayList<>(data);
         this.provider = new ListenerProviderImpl();
-        this.setHasStableIds(true);
     }
 
     @Override
@@ -362,16 +361,5 @@ public abstract class BaseRecyclerAdapter<T extends RecyclerItem, H extends View
     @Override
     public ImageLoader getImageLoader() {
         return provider.getImageLoader();
-    }
-
-    @Override
-    public final void setHasStableIds(boolean hasStableIds) {
-        if (!hasStableIds) throw new AssertionError("hasStableIds = false");
-        super.setHasStableIds(true);
-    }
-
-    @Override
-    public final long getItemId(int position) {
-        return get(position).diffId();
     }
 }

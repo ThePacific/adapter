@@ -22,11 +22,6 @@ import java.util.concurrent.atomic.AtomicLong;
 
 public interface Item<T extends ViewHolder> {
     /**
-     * for stable id
-     */
-    AtomicLong ID_COUNTER = new AtomicLong(0);
-
-    /**
      * @return item view layout resource id
      */
     @LayoutRes
@@ -45,9 +40,4 @@ public interface Item<T extends ViewHolder> {
      * @param holder view holder
      */
     void unbind(T holder);
-
-    /**
-     * @return item id
-     */
-    long diffId();
 }

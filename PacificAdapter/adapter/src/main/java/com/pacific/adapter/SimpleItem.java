@@ -17,14 +17,7 @@
 package com.pacific.adapter;
 
 public abstract class SimpleItem implements Item<ViewHolder> {
-    private final long diffId = ID_COUNTER.incrementAndGet();
-
     @Override
     public void unbind(ViewHolder holder) {
-    }
-
-    @Override
-    public long diffId() {
-        return diffId;
     }
 }

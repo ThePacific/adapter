@@ -91,12 +91,7 @@ public abstract class BaseAbsAdapter<T extends Item, H extends ViewHolder>
 
     @Override
     public final long getItemId(int position) {
-        return getItem(position).diffId();
-    }
-
-    @Override
-    public final boolean hasStableIds() {
-        return true;
+        return position;
     }
 
     @Override
