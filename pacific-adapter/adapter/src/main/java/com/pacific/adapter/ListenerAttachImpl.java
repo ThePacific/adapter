@@ -51,7 +51,7 @@ final class ListenerAttachImpl implements ListenerAttach {
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                v.setTag(R.integer.adapter_holder, holder);
+                v.setTag(R.id.adapter_holder, holder);
                 l.onClick(v);
             }
         });
@@ -70,7 +70,7 @@ final class ListenerAttachImpl implements ListenerAttach {
         view.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                v.setTag(R.integer.adapter_holder, holder);
+                v.setTag(R.id.adapter_holder, holder);
                 return l.onTouch(v, event);
             }
         });
@@ -89,7 +89,7 @@ final class ListenerAttachImpl implements ListenerAttach {
         view.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                v.setTag(R.integer.adapter_holder, holder);
+                v.setTag(R.id.adapter_holder, holder);
                 return l.onLongClick(v);
             }
         });
@@ -108,7 +108,7 @@ final class ListenerAttachImpl implements ListenerAttach {
         view.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                buttonView.setTag(R.integer.adapter_holder, holder);
+                buttonView.setTag(R.id.adapter_holder, holder);
                 l.onCheckedChanged(buttonView, isChecked);
             }
         });

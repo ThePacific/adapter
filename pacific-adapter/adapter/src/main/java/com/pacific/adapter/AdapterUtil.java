@@ -65,6 +65,6 @@ public class AdapterUtil {
      * @return view holder
      */
     public static ViewHolder getHolder(View view) {
-        return (ViewHolder) view.getTag(R.integer.adapter_holder);
+        return (ViewHolder) view.getTag(R.id.adapter_holder);
     }
 }

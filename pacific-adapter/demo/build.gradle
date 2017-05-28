@@ -3,7 +3,7 @@ apply from: "../gradle/app_module.gradle"
 android {
 
     defaultConfig {
-        applicationId "com.example.demo"
+        applicationId "com.example.adapter"
         minSdkVersion 15
     }
 
@@ -15,13 +15,12 @@ android {
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile project(':adapter')
-    compile 'com.android.support.constraint:constraint-layout:1.0.2'
+    kapt 'com.android.databinding:compiler:2.3.2'
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
     compile 'com.yqritc:recyclerview-flexibledivider:1.4.0'
-    compile 'com.android.support:support-v4:25.3.1'
-
-    compile 'com.trello.rxlifecycle2:rxlifecycle:2.0.1'
-    compile 'com.trello.rxlifecycle2:rxlifecycle-android:2.0.1'
-    compile 'com.trello.rxlifecycle2:rxlifecycle-components:2.0.1'
+    compile "android.arch.lifecycle:runtime:1.0.0-alpha1"
+    compile "android.arch.lifecycle:extensions:1.0.0-alpha1"
+    kapt "android.arch.lifecycle:compiler:1.0.0-alpha1"
     compile 'com.github.bumptech.glide:glide:3.7.0'
 }
 

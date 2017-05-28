@@ -1,4 +1,7 @@
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
 
 android {
     compileSdkVersion rootProject.ext.compile
@@ -87,10 +90,7 @@ dependencies {
     compile "io.reactivex.rxjava2:rxandroid:$rootProject.ext.rxandroid"
 
     provided "javax.annotation:javax.annotation-api:$rootProject.ext.javaxAnnotation"
-    provided "com.google.auto.value:auto-value:$rootProject.ext.autoValue"
-    annotationProcessor "com.google.auto.value:auto-value:$rootProject.ext.autoValue"
-
     compile "com.google.dagger:dagger-android-support:$rootProject.ext.dagger2"
-    annotationProcessor "com.google.dagger:dagger-compiler:$rootProject.ext.dagger2"
-    annotationProcessor "com.google.dagger:dagger-android-processor:$rootProject.ext.dagger2"
+    kapt "com.google.dagger:dagger-compiler:$rootProject.ext.dagger2"
+    kapt "com.google.dagger:dagger-android-processor:$rootProject.ext.dagger2"
 }

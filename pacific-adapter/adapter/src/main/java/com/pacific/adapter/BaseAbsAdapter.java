@@ -120,9 +120,9 @@ public abstract class BaseAbsAdapter<T extends Item, H extends ViewHolder>
             }
             convertView = inflater.inflate(item.getLayout(), parent, false);
             holder = createViewHolder(convertView);
-            convertView.setTag(R.integer.adapter_holder, holder);
+            convertView.setTag(R.id.adapter_holder, holder);
         } else {
-            holder = (H) convertView.getTag(R.integer.adapter_holder);
+            holder = (H) convertView.getTag(R.id.adapter_holder);
         }
         holder.setCurrentPosition(position);
         holder.setSize(getCount());
