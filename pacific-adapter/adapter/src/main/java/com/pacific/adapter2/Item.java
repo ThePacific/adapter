@@ -14,39 +14,28 @@
  * limitations under the License.
  */
 
-package com.pacific.adapter;
+package com.pacific.adapter2;
 
-import java.util.List;
+import android.support.annotation.LayoutRes;
 
-public interface RecyclerItem<T extends ViewHolder> extends Item<T> {
+public interface Item<T extends ViewHolder> {
     /**
-     * bind pay loads
-     *
-     * @param holder   view holder
-     * @param payloads data
+     * @return item view layout resource id
      */
-    void bindPayloads(T holder, List<Object> payloads);
+    @LayoutRes
+    int getLayout();
 
     /**
-     * get span size , for GridLayoutManager
+     * bind data callback
      *
-     * @param spanCount span
-     * @param position  adapter position
-     * @return
+     * @param holder view holder
      */
-    int getSpanSize(int spanCount, int position);
+    void bind(T holder);
 
     /**
-     * onViewAttachedToWindow callback
+     * unbind data callback
      *
-     * @param holder
+     * @param holder view holder
      */
-    void onViewAttachedToWindow(T holder);
-
-    /**
-     * onViewDetachedFromWindow callback
-     *
-     * @param holder
-     */
-    void onViewDetachedFromWindow(T holder);
+    void unbind(T holder);
 }

@@ -14,28 +14,36 @@
  * limitations under the License.
  */
 
-package com.pacific.adapter;
+package com.pacific.adapter2;
 
-import android.view.LayoutInflater;
-import android.view.ViewGroup;
+import android.view.View;
 
 import java.util.List;
 
-public final class RecyclerAdapter extends BaseRecyclerAdapter<RecyclerItem, ViewHolder> {
-
-    public RecyclerAdapter() {
+/**
+ * AbsAdapter for AdapterView , like ListView,GridView and Spinner
+ */
+public final class AbsAdapter extends BaseAbsAdapter<Item, ViewHolder> {
+    public AbsAdapter() {
         super();
     }
 
-    public RecyclerAdapter(List<RecyclerItem> data) {
-        super(data);
+    public AbsAdapter(int viewTypeCount) {
+        super(viewTypeCount);
     }
 
+    public AbsAdapter(List<Item> data, int viewTypeCount) {
+        super(data, viewTypeCount);
+    }
+
+    /**
+     * create ViewHolder
+     *
+     * @param convertView item view
+     * @return ViewHolder
+     */
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        if (inflater == null) {
-            inflater = LayoutInflater.from(parent.getContext());
-        }
-        return new ViewHolder(inflater.inflate(viewType, parent, false), this);
+    protected ViewHolder createViewHolder(View convertView) {
+        return new ViewHolder(convertView, this);
     }
 }

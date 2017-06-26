@@ -1,3 +1,9 @@
+package com.pacific.adapter2;
+
+import android.view.View;
+
+import java.util.List;
+
 /*
  * Copyright (C) 2017 The Android Open Source Project
  *
@@ -14,21 +20,27 @@
  * limitations under the License.
  */
 
-package com.pacific.adapter;
-
 /**
- * data set changed callback
- * <p>
- * it's useful to show or hide empty view
+ * PagerAdapter for ViewPager
  */
-public interface OnDataSetChanged {
-    /**
-     * called when data size is 0
-     */
-    void onEmptyData();
+public final class PagerAdapter2 extends BasePagerAdapter2<Item, ViewHolder> {
+
+    public PagerAdapter2() {
+        super();
+    }
+
+    public PagerAdapter2(List<Item> data) {
+        super(data);
+    }
 
     /**
-     * called when data size larger than 0
+     * create ViewHolder
+     *
+     * @param convertView item view
+     * @return ViewHolder
      */
-    void onHasData();
+    @Override
+    protected ViewHolder createViewHolder(View convertView) {
+        return new ViewHolder(convertView, this);
+    }
 }

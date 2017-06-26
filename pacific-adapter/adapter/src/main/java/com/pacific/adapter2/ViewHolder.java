@@ -14,12 +14,14 @@
  * limitations under the License.
  */
 
-package com.pacific.adapter;
+package com.pacific.adapter2;
 
-import android.databinding.DataBindingUtil;
 import android.support.annotation.IdRes;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 
 public class ViewHolder extends RecyclerView.ViewHolder implements ListenerAttach {
 
@@ -51,11 +53,18 @@ public class ViewHolder extends RecyclerView.ViewHolder implements ListenerAttac
         super(itemView);
         this.listenerAttach = new ListenerAttachImpl(provider, this);
         try {
-            Class.forName("android.databinding.DataBindingUtil");
-            binding = DataBindingUtil.bind(itemView);
+            Class<?> clazz = Class.forName("android.databinding.DataBindingUtil");
+            Method method = clazz.getMethod("bind", View.class);
+            binding = method.invoke(null, itemView);
         } catch (ClassNotFoundException e) {
             binding = new DefaultBinding(itemView);
         } catch (NoClassDefFoundError error) {
+            binding = new DefaultBinding(itemView);
+        } catch (NoSuchMethodException e) {
+            binding = new DefaultBinding(itemView);
+        } catch (IllegalAccessException e) {
+            binding = new DefaultBinding(itemView);
+        } catch (InvocationTargetException e) {
             binding = new DefaultBinding(itemView);
         } catch (IllegalArgumentException e) {
             binding = new DefaultBinding(itemView);

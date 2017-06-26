@@ -14,30 +14,10 @@
  * limitations under the License.
  */
 
-package com.pacific.adapter;
+package com.pacific.adapter2;
 
-import android.support.annotation.LayoutRes;
-
-import java.util.concurrent.atomic.AtomicLong;
-
-public interface Item<T extends ViewHolder> {
-    /**
-     * @return item view layout resource id
-     */
-    @LayoutRes
-    int getLayout();
-
-    /**
-     * bind data callback
-     *
-     * @param holder view holder
-     */
-    void bind(T holder);
-
-    /**
-     * unbind data callback
-     *
-     * @param holder view holder
-     */
-    void unbind(T holder);
+public abstract class SimpleItem implements Item<ViewHolder> {
+    @Override
+    public void unbind(ViewHolder holder) {
+    }
 }

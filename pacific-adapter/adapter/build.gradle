@@ -11,7 +11,4 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile "com.android.support:recyclerview-v7:$rootProject.ext.support"
     compile "com.android.support:support-v4:$rootProject.ext.support"
-    provided "com.android.databinding:adapters:$rootProject.ext.dataBinding"
-    provided "com.android.databinding:library:$rootProject.ext.dataBinding"
-    provided "com.android.databinding:baseLibrary:2.4.0-alpha5"
 }

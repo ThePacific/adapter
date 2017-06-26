@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.pacific.adapter;
+package com.pacific.adapter2;
 
 import android.support.annotation.NonNull;
 
@@ -171,4 +171,6 @@ public interface DataIO<T> {
      * @return sub lists
      */
     List<T> subList(int fromIndex, int toIndex);
+
+    void replaceAllAt(int index, @NonNull List<T> list);
 }

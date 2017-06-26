@@ -13,18 +13,12 @@ android {
         versionCode rootProject.ext.versionCode
         versionName rootProject.ext.versionName
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-
-        javaCompileOptions {
-            annotationProcessorOptions {
-                includeCompileClasspath false
-            }
-        }
     }
 
     buildTypes {
         release {
-            minifyEnabled false
-            shrinkResources false
+            minifyEnabled true
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
@@ -33,7 +27,7 @@ android {
         baseline file("lint-baseline.xml")
         checkAllWarnings true
         warningsAsErrors true
-        abortOnError false
+        abortOnError true
     }
 
     packagingOptions {
@@ -59,11 +53,6 @@ android {
 
         exclude 'META-INF/LGPL2.1'
         exclude 'META-INF/ASL2.0'
-    }
-
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
     }
 }
 

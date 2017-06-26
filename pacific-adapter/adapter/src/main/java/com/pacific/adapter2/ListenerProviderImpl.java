@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.pacific.adapter;
+package com.pacific.adapter2;
 
 import android.view.View;
 import android.widget.CompoundButton;

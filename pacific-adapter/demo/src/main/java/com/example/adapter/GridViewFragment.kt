@@ -17,6 +17,12 @@ class GridViewFragment : LifecycleFragment() {
     }
 
     companion object {
-        fun newInstance(): GridViewFragment =GridViewFragment()
+        fun newInstance(): GridViewFragment = GridViewFragment()
     }
+
+    val isEmpty: Boolean
+        get() = false
+
+    var stringRepresentation: String? = null
+        get() = this.toString()
 }

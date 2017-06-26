@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.pacific.adapter;
+package com.pacific.adapter2;
 
 import android.support.annotation.NonNull;
 import android.support.v4.view.PagerAdapter;
@@ -184,6 +184,13 @@ public abstract class BasePagerAdapter2<T extends Item, H extends ViewHolder>
     }
 
     @Override
+    public void replaceAllAt(int index, @NonNull List<T> list) {
+        final int size = getCount();
+        for (int i = index; i < size; i++) data.remove(i);
+        addAll(list);
+    }
+
+    @Override
     public int indexOf(T element) {
         return data.indexOf(element);
     }
@@ -231,9 +238,9 @@ public abstract class BasePagerAdapter2<T extends Item, H extends ViewHolder>
             }
             convertView = inflater.inflate(item.getLayout(), container, false);
             holder = createViewHolder(convertView);
-            convertView.setTag(R.id.adapter_holder, holder);
+            convertView.setTag(AdapterUtil.ADAPTER_HOLDER, holder);
         } else {
-            holder = (H) convertView.getTag(R.id.adapter_holder);
+            holder = (H) convertView.getTag(AdapterUtil.ADAPTER_HOLDER);
         }
         holder.setCurrentPosition(position);
         holder.setSize(getCount());
@@ -248,7 +255,7 @@ public abstract class BasePagerAdapter2<T extends Item, H extends ViewHolder>
         if (object instanceof View) {
             View view = (View) object;
             T item = get(position);
-            ViewHolder holder = (ViewHolder) view.getTag(R.id.adapter_holder);
+            ViewHolder holder = (ViewHolder) view.getTag(AdapterUtil.ADAPTER_HOLDER);
             item.unbind(holder);
             container.removeView(view);
             cacheViews.add(view);

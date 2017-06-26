@@ -1,9 +1,3 @@
-package com.pacific.adapter;
-
-import android.view.View;
-
-import java.util.List;
-
 /*
  * Copyright (C) 2017 The Android Open Source Project
  *
@@ -20,27 +14,28 @@ import java.util.List;
  * limitations under the License.
  */
 
-/**
- * PagerAdapter for ViewPager
- */
-public final class PagerAdapter2 extends BasePagerAdapter2<Item, ViewHolder> {
+package com.pacific.adapter2;
 
-    public PagerAdapter2() {
+import android.view.LayoutInflater;
+import android.view.ViewGroup;
+
+import java.util.List;
+
+public final class RecyclerAdapter extends BaseRecyclerAdapter<RecyclerItem, ViewHolder> {
+
+    public RecyclerAdapter() {
         super();
     }
 
-    public PagerAdapter2(List<Item> data) {
+    public RecyclerAdapter(List<RecyclerItem> data) {
         super(data);
     }
 
-    /**
-     * create ViewHolder
-     *
-     * @param convertView item view
-     * @return ViewHolder
-     */
     @Override
-    protected ViewHolder createViewHolder(View convertView) {
-        return new ViewHolder(convertView, this);
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        if (inflater == null) {
+            inflater = LayoutInflater.from(parent.getContext());
+        }
+        return new ViewHolder(inflater.inflate(viewType, parent, false), this);
     }
 }

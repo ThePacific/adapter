@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.pacific.adapter;
+package com.pacific.adapter2;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -270,9 +270,20 @@ public abstract class BaseRecyclerAdapter<T extends RecyclerItem, H extends View
 
     @Override
     public void replaceAll(@NonNull List<T> list) {
-        data.clear();
+        final int size = getItemCount();
+        if (getItemCount() > 0) {
+            data.clear();
+            notifyItemRangeRemoved(0, size);
+        }
         addAll(list);
-        onDataSetChanged();
+    }
+
+    @Override
+    public void replaceAllAt(int index, @NonNull List<T> list) {
+        final int size = getItemCount();
+        for (int i = index; i < size; i++) data.remove(i);
+        notifyItemRangeRemoved(index, size - index);
+        addAll(list);
     }
 
     @Override

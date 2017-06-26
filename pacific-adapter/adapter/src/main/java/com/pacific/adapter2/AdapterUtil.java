@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.pacific.adapter;
+package com.pacific.adapter2;
 
 import android.view.View;
 
@@ -65,6 +65,8 @@ public class AdapterUtil {
      * @return view holder
      */
     public static ViewHolder getHolder(View view) {
-        return (ViewHolder) view.getTag(R.id.adapter_holder);
+        return (ViewHolder) view.getTag(ADAPTER_HOLDER);
     }
+
+    public static final int ADAPTER_HOLDER = 1 + 2 << 24;
 }
