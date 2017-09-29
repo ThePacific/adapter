@@ -45,5 +45,5 @@ public final class AbsAdapter extends BaseAbsAdapter<Item, ViewHolder> {
     @Override
     protected ViewHolder createViewHolder(View convertView) {
         return new ViewHolder(convertView, this);
-    }git
+    }
 }
