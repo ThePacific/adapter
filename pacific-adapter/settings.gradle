@@ -1,1 +1,2 @@
-include ':demo', 'adapter'
+//include ':demo'
+include 'adapter'

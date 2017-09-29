@@ -37,7 +37,7 @@ ext {
 
     permissions = "0.9.4"
     parceler = "1.1.8"
-    mAdapter = "2.0.4"
+    mAdapter = "2.1.0"
     mGuava = "0.0.1"
     mCommon = "0.0.1"
     presentation = "0.0.1"

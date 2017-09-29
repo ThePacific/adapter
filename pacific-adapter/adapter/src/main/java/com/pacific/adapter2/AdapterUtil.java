@@ -48,10 +48,6 @@ public class AdapterUtil {
         return new ArrayList<>(list);
     }
 
-    public static List<? extends RecyclerItem> fromRecyclerItems(List<RecyclerItem> list) {
-        return new ArrayList<>(list);
-    }
-
     /**
      * convert list to {@link Item} list
      *
@@ -59,10 +55,6 @@ public class AdapterUtil {
      * @return {@link Item} list
      */
     public static List<Item> toItems(List list) {
-        return new ArrayList<>(list);
-    }
-
-    public static List<? extends Item> fromItems(List<Item> list) {
         return new ArrayList<>(list);
     }
 

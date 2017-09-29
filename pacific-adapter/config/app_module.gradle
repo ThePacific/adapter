@@ -130,7 +130,7 @@ dependencies {
     implementation dep.glide
     annotationProcessor dep.glideProcessor
     
-//    implementation dep.theAdapter
+    implementation dep.theAdapter
 //    implementation dep.theGuava
 //    implementation dep.thePresentation
 //    implementation dep.theData
