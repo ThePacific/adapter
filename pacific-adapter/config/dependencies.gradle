@@ -1,0 +1,102 @@
+allprojects {
+    repositories {
+        google()
+        jcenter()
+    }
+}
+
+ext {
+    groupId = "com.github.thepacific"
+    compile = 26
+    buildTools = "26.0.1"
+    min = "14"
+    target = "26"
+    versionCode = 1
+    versionName = "0.0.1"
+    junit = "4.12"
+    espresso = "3.0.1"
+    support = "26.1.0"
+    constraint = "1.1.0-beta1"
+    lifecycle = "1.0.0-alpha9-1"
+
+    findBugsJrs305 = "3.0.1"
+    okhttp3 = "3.8.1"
+    okio = "1.13.0"
+    retrofit2 = "2.3.0"
+    gson = "2.8.1"
+    rxjava2 = "2.1.3"
+    rxandroid2 = "2.0.1"
+    autoDispose = "0.2.0"
+    timber = "4.5.1"
+
+    inject = "1"
+    javaxAnnotation = "1.3"
+    errorProneAnnotation = "2.0.21"
+    dagger2 = "2.11"
+    autoValue = "1.4.1"
+
+    permissions = "0.9.4"
+    parceler = "1.1.8"
+    mAdapter = "2.0.4"
+    mGuava = "0.0.1"
+    mCommon = "0.0.1"
+    presentation = "0.0.1"
+    data = "0.0.1"
+    mockito = "2.8.47"
+    glide = "4.0.0"
+
+    leakcanary = "1.5.1"
+    multidex = "1.0.2"
+    phoenix = "2.0.0"
+
+    dep = [
+            appcompat              : "com.android.support:appcompat-v7:$support",
+            palette                : "com.android.support:palette-v7:$support",
+            design                 : "com.android.support:design:$support",
+            cardview               : "com.android.support:cardview-v7:$support",
+            recyclerview           : "com.android.support:recyclerview-v7:$support",
+            constraint             : "com.android.support.constraint:constraint-layout:$constraint",
+            reactivestreams        : "android.arch.lifecycle:reactivestreams:$lifecycle",
+            runtime                : "android.arch.lifecycle:runtime:$lifecycle",
+            extensions             : "android.arch.lifecycle:extensions:$lifecycle",
+            lifecycleCompiler      : "android.arch.lifecycle:compiler:$lifecycle",
+            findBugsJrs305         : "com.google.code.findbugs:jsr305:$findBugsJrs305",
+            okhttp3                : "com.squareup.okhttp3:okhttp:$okhttp3",
+            loggingInterceptor     : "com.squareup.okhttp3:logging-interceptor:$okhttp3",
+            okio                   : "com.squareup.okio:okio:$okio",
+            retrofit2              : "com.squareup.retrofit2:retrofit:$retrofit2",
+            adapterRxjava2         : "com.squareup.retrofit2:adapter-rxjava2:$retrofit2",
+            converterGson          : "com.squareup.retrofit2:converter-gson:$retrofit2",
+            gson                   : "com.google.code.gson:gson:$gson",
+            rxjava2                : "io.reactivex.rxjava2:rxjava:$rxjava2",
+            rxandroid2             : "io.reactivex.rxjava2:rxandroid:$rxandroid2",
+            autoDisposeAndroid     : "com.uber.autodispose:autodispose-android:$autoDispose",
+            autoDispose            : "com.uber.autodispose:autodispose:$autoDispose",
+            annotationApi          : "javax.annotation:javax.annotation-api:$javaxAnnotation",
+            errorProneAnnotation   : "com.google.errorprone:error_prone_annotations:$errorProneAnnotation",
+            inject                 : "javax.inject:javax.inject:$inject",
+            autoValue              : "com.google.auto.value:auto-value:$autoValue",
+            autoValueCompiler      : "com.google.auto.value:auto-value:$autoValue",
+            dagger                 : "com.google.dagger:dagger:$dagger2",
+            daggerAndroid          : "com.google.dagger:dagger-android:$dagger2",
+            daggerAndroidSupport   : "com.google.dagger:dagger-android-support:$dagger2",
+            daggerCompiler         : "com.google.dagger:dagger-compiler:$dagger2",
+            daggerAndroidProcessor : "com.google.dagger:dagger-android-processor:$dagger2",
+            rxPermissions          : "com.tbruyelle.rxpermissions:rxpermissions:$permissions@aar",
+            parceler               : "org.parceler:parceler-api:$parceler",
+            parcelerProcessor      : "org.parceler:parceler:$parceler",
+            theAdapter             : "com.github.thepacific:adapter:$mAdapter",
+//            theData                : "com.github.thepacific:data:$data",
+//            theCommon              : "com.github.thepacific:common:$mCommon",
+//            thePresentation        : "com.github.thepacific:presentation:$presentation",
+//            theGuava               : "com.github.thepacific:guava:$mGuava",
+            mockito                : "org.mockito:mockito-core:$mockito",
+            espresso               : "com.android.support.test.espresso:espresso-core:$espresso",
+            multidex               : "com.android.support:multidex:$multidex",
+            multidexInstrumentation: "com.android.support:multidex-instrumentation:$multidex",
+            timber                 : "com.jakewharton.timber:timber:$timber",
+            glide                  : "com.github.bumptech.glide:glide:$glide",
+            glideProcessor         : "com.github.bumptech.glide:compiler:$glide",
+            processPhoenix         : "com.jakewharton:process-phoenix:$phoenix"
+    ]
+}

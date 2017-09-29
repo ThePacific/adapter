@@ -3,13 +3,11 @@ apply plugin: 'com.github.dcendents.android-maven'
 apply plugin: 'com.jfrog.bintray'
 apply plugin: 'com.jfrog.artifactory'
 
-group = GROUP
-
 boolean isReleaseBuild = gradle.startParameter.taskNames.contains('bintrayUpload')
 version = isReleaseBuild ? VERSION_NAME : "$VERSION_NAME-SNAPSHOT"
 logger.info("Library using version=$project.version")
 
-apply from: "$rootDir/gradle/artifacts.gradle"
+apply from: "$rootDir/config/pom_release.gradle"
 
 install {
     repositories.mavenInstaller {

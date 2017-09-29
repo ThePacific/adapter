@@ -1,11 +1,5 @@
-apply from: "../gradle/bintray_push.gradle"
-apply from: "../gradle/lib_module.gradle"
-
-android {
-    dataBinding {
-        enabled = true
-    }
-}
+apply from: "../config/bintray_push.gradle"
+apply from: "../config/lib_module.gradle"
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])

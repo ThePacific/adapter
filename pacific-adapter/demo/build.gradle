@@ -1,7 +1,8 @@
-apply from: "../gradle/app_module.gradle"
+apply from: "../config/app_module.gradle"
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
 
 android {
-
     defaultConfig {
         applicationId "com.example.adapter"
         minSdkVersion 15
@@ -13,15 +14,10 @@ android {
 }
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile project(':adapter')
-    kapt 'com.android.databinding:compiler:2.3.0'
-    compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
-    compile 'com.yqritc:recyclerview-flexibledivider:1.4.0'
-    compile "android.arch.lifecycle:runtime:1.0.0-alpha3"
-    compile "android.arch.lifecycle:extensions:1.0.0-alpha3"
-    kapt "android.arch.lifecycle:compiler:1.0.0-alpha3"
-    compile 'com.github.bumptech.glide:glide:3.7.0'
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation project(':adapter')
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
+    kapt 'com.android.databinding:compiler:2.3.1'
 }
 
 gradle.projectsEvaluated {

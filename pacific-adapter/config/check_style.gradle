@@ -1,0 +1,17 @@
+apply plugin: 'checkstyle'
+
+checkstyle {
+    ignoreFailures false
+    showViolations true
+    toolVersion "8.1"
+
+}
+
+task('checkstyle', type: Checkstyle) {
+    configFile rootProject.file('config/google_checks.xml')
+
+    source 'src/main/java'
+    include '**/*.java'
+    exclude '**/gen/**'
+    classpath = files()
+}

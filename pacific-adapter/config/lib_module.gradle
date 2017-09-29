@@ -10,9 +10,7 @@ android {
         versionCode rootProject.ext.versionCode
         versionName rootProject.ext.versionName
 
-        lintOptions {
-            abortOnError false
-        }
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
@@ -20,6 +18,13 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+    }
+
+    lintOptions {
+        baseline file("lint-baseline.xml")
+        checkAllWarnings true
+        warningsAsErrors true
+        abortOnError false
     }
 
     packagingOptions {
@@ -45,9 +50,39 @@ android {
 
         exclude 'META-INF/LGPL2.1'
         exclude 'META-INF/ASL2.0'
+
+        exclude 'META-INF/rxjava.properties'
+        exclude 'META-INF/rxjava.properties.txt'
+
+        exclude 'META-INF/RXJAVA.DEPENDENCIES'
+        exclude 'META-INF/RXJAVA.DEPENDENCIES.txt'
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    configurations.all {
+        resolutionStrategy.force dep.findBugsJrs305
+        resolutionStrategy.force dep.appcompat
+        resolutionStrategy.force dep.annotationApi
+        resolutionStrategy.force dep.multidex
     }
 }
 
+
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    compileOnly dep.inject
+    compileOnly dep.findBugsJrs305
+    compileOnly dep.errorProneAnnotation
+    compileOnly dep.annotationApi
+
+    testImplementation "junit:junit:$junit"
+    testImplementation dep.mockito
+
+    androidTestImplementation(dep.espresso, {
+        exclude group: 'com.android.support', module: '*'
+    })
 }

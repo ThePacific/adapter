@@ -25,7 +25,8 @@ import java.util.List;
  *
  * @param <T> type of data
  */
-public interface DataIO<T> {
+public interface DataIO<T extends Item> {
+
     /**
      * clean data
      */
@@ -121,9 +122,6 @@ public interface DataIO<T> {
 
     /**
      * replace special item
-     *
-     * @param index
-     * @param element
      */
     void replaceAt(int index, T element);
 
@@ -156,7 +154,7 @@ public interface DataIO<T> {
      * @param index item index
      * @return data item
      */
-    T get(int index);
+    <R extends T> R get(int index);
 
     /**
      * @return the whole data list
@@ -172,5 +170,10 @@ public interface DataIO<T> {
      */
     List<T> subList(int fromIndex, int toIndex);
 
-    void replaceAllAt(int index, @NonNull List<T> list);
+    /***
+     * clean source data list and then add new list
+     * @param index from index
+     * @param list new list
+     */
+    void replaceAll(int index, @NonNull List<T> list);
 }

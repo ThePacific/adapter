@@ -184,7 +184,7 @@ public abstract class BasePagerAdapter2<T extends Item, H extends ViewHolder>
     }
 
     @Override
-    public void replaceAllAt(int index, @NonNull List<T> list) {
+    public void replaceAll(int index, @NonNull List<T> list) {
         final int size = getCount();
         for (int i = index; i < size; i++) data.remove(i);
         addAll(list);
@@ -206,10 +206,11 @@ public abstract class BasePagerAdapter2<T extends Item, H extends ViewHolder>
     }
 
     @Override
-    public T get(int position) {
-        if (position >= data.size())
+    public <R extends T> R get(int index) {
+        if (index >= data.size()) {
             return null;
-        return data.get(position);
+        }
+        return (R) data.get(index);
     }
 
     @Override

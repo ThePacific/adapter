@@ -30,6 +30,7 @@ import java.util.List;
 
 public abstract class BaseRecyclerAdapter<T extends RecyclerItem, H extends ViewHolder>
         extends Adapter<H> implements DataIO<T>, ListenerProvider {
+
     /**
      * layout inflater
      */
@@ -151,9 +152,10 @@ public abstract class BaseRecyclerAdapter<T extends RecyclerItem, H extends View
 
     @Override
     public void clear() {
-        if (getItemCount() > 0) {
+        final int size = getItemCount();
+        if (size > 0) {
             data.clear();
-            notifyDataSetChanged();
+            notifyItemRangeRemoved(0, size);
             onDataSetChanged();
         }
     }
@@ -216,8 +218,14 @@ public abstract class BaseRecyclerAdapter<T extends RecyclerItem, H extends View
     @Override
     public void removeAll(@NonNull List<T> list) {
         final int size = getItemCount();
+        int index;
         List<Integer> indexes = new ArrayList<>();
-        for (T item : list) indexes.add(data.indexOf(item));
+        for (T item : list) {
+            index = data.indexOf(item);
+            if (index >= 0) {
+                indexes.add(index);
+            }
+        }
         if (data.removeAll(list)) {
             for (int i = 0; i < size; i++) {
                 if (indexes.contains(i)) {
@@ -232,7 +240,9 @@ public abstract class BaseRecyclerAdapter<T extends RecyclerItem, H extends View
     public void retainAll(@NonNull List<T> list) {
         final int size = getItemCount();
         List<Integer> indexes = new ArrayList<>();
-        for (T item : list) indexes.add(data.indexOf(item));
+        for (T item : list) {
+            indexes.add(data.indexOf(item));
+        }
         if (data.retainAll(list)) {
             for (int i = 0; i < size; i++) {
                 if (!indexes.contains(i)) {
@@ -249,8 +259,11 @@ public abstract class BaseRecyclerAdapter<T extends RecyclerItem, H extends View
     }
 
     @Override
-    public T get(int index) {
-        return data.get(index);
+    public <R extends T> R get(int index) {
+        if (index >= data.size()) {
+            return null;
+        }
+        return (R) data.get(index);
     }
 
     @Override
@@ -275,15 +288,23 @@ public abstract class BaseRecyclerAdapter<T extends RecyclerItem, H extends View
             data.clear();
             notifyItemRangeRemoved(0, size);
         }
-        addAll(list);
+        if (data.addAll(list)) {
+            notifyItemRangeInserted(0, list.size());
+        }
+        onDataSetChanged();
     }
 
     @Override
-    public void replaceAllAt(int index, @NonNull List<T> list) {
+    public void replaceAll(int index, @NonNull List<T> list) {
         final int size = getItemCount();
-        for (int i = index; i < size; i++) data.remove(i);
+        for (int i = index; i < size; i++) {
+            data.remove(i);
+        }
         notifyItemRangeRemoved(index, size - index);
-        addAll(list);
+        if (data.addAll(list)) {
+            notifyItemRangeInserted(index, list.size());
+        }
+        onDataSetChanged();
     }
 
     @Override
@@ -356,8 +377,6 @@ public abstract class BaseRecyclerAdapter<T extends RecyclerItem, H extends View
 
     /**
      * add image loader to load image
-     *
-     * @param imageLoader
      */
     @Override
     public void setImageLoader(ImageLoader imageLoader) {
@@ -366,8 +385,6 @@ public abstract class BaseRecyclerAdapter<T extends RecyclerItem, H extends View
 
     /**
      * get ImageLoader
-     *
-     * @return
      */
     @Override
     public ImageLoader getImageLoader() {
