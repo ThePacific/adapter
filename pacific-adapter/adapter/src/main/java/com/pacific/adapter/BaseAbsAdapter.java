@@ -14,25 +14,26 @@
  * limitations under the License.
  */
 
-package com.pacific.adapter2;
+package com.pacific.adapter;
 
 import android.support.annotation.NonNull;
-import android.support.v4.view.PagerAdapter;
+import android.util.SparseIntArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.BaseAdapter;
 import android.widget.CompoundButton;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Queue;
 
 /**
- * PagerAdapter for ViewPager
+ * AbsAdapter for AdapterView , like ListView,GridView and Spinner
+ *
+ * @param <T> type Item
  */
-public abstract class BasePagerAdapter2<T extends Item, H extends ViewHolder>
-        extends PagerAdapter implements DataIO<T>, ListenerProvider {
+public abstract class BaseAbsAdapter<T extends Item, H extends ViewHolder>
+        extends BaseAdapter implements DataIO<T>, ListenerProvider {
     /**
      * layout inflater
      */
@@ -44,19 +45,9 @@ public abstract class BasePagerAdapter2<T extends Item, H extends ViewHolder>
     protected final ArrayList<T> data;
 
     /**
-     * cache views
+     * view type count
      */
-    protected Queue<View> cacheViews;
-
-    /**
-     * current position
-     */
-    protected int currentPosition = -1;
-
-    /**
-     * current target
-     */
-    protected View currentTarget;
+    protected final int viewTypeCount;
 
     /**
      * data set change callback
@@ -68,14 +59,81 @@ public abstract class BasePagerAdapter2<T extends Item, H extends ViewHolder>
      */
     protected ListenerProviderImpl provider;
 
-    public BasePagerAdapter2() {
-        this(null);
+    protected final SparseIntArray typeArray;
+
+    /**
+     * default 1 view type
+     */
+    public BaseAbsAdapter() {
+        this(1);
     }
 
-    public BasePagerAdapter2(List<T> data) {
+    public BaseAbsAdapter(int viewTypeCount) {
+        this(null, viewTypeCount);
+    }
+
+    public BaseAbsAdapter(List<T> data, int viewTypeCount) {
         this.data = data == null ? new ArrayList<T>() : new ArrayList<>(data);
         this.provider = new ListenerProviderImpl();
-        this.cacheViews = new LinkedList<>();
+        this.viewTypeCount = viewTypeCount;
+        this.typeArray = new SparseIntArray();
+    }
+
+    @Override
+    public int getCount() {
+        return data.size();
+    }
+
+    @Override
+    public T getItem(int position) {
+        return get(position);
+    }
+
+    @Override
+    public final long getItemId(int position) {
+        return position;
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        int key = get(position).getLayout();
+        int value = typeArray.get(key, -1);
+        if (value == -1) {
+            value = typeArray.size();
+            typeArray.put(key, value);
+        }
+        return value;
+    }
+
+    @Override
+    public int getViewTypeCount() {
+        return this.viewTypeCount;
+    }
+
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+        H holder;
+        T item = getItem(position);
+        if (convertView == null) {
+            if (inflater == null) {
+                inflater = LayoutInflater.from(parent.getContext());
+            }
+            convertView = inflater.inflate(item.getLayout(), parent, false);
+            holder = createViewHolder(convertView);
+            convertView.setTag(AdapterUtil.ADAPTER_HOLDER, holder);
+        } else {
+            holder = (H) convertView.getTag(AdapterUtil.ADAPTER_HOLDER);
+        }
+        holder.setCurrentPosition(position);
+        holder.setSize(getCount());
+        holder.setCurrentItem(item);
+        item.bind(holder);
+        return convertView;
+    }
+
+    @Override
+    public boolean isEnabled(int position) {
+        return position < data.size();
     }
 
     @Override
@@ -219,59 +277,6 @@ public abstract class BasePagerAdapter2<T extends Item, H extends ViewHolder>
     }
 
     @Override
-    public int getCount() {
-        return data.size();
-    }
-
-    @Override
-    public boolean isViewFromObject(View view, Object object) {
-        return view == object;
-    }
-
-    @Override
-    public Object instantiateItem(ViewGroup container, int position) {
-        H holder;
-        T item = get(position);
-        View convertView = cacheViews.poll();
-        if (convertView == null) {
-            if (inflater == null) {
-                inflater = LayoutInflater.from(container.getContext());
-            }
-            convertView = inflater.inflate(item.getLayout(), container, false);
-            holder = createViewHolder(convertView);
-            convertView.setTag(AdapterUtil.ADAPTER_HOLDER, holder);
-        } else {
-            holder = (H) convertView.getTag(AdapterUtil.ADAPTER_HOLDER);
-        }
-        holder.setCurrentPosition(position);
-        holder.setSize(getCount());
-        holder.setCurrentItem(item);
-        item.bind(holder);
-        container.addView(convertView);
-        return convertView;
-    }
-
-    @Override
-    public void destroyItem(ViewGroup container, int position, Object object) {
-        if (object instanceof View) {
-            View view = (View) object;
-            T item = get(position);
-            ViewHolder holder = (ViewHolder) view.getTag(AdapterUtil.ADAPTER_HOLDER);
-            item.unbind(holder);
-            container.removeView(view);
-            cacheViews.add(view);
-        }
-    }
-
-    @Override
-    public void setPrimaryItem(ViewGroup container, int position, Object object) {
-        this.currentPosition = position;
-        if (object instanceof View) {
-            this.currentTarget = (View) object;
-        }
-    }
-
-    @Override
     public void notifyDataSetChanged() {
         super.notifyDataSetChanged();
         if (getCount() == 0) {
@@ -291,14 +296,6 @@ public abstract class BasePagerAdapter2<T extends Item, H extends ViewHolder>
 
     public void setOnDataSetChanged(OnDataSetChanged onDataSetChanged) {
         this.onDataSetChanged = onDataSetChanged;
-    }
-
-    public int getCurrentPosition() {
-        return currentPosition;
-    }
-
-    public View getCurrentTarget() {
-        return currentTarget;
     }
 
     @Override

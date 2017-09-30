@@ -13,29 +13,33 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package com.pacific.adapter;
 
-package com.pacific.adapter2;
-
-import android.view.LayoutInflater;
-import android.view.ViewGroup;
+import android.view.View;
 
 import java.util.List;
 
-public final class RecyclerAdapter extends BaseRecyclerAdapter<RecyclerItem, ViewHolder> {
+/**
+ * PagerAdapter for ViewPager
+ */
+public final class PagerAdapter2 extends BasePagerAdapter2<Item, ViewHolder> {
 
-    public RecyclerAdapter() {
+    public PagerAdapter2() {
         super();
     }
 
-    public RecyclerAdapter(List<RecyclerItem> data) {
+    public PagerAdapter2(List<Item> data) {
         super(data);
     }
 
+    /**
+     * create ViewHolder
+     *
+     * @param convertView item view
+     * @return ViewHolder
+     */
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        if (inflater == null) {
-            inflater = LayoutInflater.from(parent.getContext());
-        }
-        return new ViewHolder(inflater.inflate(viewType, parent, false), this);
+    protected ViewHolder createViewHolder(View convertView) {
+        return new ViewHolder(convertView, this);
     }
 }

@@ -14,26 +14,10 @@
  * limitations under the License.
  */
 
-package com.pacific.adapter2;
+package com.pacific.adapter;
 
-import java.util.List;
-
-public abstract class SimpleRecyclerItem extends SimpleItem implements RecyclerItem<ViewHolder> {
-
+public abstract class SimpleItem implements Item<ViewHolder> {
     @Override
-    public void bindPayloads(ViewHolder holder, List<Object> payloads) {
-    }
-
-    @Override
-    public int getSpanSize(int spanCount, int position) {
-        return spanCount;
-    }
-
-    @Override
-    public void onViewAttachedToWindow(ViewHolder holder) {
-    }
-
-    @Override
-    public void onViewDetachedFromWindow(ViewHolder holder) {
+    public void unbind(ViewHolder holder) {
     }
 }
