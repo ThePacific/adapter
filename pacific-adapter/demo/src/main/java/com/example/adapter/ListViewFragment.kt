@@ -9,8 +9,8 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.adapter.databinding.FragmentListViewBinding
 import com.example.adapter.item.ListItem
-import com.pacific.adapter2.AbsAdapter
-import com.pacific.adapter2.AdapterUtil
+import com.pacific.adapter.AbsAdapter
+import com.pacific.adapter.AdapterUtil
 
 class ListViewFragment : Fragment() {
     val adapter = AbsAdapter()
