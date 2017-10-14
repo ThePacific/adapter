@@ -25,10 +25,10 @@ class RecyclerViewFragment : Fragment() {
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         var rv: RecyclerView = view!!.findViewById<RecyclerView>(R.id.recycler)
-        rv.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
+        rv.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
 
         val div = Divider(activity, R.color.colorPrimary)
-//        div.setDrawable(ContextCompat.getDrawable(activity,R.drawable.div))
+        div.setDrawable(ContextCompat.getDrawable(activity,R.drawable.div))
 
 
         rv.addItemDecoration(div)

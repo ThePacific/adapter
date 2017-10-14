@@ -34,7 +34,7 @@ public class Divider extends RecyclerView.ItemDecoration {
     public Divider(Context context, @ColorRes int color) {
         this.context = context;
         mDivider = new ColorDrawable(ContextCompat.getColor(context, color));
-        setOrientation(VERTICAL);
+        setOrientation(HORIZONTAL);
     }
 
     /**
@@ -95,29 +95,29 @@ public class Divider extends RecyclerView.ItemDecoration {
             final View child = parent.getChildAt(i);
             parent.getDecoratedBoundsWithMargins(child, mBounds);
             final int bottom = mBounds.bottom + Math.round(child.getTranslationY());
-            final int top = bottom - dividerIntrinsicHeight();
+            final int top = bottom - myIntrinsicHeight();
             mDivider.setBounds(left, top, right, bottom);
             mDivider.draw(canvas);
-            if (i == 0) {
-                Log.e("________", String.valueOf(pxToDp(dividerIntrinsicHeight(), context)));
-                Log.e("____t____", String.valueOf(top));
-                Log.e("____b____", String.valueOf(bottom));
-            }
+//            if (i == 0) {
+//                Log.e("________", String.valueOf(pxToDp(myIntrinsicHeight(), context)));
+//                Log.e("____t____", String.valueOf(top));
+//                Log.e("____b____", String.valueOf(bottom));
+//            }
         }
         canvas.restore();
     }
 
 
-    int dividerIntrinsicHeight() {
+    int myIntrinsicHeight() {
         if (mDivider instanceof ColorDrawable) {
-            return (int) dpToPx(8, context);
+            return (int) dpToPx(1, context);
         }
         return mDivider.getIntrinsicHeight();
     }
 
-    int dividerIntrinsicWidth() {
+    int myIntrinsicWidth() {
         if (mDivider instanceof ColorDrawable) {
-            return (int) dpToPx(8, context);
+            return (int) dpToPx(1, context);
         }
         return mDivider.getIntrinsicWidth();
     }
@@ -142,9 +142,15 @@ public class Divider extends RecyclerView.ItemDecoration {
             final View child = parent.getChildAt(i);
             parent.getLayoutManager().getDecoratedBoundsWithMargins(child, mBounds);
             final int right = mBounds.right + Math.round(child.getTranslationX());
-            final int left = right - dividerIntrinsicWidth();
+            final int left = right - myIntrinsicWidth();
             mDivider.setBounds(left, top, right, bottom);
             mDivider.draw(canvas);
+
+            if (i == 0) {
+                Log.e("________", String.valueOf(pxToDp(myIntrinsicWidth(), context)));
+                Log.e("____f____", String.valueOf(left));
+                Log.e("____r____", String.valueOf(right));
+            }
         }
         canvas.restore();
     }
@@ -157,9 +163,9 @@ public class Divider extends RecyclerView.ItemDecoration {
             return;
         }
         if (mOrientation == VERTICAL) {
-            outRect.set(0, 0, 0, dividerIntrinsicHeight());
+            outRect.set(0, 0, 0, myIntrinsicHeight());
         } else {
-            outRect.set(0, 0, dividerIntrinsicWidth(), 0);
+            outRect.set(0, 0, myIntrinsicWidth(), 0);
         }
     }
 
