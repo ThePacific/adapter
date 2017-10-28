@@ -76,13 +76,16 @@ dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     compileOnly dep.inject
     compileOnly dep.findBugsJrs305
-    compileOnly dep.errorProneAnnotation
+    compileOnly dep.errorProne
     compileOnly dep.annotationApi
 
-    testImplementation "junit:junit:$junit"
+    testImplementation dep.junit
     testImplementation dep.mockito
-
+    testImplementation dep.lifecycleTest
+    androidTestImplementation dep.testRunner
     androidTestImplementation(dep.espresso, {
         exclude group: 'com.android.support', module: '*'
     })
+
+    implementation dep.lifecycleJava8
 }

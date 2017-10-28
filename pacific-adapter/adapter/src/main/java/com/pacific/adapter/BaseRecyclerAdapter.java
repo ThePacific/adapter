@@ -156,8 +156,8 @@ public abstract class BaseRecyclerAdapter<T extends RecyclerItem, H extends View
         if (size > 0) {
             data.clear();
             notifyItemRangeRemoved(0, size);
-            onDataSetChanged();
         }
+        onDataSetChanged();
     }
 
     @Override

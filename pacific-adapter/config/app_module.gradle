@@ -66,7 +66,6 @@ android {
 
     configurations.all {
         resolutionStrategy.force dep.findBugsJrs305
-        resolutionStrategy.force dep.appcompat
         resolutionStrategy.force dep.annotationApi
         resolutionStrategy.force dep.multidex
     }
@@ -81,10 +80,9 @@ dependencies {
     implementation dep.recyclerview
     implementation dep.constraint
 
-    implementation dep.reactivestreams
-    implementation dep.runtime
-    implementation dep.extensions
-    annotationProcessor dep.lifecycleCompiler
+    implementation dep.lifecycleReactivestreams
+    implementation dep.lifecycleExtensions
+    implementation dep.lifecycleJava8
 
     implementation dep.okhttp3
     implementation dep.loggingInterceptor
@@ -97,11 +95,13 @@ dependencies {
     implementation dep.rxandroid2
     implementation dep.autoDispose
     implementation dep.autoDisposeAndroid
+    implementation dep.autoDisposeComponent
+    implementation dep.reflection
     implementation dep.timber
 
     implementation dep.inject
     implementation dep.findBugsJrs305
-    implementation dep.errorProneAnnotation
+    implementation dep.errorProne
     compileOnly dep.annotationApi
 
     compileOnly dep.autoValue
@@ -113,8 +113,10 @@ dependencies {
     annotationProcessor dep.daggerCompiler
     annotationProcessor dep.daggerAndroidProcessor
 
-    testImplementation "junit:junit:$junit"
+    testImplementation dep.junit
     testImplementation dep.mockito
+    testImplementation dep.lifecycleTest
+    androidTestImplementation dep.testRunner
     androidTestImplementation(dep.espresso, {
         exclude group: 'com.android.support', module: '*'
     })
@@ -129,10 +131,7 @@ dependencies {
 
     implementation dep.glide
     annotationProcessor dep.glideProcessor
-    
-    implementation dep.theAdapter
-//    implementation dep.theGuava
-//    implementation dep.thePresentation
-//    implementation dep.theData
-//    implementation dep.theCommon
+    implementation dep.parceler
+    annotationProcessor dep.parcelerProcessor
+    implementation dep.rxPermissions
 }

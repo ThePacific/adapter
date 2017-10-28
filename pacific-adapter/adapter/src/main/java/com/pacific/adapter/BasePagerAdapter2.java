@@ -82,8 +82,8 @@ public abstract class BasePagerAdapter2<T extends Item, H extends ViewHolder>
     public void clear() {
         if (data.size() > 0) {
             data.clear();
-            notifyDataSetChanged();
         }
+        notifyDataSetChanged();
     }
 
     @Override

@@ -1,0 +1,51 @@
+
+logger.info("Library using version=$project.version")
+
+if (project.plugins.hasPlugin('com.android.library')) {
+    android.libraryVariants.all {
+        variant ->
+            Task javadocTask = task("generate${variant.name.capitalize()}Javadoc", type: Javadoc) {
+                group = 'artifact'
+                description "Generates Javadoc for $variant.name"
+                destinationDir = new File(project.docsDir, "javadoc-$variant.name")
+
+                if (JavaVersion.current().isJava8Compatible()) {
+                    options.addStringOption('Xdoclint:none', '-quiet')
+                }
+            }
+
+            // For official release, don't prefix the name so the artifact is published correctly
+            // (Can't seem to modify it for publishing, for whatever reason...)
+            String classifierPrefix = (variant.name == 'release') ? '' : "$variant.name-"
+
+            Task javadocJarTask = task("generate${variant.name.capitalize()}JavadocJar", type: Jar, dependsOn: javadocTask) {
+                group = 'artifact'
+                description = "Generates Javadoc jar for $variant.name"
+
+                classifier = "${classifierPrefix}javadoc"
+                from javadocTask.destinationDir
+            }
+
+            Task sourcesJarTask = task("generate${variant.name.capitalize()}SourcesJar", type: Jar) {
+                group = 'artifact'
+                description = "Generates sources jar for $variant.name"
+
+                classifier = "${classifierPrefix}sources"
+                from variant.javaCompiler.source
+            }
+
+            if (variant.name == 'release') {
+                // There's a lot of "magic" around the archives configuration; easier
+                // just to embrace it rather than try to configure around it
+                artifacts {
+                    archives javadocJarTask, sourcesJarTask
+                }
+            } else {
+                // Create a configuration we can publish from for each variant
+                String configurationName = "archives${variant.name.capitalize()}"
+                configurations.create(configurationName)
+                artifacts.add configurationName, javadocJarTask
+                artifacts.add configurationName, sourcesJarTask
+            }
+    }
+}
