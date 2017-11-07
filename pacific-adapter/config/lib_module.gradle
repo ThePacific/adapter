@@ -66,6 +66,7 @@ android {
     configurations.all {
         resolutionStrategy.force dep.findBugsJrs305
         resolutionStrategy.force dep.appcompat
+        resolutionStrategy.force dep.appcompat
         resolutionStrategy.force dep.annotationApi
         resolutionStrategy.force dep.multidex
     }
@@ -87,5 +88,8 @@ dependencies {
         exclude group: 'com.android.support', module: '*'
     })
 
+    implementation dep.supportV4
     implementation dep.lifecycleJava8
+    implementation dep.lifecycleReactivestreams
+    implementation dep.lifecycleExtensions
 }

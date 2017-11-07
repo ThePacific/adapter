@@ -7,21 +7,21 @@ allprojects {
 
 ext {
     groupId = "com.github.thepacific"
-    compile = 27
+    compile = 26
     buildTools = "27.0.0"
     min = "14"
-    target = "27"
-    versionCode = 1
-    versionName = "0.0.1"
+    target = "26"
+    versionCode = 22
+    versionName = "2.1.1"
 
     testRunner = "1.0.1"
     junit = "4.12"
     espresso = "3.0.0"
-    support = "27.0.0"
+    support = "26.1.0"
     mockito = "2.10.0"
 
     constraint = "1.1.0-beta3"
-    lifecycle = "1.0.0-rc1"
+    lifecycle = "1.0.0"
 
     findBugsJrs305 = "3.0.2"
     okhttp3 = "3.9.0"
@@ -54,6 +54,7 @@ ext {
     data = "0.0.2"
 
     dep = [
+            supportV4               : "com.android.support:support-v4:$support",
             appcompat               : "com.android.support:appcompat-v7:$support",
             palette                 : "com.android.support:palette-v7:$support",
             design                  : "com.android.support:design:$support",

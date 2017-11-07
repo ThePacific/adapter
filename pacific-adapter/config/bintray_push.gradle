@@ -3,6 +3,11 @@ apply plugin: 'com.github.dcendents.android-maven'
 apply plugin: 'com.jfrog.bintray'
 apply plugin: 'com.jfrog.artifactory'
 
+
+group = GROUP
+boolean isReleaseBuild = gradle.startParameter.taskNames.contains('bintrayUpload')
+version = isReleaseBuild ? VERSION_NAME : "$VERSION_NAME-SNAPSHOT"
+
 logger.info("Library using version=$project.version")
 
 if (project.plugins.hasPlugin('com.android.library')) {

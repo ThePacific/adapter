@@ -18,20 +18,15 @@ class RecyclerViewFragment : Fragment() {
         super.onCreate(savedInstanceState)
     }
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater!!.inflate(R.layout.fragment_recycler_view, container, false)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        return inflater.inflate(R.layout.fragment_recycler_view, container, false)
     }
 
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         var rv: RecyclerView = view!!.findViewById<RecyclerView>(R.id.recycler)
         rv.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
 
-        val div = Divider(activity, R.color.colorPrimary)
-        div.setDrawable(ContextCompat.getDrawable(activity,R.drawable.div))
-
-
-        rv.addItemDecoration(div)
         val adapter = RecyclerAdapter()
         rv.adapter = adapter
 
