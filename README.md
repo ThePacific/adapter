@@ -16,8 +16,8 @@ compile 'com.github.thepacific:adapter:{lastestVersion}'
 ```
 # Proguard
 ```groovy
--keep class android.databinding.DataBindingUtil {
-   public static *;
+-keep public class android.databinding.DataBindingUtil {
+    public static android.databinding.ViewDataBinding bind(android.view.View);
 }
 ```
 
