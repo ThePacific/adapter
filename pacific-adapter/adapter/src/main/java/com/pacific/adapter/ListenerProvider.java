@@ -21,74 +21,96 @@ import android.view.View.OnLongClickListener;
 import android.view.View.OnTouchListener;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 
-public interface ListenerProvider {
-    /**
-     * set OnClickListener
-     *
-     * @param listener
-     */
-    void setOnClickListener(OnClickListener listener);
+import androidx.annotation.Nullable;
 
+public interface ListenerProvider {
     /**
      * get OnClickListener
      *
      * @return
      */
+    @Nullable
     OnClickListener getOnClickListener();
 
     /**
-     * set OnTouchListener
+     * set OnClickListener
      *
      * @param listener
      */
-    void setOnTouchListener(OnTouchListener listener);
+    void setOnClickListener(@Nullable OnClickListener listener);
 
     /**
      * get OnTouchListeners
      *
      * @return
      */
+    @Nullable
     OnTouchListener getOnTouchListener();
 
     /**
-     * set OnLongClickListener
+     * set OnTouchListener
      *
      * @param listener
      */
-    void setOnLongClickListener(OnLongClickListener listener);
+    void setOnTouchListener(@Nullable OnTouchListener listener);
 
     /**
      * get OnLongClickListener
      *
      * @return
      */
+    @Nullable
     OnLongClickListener getOnLongClickListener();
 
     /**
-     * set CompoundButton.OnCheckedChangeListener
+     * set OnLongClickListener
      *
      * @param listener
      */
-    void setOnCheckedChangeListener(OnCheckedChangeListener listener);
+    void setOnLongClickListener(@Nullable OnLongClickListener listener);
 
     /**
      * get CompoundButton.OnCheckedChangeListener
      *
      * @return
      */
+    @Nullable
     OnCheckedChangeListener getOnCheckedChangeListener();
 
     /**
-     * set image loader to load image
+     * set CompoundButton.OnCheckedChangeListener
      *
-     * @param imageLoader
+     * @param listener
      */
-    void setImageLoader(ImageLoader imageLoader);
+    void setOnCheckedChangeListener(@Nullable OnCheckedChangeListener listener);
 
     /**
      * get ImageLoader
      *
      * @return
      */
+    @Nullable
     ImageLoader getImageLoader();
+
+    /**
+     * set image loader to load image
+     *
+     * @param imageLoader
+     */
+    void setImageLoader(@Nullable ImageLoader imageLoader);
+
+    /**
+     * get AdapterTextWatcher
+     *
+     * @return
+     */
+    @Nullable
+    AdapterTextWatcher getTextChangedListener();
+
+    /**
+     * set AdapterTextWatcher
+     *
+     * @param textWatcher
+     */
+    void setTextChangedListener(@Nullable AdapterTextWatcher textWatcher);
 }

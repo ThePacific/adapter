@@ -16,7 +16,7 @@
 
 package com.pacific.adapter;
 
-import android.support.annotation.IdRes;
+import androidx.annotation.IdRes;
 
 interface ListenerAttach {
     /**
@@ -53,4 +53,19 @@ interface ListenerAttach {
      * @param viewId
      */
     void attachImageLoader(@IdRes int viewId);
+
+    /**
+     * attach TextChangedListener for TextView or EditText
+     *
+     * @param viewId
+     */
+    void attachTextChangedListener(@IdRes int viewId);
+
+
+    /**
+     * detach TextChangedListener for TextView or EditText
+     *
+     * @param viewId
+     */
+    void detachTextChangedListener(@IdRes int viewId);
 }

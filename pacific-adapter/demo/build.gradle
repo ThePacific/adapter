@@ -1,17 +1,17 @@
-apply from: "../config/app_module.gradle"
+import com.square.buildsrc.BuildPlugins
+import com.square.buildsrc.Libs
+
+apply from: "../gradle/android_app_module.gradle"
 apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-kapt'
+apply plugin: 'kotlin-android-extensions'
 
 android {
     defaultConfig {
         applicationId "com.example.adapter"
-        minSdkVersion 15
     }
 }
 
 dependencies {
-    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation project(':adapter')
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
-    kapt 'com.android.databinding:compiler:+'
 }

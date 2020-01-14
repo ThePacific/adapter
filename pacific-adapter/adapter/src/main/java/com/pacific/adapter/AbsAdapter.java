@@ -18,12 +18,15 @@ package com.pacific.adapter;
 
 import android.view.View;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import java.util.List;
 
 /**
  * AbsAdapter for AdapterView , like ListView,GridView and Spinner
  */
-public final class AbsAdapter extends BaseAbsAdapter<Item, ViewHolder> {
+public final class AbsAdapter extends BaseAbsAdapter<RecyclerItem, ViewHolder> {
     public AbsAdapter() {
         super();
     }
@@ -32,7 +35,7 @@ public final class AbsAdapter extends BaseAbsAdapter<Item, ViewHolder> {
         super(viewTypeCount);
     }
 
-    public AbsAdapter(List<Item> data, int viewTypeCount) {
+    public AbsAdapter(@Nullable List<RecyclerItem> data, int viewTypeCount) {
         super(data, viewTypeCount);
     }
 
@@ -43,7 +46,11 @@ public final class AbsAdapter extends BaseAbsAdapter<Item, ViewHolder> {
      * @return ViewHolder
      */
     @Override
-    protected ViewHolder createViewHolder(View convertView) {
-        return new ViewHolder(convertView, this);
+    protected ViewHolder createViewHolder(@NonNull View convertView, int viewType) {
+        ViewHolder holder = new ViewHolder(convertView, this);
+        if (onCreateViewHolder != null) {
+            onCreateViewHolder.onCreateViewHolder(holder, viewType);
+        }
+        return holder;
     }
 }

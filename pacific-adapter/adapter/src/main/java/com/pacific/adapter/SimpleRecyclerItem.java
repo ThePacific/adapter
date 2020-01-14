@@ -16,12 +16,18 @@
 
 package com.pacific.adapter;
 
+import androidx.annotation.NonNull;
+
 import java.util.List;
 
-public abstract class SimpleRecyclerItem extends SimpleItem implements RecyclerItem<ViewHolder> {
+public abstract class SimpleRecyclerItem implements RecyclerItem<ViewHolder> {
+
+    protected boolean isSelected = false;
+
+    protected boolean isEnable = false;
 
     @Override
-    public void bindPayloads(ViewHolder holder, List<Object> payloads) {
+    public void bindPayloads(@NonNull ViewHolder holder, @NonNull List<Object> payloads) {
     }
 
     @Override
@@ -30,10 +36,38 @@ public abstract class SimpleRecyclerItem extends SimpleItem implements RecyclerI
     }
 
     @Override
-    public void onViewAttachedToWindow(ViewHolder holder) {
+    public void onViewAttachedToWindow(@NonNull ViewHolder holder) {
     }
 
     @Override
-    public void onViewDetachedFromWindow(ViewHolder holder) {
+    public void onViewDetachedFromWindow(@NonNull ViewHolder holder) {
+    }
+
+    @Override
+    public void unbind(@NonNull ViewHolder holder) {
+    }
+
+    @Override
+    public boolean isSelected() {
+        return isSelected;
+    }
+
+    @Override
+    public boolean isEnable() {
+        return isEnable;
+    }
+
+    @Override
+    public void setSelected(boolean selected) {
+        this.isSelected = selected;
+    }
+
+    @Override
+    public void setEnable(boolean isEnable) {
+        this.isEnable = isEnable;
+    }
+
+    @Override
+    public void onDestroy() {
     }
 }

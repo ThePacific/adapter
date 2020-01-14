@@ -16,57 +16,54 @@
 
 package com.pacific.adapter;
 
-import android.support.annotation.IdRes;
-import android.support.v7.widget.RecyclerView;
+import android.app.Activity;
 import android.view.View;
+import android.view.ViewGroup;
 
-import java.lang.reflect.InvocationTargetException;
+import androidx.annotation.IdRes;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.RecyclerView;
+
 import java.lang.reflect.Method;
 
 public class ViewHolder extends RecyclerView.ViewHolder implements ListenerAttach {
 
     /**
+     * ListenerAttach
+     */
+    private final ListenerAttachImpl listenerAttach;
+    /**
      * binding
      */
+    @NonNull
     private Object binding;
     /**
      * adapter position
      */
     private int position = -1;
-
     /**
      * adapter size
      */
     private int size = 0;
-
     /**
      * item
      */
-    private Item item;
+    private RecyclerItem item;
 
-    /**
-     * ListenerAttach
-     */
-    private final ListenerAttachImpl listenerAttach;
-
-    public ViewHolder(View itemView, ListenerProvider provider) {
+    public ViewHolder(@Nullable View itemView, @Nullable ListenerProvider provider) {
         super(itemView);
-        this.listenerAttach = new ListenerAttachImpl(provider, this);
+        this.listenerAttach = new ListenerAttachImpl(this, provider);
         try {
-            Class<?> clazz = Class.forName("android.databinding.DataBindingUtil");
+            Class<?> clazz;
+            try {
+                clazz = Class.forName("androidx.databinding.DataBindingUtil");
+            } catch (Exception ignored) {
+                clazz = Class.forName("android.databinding.DataBindingUtil");
+            }
             Method method = clazz.getMethod("bind", View.class);
             binding = method.invoke(null, itemView);
-        } catch (ClassNotFoundException e) {
-            binding = new DefaultBinding(itemView);
-        } catch (NoClassDefFoundError error) {
-            binding = new DefaultBinding(itemView);
-        } catch (NoSuchMethodException e) {
-            binding = new DefaultBinding(itemView);
-        } catch (IllegalAccessException e) {
-            binding = new DefaultBinding(itemView);
-        } catch (InvocationTargetException e) {
-            binding = new DefaultBinding(itemView);
-        } catch (IllegalArgumentException e) {
+        } catch (Exception ignored) {
             binding = new DefaultBinding(itemView);
         }
     }
@@ -80,12 +77,17 @@ public class ViewHolder extends RecyclerView.ViewHolder implements ListenerAttac
         return size;
     }
 
+    void setSize(int size) {
+        this.size = size;
+    }
+
     /**
      * get item
      *
      * @return
      */
-    public <V extends Item> V getItem() {
+    @NonNull
+    public <V extends RecyclerItem> V getItem() {
         return (V) item;
     }
 
@@ -95,8 +97,7 @@ public class ViewHolder extends RecyclerView.ViewHolder implements ListenerAttac
      * @return
      */
     public boolean isFirstItem() {
-        if (position == 0) return true;
-        return false;
+        return position == 0;
     }
 
     /**
@@ -105,8 +106,7 @@ public class ViewHolder extends RecyclerView.ViewHolder implements ListenerAttac
      * @return
      */
     public boolean isLastItem() {
-        if (position == size - 1) return true;
-        return false;
+        return position == size - 1;
     }
 
     /**
@@ -119,14 +119,13 @@ public class ViewHolder extends RecyclerView.ViewHolder implements ListenerAttac
     }
 
     void setCurrentPosition(int position) {
+        if (position < 0) {
+            throw new UnsupportedOperationException("position = -1");
+        }
         this.position = position;
     }
 
-    void setSize(int size) {
-        this.size = size;
-    }
-
-    void setCurrentItem(Item item) {
+    void setCurrentItem(RecyclerItem item) {
         this.item = item;
     }
 
@@ -137,6 +136,7 @@ public class ViewHolder extends RecyclerView.ViewHolder implements ListenerAttac
      * @param <T>
      * @return
      */
+    @NonNull
     public <T extends Object> T binding() {
         return (T) this.binding;
     }
@@ -184,5 +184,48 @@ public class ViewHolder extends RecyclerView.ViewHolder implements ListenerAttac
     @Override
     public void attachImageLoader(@IdRes int viewId) {
         listenerAttach.attachImageLoader(viewId);
+    }
+
+    @Override
+    public void attachTextChangedListener(@IdRes int viewId) {
+        listenerAttach.attachTextChangedListener(viewId);
+    }
+
+    @Override
+    public void detachTextChangedListener(@IdRes int viewId) {
+        listenerAttach.detachTextChangedListener(viewId);
+    }
+
+    /**
+     * get the current attached Adapter
+     *
+     * @param <T>
+     * @return
+     */
+    @NonNull
+    public <T extends Object> T adapter() {
+        return (T) this.listenerAttach.provider;
+    }
+
+    /**
+     * get the current attached Parent: ListView，GridView，RecyclerView，ViewPager ect
+     *
+     * @param <T>
+     * @return
+     */
+    @NonNull
+    public <T extends ViewGroup> T parent() {
+        return (T) itemView.getParent();
+    }
+
+    /**
+     * get the current attached Activity
+     *
+     * @param <T>
+     * @return
+     */
+    @NonNull
+    public <T extends Activity> T activity() {
+        return (T) itemView.getContext();
     }
 }

@@ -16,46 +16,54 @@
 
 package com.pacific.adapter;
 
-import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.RecyclerView.Adapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.RecyclerView.Adapter;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 public abstract class BaseRecyclerAdapter<T extends RecyclerItem, H extends ViewHolder>
-        extends Adapter<H> implements DataIO<T>, ListenerProvider {
-
-    /**
-     * layout inflater
-     */
-    protected LayoutInflater inflater;
+        extends Adapter<H>
+        implements DataIO<T>, ListenerProvider {
 
     /**
      * data set
      */
+    @NonNull
     protected final ArrayList<T> data;
-
+    /**
+     * layout inflater
+     */
+    @Nullable
+    protected LayoutInflater inflater;
     /**
      * data set change callback
      */
+    @Nullable
     protected OnDataSetChanged onDataSetChanged;
 
     /**
      * listeners provider
      */
+    @Nullable
     protected ListenerProviderImpl provider;
+
+    @NonNull
+    protected OnCreateViewHolder onCreateViewHolder;
 
     public BaseRecyclerAdapter() {
         this(null);
     }
 
-    public BaseRecyclerAdapter(List<T> data) {
+    public BaseRecyclerAdapter(@Nullable List<T> data) {
         this.data = data == null ? new ArrayList<T>() : new ArrayList<>(data);
         this.provider = new ListenerProviderImpl();
     }
@@ -66,8 +74,10 @@ public abstract class BaseRecyclerAdapter<T extends RecyclerItem, H extends View
     }
 
     @Override
-    public H onCreateViewHolder(ViewGroup parent, int viewType) {
-        throw new AssertionError("You must override BaseRecyclerAdapter.onCreateViewHolder()");
+    public H onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        throw new AssertionError(
+                "You must override BaseRecyclerAdapter.onCreateViewHolder()"
+        );
     }
 
     @Override
@@ -85,7 +95,6 @@ public abstract class BaseRecyclerAdapter<T extends RecyclerItem, H extends View
         int position = holder.getAdapterPosition();
         if (position != RecyclerView.NO_POSITION) {
             get(position).onViewAttachedToWindow(holder);
-            return;
         }
     }
 
@@ -94,7 +103,6 @@ public abstract class BaseRecyclerAdapter<T extends RecyclerItem, H extends View
         int position = holder.getAdapterPosition();
         if (position != RecyclerView.NO_POSITION) {
             get(position).onViewDetachedFromWindow(holder);
-            return;
         }
     }
 
@@ -129,19 +137,13 @@ public abstract class BaseRecyclerAdapter<T extends RecyclerItem, H extends View
         return onDataSetChanged;
     }
 
-    public void setOnDataSetChanged(OnDataSetChanged onDataSetChanged) {
+    public void setOnDataSetChanged(@Nullable OnDataSetChanged onDataSetChanged) {
         this.onDataSetChanged = onDataSetChanged;
     }
 
     private void onDataSetChanged() {
-        if (getItemCount() == 0) {
-            if (onDataSetChanged != null) {
-                onDataSetChanged.onEmptyData();
-            }
-        } else {
-            if (onDataSetChanged != null) {
-                onDataSetChanged.onHasData();
-            }
+        if (onDataSetChanged != null) {
+            onDataSetChanged.apply(data.size());
         }
     }
 
@@ -152,17 +154,16 @@ public abstract class BaseRecyclerAdapter<T extends RecyclerItem, H extends View
 
     @Override
     public void clear() {
-        final int size = getItemCount();
-        if (size > 0) {
+        if (data.size() > 0) {
             data.clear();
-            notifyItemRangeRemoved(0, size);
+            notifyDataSetChanged();
         }
         onDataSetChanged();
     }
 
     @Override
-    public void add(T element) {
-        final int size = getItemCount();
+    public void add(@NonNull T element) {
+        int size = data.size();
         if (data.add(element)) {
             notifyItemInserted(size);
             onDataSetChanged();
@@ -170,8 +171,8 @@ public abstract class BaseRecyclerAdapter<T extends RecyclerItem, H extends View
     }
 
     @Override
-    public void remove(T element) {
-        final int index = data.indexOf(element);
+    public void remove(@NonNull T element) {
+        int index = data.indexOf(element);
         if (data.remove(element)) {
             notifyItemRemoved(index);
             onDataSetChanged();
@@ -179,7 +180,7 @@ public abstract class BaseRecyclerAdapter<T extends RecyclerItem, H extends View
     }
 
     @Override
-    public boolean contains(T element) {
+    public boolean contains(@NonNull T element) {
         return data.contains(element);
     }
 
@@ -189,10 +190,13 @@ public abstract class BaseRecyclerAdapter<T extends RecyclerItem, H extends View
     }
 
     @Override
-    public void add(int index, T element) {
-        final int size = getItemCount();
+    public void add(int index, @NonNull T element) {
+        int size = getItemCount();
+        if (index >= size) {
+            throw new AssertionError("index >= size");
+        }
         data.add(index, element);
-        if (getItemCount() > size) {
+        if (data.size() > size) {
             notifyItemInserted(index);
             onDataSetChanged();
         }
@@ -200,7 +204,7 @@ public abstract class BaseRecyclerAdapter<T extends RecyclerItem, H extends View
 
     @Override
     public void addAll(@NonNull List<T> list) {
-        final int size = getItemCount();
+        int size = data.size();
         if (data.addAll(list)) {
             notifyItemRangeInserted(size, list.size());
             onDataSetChanged();
@@ -217,9 +221,8 @@ public abstract class BaseRecyclerAdapter<T extends RecyclerItem, H extends View
 
     @Override
     public void removeAll(@NonNull List<T> list) {
-        final int size = getItemCount();
-        int index;
         List<Integer> indexes = new ArrayList<>();
+        int index;
         for (T item : list) {
             index = data.indexOf(item);
             if (index >= 0) {
@@ -227,10 +230,8 @@ public abstract class BaseRecyclerAdapter<T extends RecyclerItem, H extends View
             }
         }
         if (data.removeAll(list)) {
-            for (int i = 0; i < size; i++) {
-                if (indexes.contains(i)) {
-                    notifyItemRemoved(i);
-                }
+            for (int k = 0; k < indexes.size(); k++) {
+                notifyItemRemoved(indexes.get(k));
             }
             onDataSetChanged();
         }
@@ -238,11 +239,16 @@ public abstract class BaseRecyclerAdapter<T extends RecyclerItem, H extends View
 
     @Override
     public void retainAll(@NonNull List<T> list) {
-        final int size = getItemCount();
         List<Integer> indexes = new ArrayList<>();
+        int index;
         for (T item : list) {
-            indexes.add(data.indexOf(item));
+            index = data.indexOf(item);
+            if (index >= 0) {
+                indexes.add(index);
+            }
         }
+
+        int size = data.size();
         if (data.retainAll(list)) {
             for (int i = 0; i < size; i++) {
                 if (!indexes.contains(i)) {
@@ -253,6 +259,7 @@ public abstract class BaseRecyclerAdapter<T extends RecyclerItem, H extends View
         }
     }
 
+    @NonNull
     @Override
     public List<T> getAll() {
         return data;
@@ -261,50 +268,61 @@ public abstract class BaseRecyclerAdapter<T extends RecyclerItem, H extends View
     @Override
     public <R extends T> R get(int index) {
         if (index >= data.size()) {
-            return null;
+            throw new AssertionError("index >= size");
         }
         return (R) data.get(index);
     }
 
     @Override
-    public void replaceAt(int index, T element) {
+    public void replaceAt(int index, @NonNull T element) {
         if (data.set(index, element) != null) {
             notifyItemChanged(index);
         }
     }
 
     @Override
-    public void replace(T oldElement, T newElement) {
-        final int index = data.indexOf(oldElement);
-        if (data.set(index, newElement) != null) {
-            notifyItemChanged(index);
-        }
+    public void replace(@NonNull T oldElement, @NonNull T newElement) {
+        replaceAt(data.indexOf(oldElement), newElement);
     }
 
     @Override
     public void replaceAll(@NonNull List<T> list) {
-        final int size = getItemCount();
-        if (getItemCount() > 0) {
+        if (data.size() > 0) {
             data.clear();
-            notifyItemRangeRemoved(0, size);
         }
-        if (data.addAll(list)) {
-            notifyItemRangeInserted(0, list.size());
-        }
+        data.addAll(list);
+        notifyDataSetChanged();
         onDataSetChanged();
     }
 
     @Override
     public void replaceAll(int index, @NonNull List<T> list) {
-        final int size = getItemCount();
-        for (int i = index; i < size; i++) {
-            data.remove(i);
+        replaceAll(index, list, false);
+    }
+
+    public final void replaceAll(
+            int index,
+            @NonNull List<T> list,
+            boolean notifyDataSetChanged
+    ) {
+        int size = data.size();
+        if (index >= size) {
+            addAll(list);
+        } else {
+            for (int i = index; i < size; i++) {
+                data.remove(index);
+            }
+            if (!notifyDataSetChanged) {
+                notifyItemRangeRemoved(index, size - index);
+            }
+            if (data.addAll(list) && !notifyDataSetChanged) {
+                notifyItemRangeInserted(index, list.size());
+            }
+            if (notifyDataSetChanged) {
+                notifyDataSetChanged();
+            }
+            onDataSetChanged();
         }
-        notifyItemRangeRemoved(index, size - index);
-        if (data.addAll(list)) {
-            notifyItemRangeInserted(index, list.size());
-        }
-        onDataSetChanged();
     }
 
     @Override
@@ -318,15 +336,16 @@ public abstract class BaseRecyclerAdapter<T extends RecyclerItem, H extends View
     }
 
     @Override
-    public int indexOf(T element) {
+    public int indexOf(@NonNull T element) {
         return data.indexOf(element);
     }
 
     @Override
-    public int lastIndexOf(T element) {
+    public int lastIndexOf(@NonNull T element) {
         return data.lastIndexOf(element);
     }
 
+    @NonNull
     @Override
     public List<T> subList(int fromIndex, int toIndex) {
         if (fromIndex < 0 || toIndex >= getItemCount()) {
@@ -336,58 +355,117 @@ public abstract class BaseRecyclerAdapter<T extends RecyclerItem, H extends View
     }
 
     @Override
-    public void setOnClickListener(View.OnClickListener listener) {
-        provider.setOnClickListener(listener);
+    public int firstSelectedIndex() {
+        return AdapterUtils.firstSelectedIndex(data);
     }
 
     @Override
+    public int lastSelectedIndex() {
+        return AdapterUtils.lastSelectedIndex(data);
+    }
+
+    @Override
+    @NonNull
+    public List<Integer> selectedIndices() {
+        return AdapterUtils.selectedIndices(data);
+    }
+
+    @Override
+    @Nullable
+    public T firstSelectedItem() {
+        return AdapterUtils.firstSelectedItem(data);
+    }
+
+    @Override
+    @Nullable
+    public T lastSelectedItem() {
+        return AdapterUtils.lastSelectedItem(data);
+    }
+
+    @Override
+    @NonNull
+    public List<T> selectedItems() {
+        return AdapterUtils.selectedItems(data);
+    }
+
+    @Override
+    @Nullable
     public View.OnClickListener getOnClickListener() {
         return provider.getOnClickListener();
     }
 
     @Override
-    public void setOnTouchListener(View.OnTouchListener listener) {
-        provider.setOnTouchListener(listener);
+    public void setOnClickListener(@Nullable View.OnClickListener listener) {
+        provider.setOnClickListener(listener);
     }
 
     @Override
+    @Nullable
     public View.OnTouchListener getOnTouchListener() {
         return provider.getOnTouchListener();
     }
 
     @Override
-    public void setOnLongClickListener(View.OnLongClickListener listener) {
-        provider.setOnLongClickListener(listener);
+    public void setOnTouchListener(@Nullable View.OnTouchListener listener) {
+        provider.setOnTouchListener(listener);
     }
 
     @Override
+    @Nullable
     public View.OnLongClickListener getOnLongClickListener() {
         return provider.getOnLongClickListener();
     }
 
     @Override
-    public void setOnCheckedChangeListener(CompoundButton.OnCheckedChangeListener listener) {
-        provider.setOnCheckedChangeListener(listener);
+    public void setOnLongClickListener(@Nullable View.OnLongClickListener listener) {
+        provider.setOnLongClickListener(listener);
     }
 
     @Override
+    @Nullable
     public CompoundButton.OnCheckedChangeListener getOnCheckedChangeListener() {
         return provider.getOnCheckedChangeListener();
     }
 
-    /**
-     * add image loader to load image
-     */
     @Override
-    public void setImageLoader(ImageLoader imageLoader) {
-        provider.setImageLoader(imageLoader);
+    public void setOnCheckedChangeListener(@Nullable CompoundButton.OnCheckedChangeListener listener) {
+        provider.setOnCheckedChangeListener(listener);
     }
 
     /**
      * get ImageLoader
      */
     @Override
+    @Nullable
     public ImageLoader getImageLoader() {
         return provider.getImageLoader();
+    }
+
+    /**
+     * add image loader to load image
+     */
+    @Override
+    public void setImageLoader(@Nullable ImageLoader imageLoader) {
+        provider.setImageLoader(imageLoader);
+    }
+
+    @Override
+    @Nullable
+    public AdapterTextWatcher getTextChangedListener() {
+        return provider.getTextChangedListener();
+    }
+
+    @Override
+    public void setTextChangedListener(@Nullable AdapterTextWatcher textWatcher) {
+        provider.setTextChangedListener(textWatcher);
+    }
+
+    @NonNull
+    public OnCreateViewHolder getOnCreateViewHolder() {
+        return onCreateViewHolder;
+    }
+
+    public void setOnCreateViewHolder(@NonNull OnCreateViewHolder onCreateViewHolder) {
+        this.onCreateViewHolder = onCreateViewHolder;
     }
 }

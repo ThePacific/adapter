@@ -1,0 +1,202 @@
+import com.square.buildsrc.BuildPlugins
+import com.square.buildsrc.Libs
+
+// apply plugin: BuildPlugins.androidApplication
+// apply plugin: BuildPlugins.androidLibrary
+apply plugin: BuildPlugins.kotlinAndroid
+apply plugin: BuildPlugins.kotlinAndroidExtensions
+apply plugin: BuildPlugins.jetbrainsAndroidExtensions
+apply plugin: BuildPlugins.kotlinxSerialization
+apply plugin: BuildPlugins.kotlinKapt
+
+android {
+    compileSdkVersion Libs.AndroidSdk.compileSdkVersion
+    buildToolsVersion Libs.AndroidSdk.buildToolsVersion
+    defaultConfig {
+        minSdkVersion Libs.AndroidSdk.minSdkVersion
+        targetSdkVersion Libs.AndroidSdk.targetSdkVersion
+        versionCode Libs.AndroidSdk.versionCode
+        versionName Libs.AndroidSdk.versionName
+        multiDexEnabled true
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    dataBinding {
+        enabled = true
+    }
+}
+
+androidExtensions {
+    experimental = true
+}
+
+kapt {
+    correctErrorTypes = true
+    useBuildCache = true
+
+    javacOptions {
+        option("-Xmaxerrs", 1000)
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    // implementation project(':guava')
+    // implementation project(':guava-android')
+    // implementation project(':data')
+    // implementation project(':data-android')
+    // implementation project(':core')
+    // implementation project(':core')
+
+    compileOnly Libs.injectAnnotation
+    compileOnly Libs.errorProne
+    compileOnly Libs.jetAnnotation
+    compileOnly Libs.javaxAnnotation
+    compileOnly Libs.findBugsJrs305
+
+    implementation Libs.Kotlin.stdlibJdk8
+    implementation Libs.Kotlin.stdlibJdk7
+    implementation Libs.Kotlin.reflect
+    implementation Libs.Kotlin.serializationRuntime
+    implementation Libs.Coroutines.core
+    implementation Libs.Coroutines.rxJava
+    implementation Libs.Coroutines.android
+
+    implementation Libs.OkHttp.okHttp
+    implementation Libs.OkHttp.loggingInterceptor
+    implementation Libs.okio
+    implementation Libs.Retrofit.retrofit
+    implementation Libs.Retrofit.rxJavaAdapter
+    implementation Libs.Retrofit.moshiConverter
+    implementation Libs.Moshi.moshi
+    implementation Libs.Moshi.kotlin
+    kapt Libs.Moshi.codegen
+
+    implementation Libs.RxJava.rxJava
+    implementation Libs.RxJava.rxAndroid
+    implementation Libs.RxJava.stream
+
+    implementation Libs.matisse
+    implementation Libs.lubanTurbo
+    implementation Libs.Glide.glide
+    implementation Libs.Glide.okhttp3Integration
+    kapt Libs.Glide.compiler
+
+    compileOnly Libs.AutoValue.autoValue
+    kapt Libs.AutoValue.compiler
+    implementation Libs.Dagger.dagger
+    kapt Libs.Dagger.compiler
+    implementation Libs.Dagger.androidSupport
+    kapt Libs.Dagger.androidProcessor
+
+    implementation Libs.mmkv
+    implementation Libs.mvRx
+    implementation Libs.coordinators
+    implementation Libs.reflection
+    implementation Libs.timber
+    implementation Libs.threeTenAbp
+    implementation Libs.gravitySnapHelper
+    debugImplementation Libs.leakcanary
+
+    implementation Libs.flexbox
+    implementation Libs.Epoxy.epoxy
+    implementation Libs.Epoxy.paging
+    implementation Libs.Epoxy.dataBinding
+    kapt Libs.Epoxy.processor
+
+    implementation Libs.Google.material
+    implementation Libs.AndroidX.annotation
+    implementation Libs.AndroidX.Collection.collection
+    implementation Libs.AndroidX.Collection.ktx
+    implementation Libs.AndroidX.Activity.activity
+    implementation Libs.AndroidX.Activity.ktx
+    implementation Libs.AndroidX.Fragment.fragment
+    implementation Libs.AndroidX.Fragment.ktx
+    implementation Libs.AndroidX.Appcompat.appcompat
+    implementation Libs.AndroidX.Core.core
+    implementation Libs.AndroidX.Core.ktx
+    implementation Libs.AndroidX.Savedstate.savedstate
+    // implementation Libs.AndroidX.Savedstate.bundle
+    // implementation Libs.AndroidX.Savedstate.common
+    implementation Libs.AndroidX.Constraintlayout.constraintlayout
+    implementation Libs.AndroidX.Preference.preference
+    implementation Libs.AndroidX.Preference.ktx
+    implementation Libs.AndroidX.Palette.palette
+    implementation Libs.AndroidX.Palette.ktx
+    implementation Libs.AndroidX.cardview
+    implementation Libs.AndroidX.Recyclerview.recyclerview
+    implementation Libs.AndroidX.Recyclerview.selection
+    implementation Libs.AndroidX.viewpager
+    implementation Libs.AndroidX.viewpager2
+    implementation Libs.AndroidX.swiperefreshlayout
+    implementation Libs.AndroidX.slidingpanelayout
+    implementation Libs.AndroidX.transition
+    implementation Libs.AndroidX.Dynamicanimation.dynamicanimation
+    implementation Libs.AndroidX.Dynamicanimation.ktx
+    implementation Libs.AndroidX.sharetarget
+    implementation Libs.AndroidX.webkit
+    implementation Libs.AndroidX.versionedparcelable
+    implementation Libs.AndroidX.interpolator
+    implementation Libs.AndroidX.drawerlayout
+    implementation Libs.AndroidX.coordinatorlayout
+    implementation Libs.AndroidX.customview
+    implementation Libs.AndroidX.asynclayoutinflater
+    implementation Libs.AndroidX.browser
+    implementation Libs.AndroidX.biometric
+    implementation Libs.AndroidX.autofill
+    implementation Libs.AndroidX.contentpager
+    implementation Libs.AndroidX.loader
+    implementation Libs.AndroidX.versionedparcelable
+    implementation Libs.AndroidX.Work.runtime
+    implementation Libs.AndroidX.Work.runtimeKtx
+    implementation Libs.AndroidX.Work.rxJava
+    implementation Libs.AndroidX.Concurrent.concurrentFutures
+    implementation Libs.AndroidX.Navigation.fragment
+    implementation Libs.AndroidX.Navigation.fragmentKtx
+    implementation Libs.AndroidX.Navigation.ui
+    implementation Libs.AndroidX.Navigation.uiKtx
+    implementation Libs.AndroidX.Lifecycle.extensions
+    implementation Libs.AndroidX.Lifecycle.commonJava8
+    implementation Libs.AndroidX.Lifecycle.viewmodelKtx
+    implementation Libs.AndroidX.Lifecycle.runtimeKtx
+    implementation Libs.AndroidX.Lifecycle.reactive
+    implementation Libs.AndroidX.Lifecycle.reactiveKtx
+    implementation Libs.AndroidX.Lifecycle.livedataKtx
+    implementation Libs.AndroidX.Lifecycle.livedataCoreKtx
+    implementation Libs.AndroidX.Arch.common
+    implementation Libs.AndroidX.Arch.runtime
+    implementation Libs.AndroidX.Paging.common
+    implementation Libs.AndroidX.Paging.commonKtx
+    implementation Libs.AndroidX.Paging.rxJava
+    implementation Libs.AndroidX.Paging.rxJavaKtx
+    implementation Libs.AndroidX.Room.common
+    implementation Libs.AndroidX.Room.runtime
+    // implementation Libs.AndroidX.Room.coroutines
+    implementation Libs.AndroidX.Room.rxJava
+    implementation Libs.AndroidX.Room.migration
+    implementation Libs.AndroidX.Room.ktx
+    kapt Libs.AndroidX.Room.compiler
+    implementation Libs.AndroidX.Vectordrawable.vectordrawable
+    implementation Libs.AndroidX.Vectordrawable.animated
+    implementation Libs.AndroidX.Remotecallback.remotecallback
+    kapt Libs.AndroidX.Remotecallback.processor
+    implementation Libs.AndroidX.Multidex.multidex
+
+    implementation Libs.AndroidX.Camera.core
+    implementation Libs.AndroidX.Camera.camera2
+    implementation Libs.AndroidX.Camera.extensions
+    implementation Libs.AndroidX.Camera.view
+
+    testImplementation Libs.Kotlin.test
+    testImplementation Libs.Kotlin.testJunit
+    testImplementation Libs.junit
+    testImplementation Libs.mockito
+    testImplementation Libs.truth
+    androidTestImplementation Libs.AndroidX.Test.runner
+    androidTestImplementation Libs.AndroidX.TestExt.junit
+    androidTestImplementation Libs.AndroidX.TestExt.junitKtx
+    androidTestImplementation Libs.AndroidX.Espresso.core
+    androidTestImplementation Libs.AndroidX.Multidex.multidex
+    androidTestImplementation Libs.AndroidX.Multidex.instrumentation
+}

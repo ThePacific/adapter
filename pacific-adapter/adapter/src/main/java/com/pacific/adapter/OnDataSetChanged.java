@@ -18,17 +18,13 @@ package com.pacific.adapter;
 
 /**
  * data set changed callback
- * <p>
- * it's useful to show or hide empty view
+ * It's useful to show or hide empty view
  */
 public interface OnDataSetChanged {
     /**
-     * called when data size is 0
+     * called when data source changed
+     *
+     * @param count current data source size
      */
-    void onEmptyData();
-
-    /**
-     * called when data size larger than 0
-     */
-    void onHasData();
+    void apply(int count);
 }

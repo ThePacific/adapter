@@ -17,18 +17,21 @@ package com.pacific.adapter;
 
 import android.view.View;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import java.util.List;
 
 /**
  * PagerAdapter for ViewPager
  */
-public final class PagerAdapter2 extends BasePagerAdapter2<Item, ViewHolder> {
+public final class PagerAdapter2 extends BasePagerAdapter2<RecyclerItem, ViewHolder> {
 
     public PagerAdapter2() {
         super();
     }
 
-    public PagerAdapter2(List<Item> data) {
+    public PagerAdapter2(@Nullable List<RecyclerItem> data) {
         super(data);
     }
 
@@ -39,7 +42,11 @@ public final class PagerAdapter2 extends BasePagerAdapter2<Item, ViewHolder> {
      * @return ViewHolder
      */
     @Override
-    protected ViewHolder createViewHolder(View convertView) {
-        return new ViewHolder(convertView, this);
+    protected ViewHolder createViewHolder(@NonNull View convertView, int viewType) {
+        ViewHolder holder = new ViewHolder(convertView, this);
+        if (onCreateViewHolder != null) {
+            onCreateViewHolder.onCreateViewHolder(holder, viewType);
+        }
+        return holder;
     }
 }

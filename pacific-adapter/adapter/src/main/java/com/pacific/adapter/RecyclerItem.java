@@ -16,16 +16,39 @@
 
 package com.pacific.adapter;
 
+import androidx.annotation.LayoutRes;
+import androidx.annotation.NonNull;
+
 import java.util.List;
 
-public interface RecyclerItem<T extends ViewHolder> extends Item<T> {
+public interface RecyclerItem<T extends ViewHolder> {
+    /**
+     * @return item view layout resource id
+     */
+    @LayoutRes
+    int getLayout();
+
+    /**
+     * bind data callback
+     *
+     * @param holder view holder
+     */
+    void bind(@NonNull T holder);
+
+    /**
+     * unbind data callback
+     *
+     * @param holder view holder
+     */
+    void unbind(@NonNull T holder);
+
     /**
      * bind pay loads
      *
      * @param holder   view holder
      * @param payloads data
      */
-    void bindPayloads(T holder, List<Object> payloads);
+    void bindPayloads(@NonNull T holder, @NonNull List<Object> payloads);
 
     /**
      * get span size , for GridLayoutManager
@@ -41,12 +64,22 @@ public interface RecyclerItem<T extends ViewHolder> extends Item<T> {
      *
      * @param holder
      */
-    void onViewAttachedToWindow(T holder);
+    void onViewAttachedToWindow(@NonNull T holder);
 
     /**
      * onViewDetachedFromWindow callback
      *
      * @param holder
      */
-    void onViewDetachedFromWindow(T holder);
+    void onViewDetachedFromWindow(@NonNull T holder);
+
+    boolean isSelected();
+
+    boolean isEnable();
+
+    void setSelected(boolean selected);
+
+    void setEnable(boolean isEnable);
+
+    void onDestroy();
 }

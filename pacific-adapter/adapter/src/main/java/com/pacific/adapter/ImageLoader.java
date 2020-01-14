@@ -2,6 +2,9 @@ package com.pacific.adapter;
 
 import android.widget.ImageView;
 
+import androidx.annotation.NonNull;
+
 public interface ImageLoader {
-    void load(ImageView imageView, ViewHolder holder);
+
+    void onImageLoad(@NonNull ImageView imageView, @NonNull ViewHolder holder);
 }

@@ -1,17 +1,20 @@
 package com.example.adapter
 
-import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentManager
-import android.support.v4.app.FragmentPagerAdapter
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentPagerAdapter
 
-class FragmentAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
+class FragmentAdapter(
+    fm: FragmentManager
+) : FragmentPagerAdapter(fm, BEHAVIOR_SET_USER_VISIBLE_HINT) {
+
     override fun getItem(position: Int): Fragment {
-        when (position) {
-            0 -> return RecyclerViewFragment.newInstance()
-            1 -> return ListViewFragment.newInstance()
-            2 -> return GridViewFragment.newInstance()
-            3 -> return ViewPagerFragment.newInstance()
-            else -> return AboutFragment.newInstance()
+        return when (position) {
+            0 -> RecyclerViewFragment.newInstance()
+            1 -> ListViewFragment.newInstance()
+            2 -> GridViewFragment.newInstance()
+            3 -> ViewPagerFragment.newInstance()
+            else -> AboutFragment.newInstance()
         }
     }
 

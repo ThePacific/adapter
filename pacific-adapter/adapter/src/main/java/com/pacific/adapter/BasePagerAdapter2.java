@@ -16,12 +16,14 @@
 
 package com.pacific.adapter;
 
-import android.support.annotation.NonNull;
-import android.support.v4.view.PagerAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.viewpager.widget.PagerAdapter;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -31,18 +33,16 @@ import java.util.Queue;
 /**
  * PagerAdapter for ViewPager
  */
-public abstract class BasePagerAdapter2<T extends Item, H extends ViewHolder>
+public abstract class BasePagerAdapter2<T extends RecyclerItem, H extends ViewHolder>
         extends PagerAdapter implements DataIO<T>, ListenerProvider {
-    /**
-     * layout inflater
-     */
-    protected LayoutInflater inflater;
-
     /**
      * data set
      */
     protected final ArrayList<T> data;
-
+    /**
+     * layout inflater
+     */
+    protected LayoutInflater inflater;
     /**
      * cache views
      */
@@ -68,11 +68,14 @@ public abstract class BasePagerAdapter2<T extends Item, H extends ViewHolder>
      */
     protected ListenerProviderImpl provider;
 
+    @NonNull
+    protected OnCreateViewHolder onCreateViewHolder;
+
     public BasePagerAdapter2() {
         this(null);
     }
 
-    public BasePagerAdapter2(List<T> data) {
+    public BasePagerAdapter2(@Nullable List<T> data) {
         this.data = data == null ? new ArrayList<T>() : new ArrayList<>(data);
         this.provider = new ListenerProviderImpl();
         this.cacheViews = new LinkedList<>();
@@ -92,7 +95,7 @@ public abstract class BasePagerAdapter2<T extends Item, H extends ViewHolder>
     }
 
     @Override
-    public boolean contains(T element) {
+    public boolean contains(@NonNull T element) {
         return data.contains(element);
     }
 
@@ -102,18 +105,22 @@ public abstract class BasePagerAdapter2<T extends Item, H extends ViewHolder>
     }
 
     @Override
-    public void add(T element) {
+    public void add(@NonNull T element) {
         if (data.add(element)) {
             notifyDataSetChanged();
         }
     }
 
     @Override
-    public void add(int index, T element) {
-        final int size = data.size();
-        data.add(index, element);
-        if (data.size() > size) {
-            notifyDataSetChanged();
+    public void add(final int index, @NonNull T element) {
+        int size = data.size();
+        if (index >= size) {
+            add(element);
+        } else {
+            data.add(index, element);
+            if (data.size() > size) {
+                notifyDataSetChanged();
+            }
         }
     }
 
@@ -125,14 +132,14 @@ public abstract class BasePagerAdapter2<T extends Item, H extends ViewHolder>
     }
 
     @Override
-    public void addAll(int index, @NonNull List<T> list) {
+    public void addAll(final int index, @NonNull List<T> list) {
         if (data.addAll(index, list)) {
             notifyDataSetChanged();
         }
     }
 
     @Override
-    public T remove(int index) {
+    public T remove(final int index) {
         T obj = data.remove(index);
         if (obj != null) {
             notifyDataSetChanged();
@@ -141,7 +148,7 @@ public abstract class BasePagerAdapter2<T extends Item, H extends ViewHolder>
     }
 
     @Override
-    public void remove(T element) {
+    public void remove(@NonNull T element) {
         if (data.remove(element)) {
             notifyDataSetChanged();
         }
@@ -171,12 +178,12 @@ public abstract class BasePagerAdapter2<T extends Item, H extends ViewHolder>
     }
 
     @Override
-    public void replace(T oldElement, T newElement) {
+    public void replace(@NonNull T oldElement, @NonNull T newElement) {
         replaceAt(data.indexOf(oldElement), newElement);
     }
 
     @Override
-    public void replaceAt(int index, T element) {
+    public void replaceAt(final int index, @NonNull T element) {
         T obj = data.set(index, element);
         if (obj != null) {
             notifyDataSetChanged();
@@ -184,35 +191,78 @@ public abstract class BasePagerAdapter2<T extends Item, H extends ViewHolder>
     }
 
     @Override
-    public void replaceAll(int index, @NonNull List<T> list) {
-        final int size = getCount();
-        for (int i = index; i < size; i++) data.remove(i);
-        addAll(list);
+    public void replaceAll(final int index, @NonNull List<T> list) {
+        int size = data.size();
+        if (index >= size) {
+            addAll(list);
+        } else {
+            for (int i = index; i < size; i++) {
+                data.remove(index);
+            }
+            addAll(list);
+        }
     }
 
     @Override
-    public int indexOf(T element) {
+    public int indexOf(@NonNull T element) {
         return data.indexOf(element);
     }
 
     @Override
-    public int lastIndexOf(T element) {
+    public int lastIndexOf(@NonNull T element) {
         return data.lastIndexOf(element);
     }
 
+    @NonNull
     @Override
     public List<T> subList(int fromIndex, int toIndex) {
         return data.subList(fromIndex, toIndex);
     }
 
     @Override
-    public <R extends T> R get(int index) {
+    public int firstSelectedIndex() {
+        return AdapterUtils.firstSelectedIndex(data);
+    }
+
+    @Override
+    public int lastSelectedIndex() {
+        return AdapterUtils.lastSelectedIndex(data);
+    }
+
+    @Override
+    @NonNull
+    public List<Integer> selectedIndices() {
+        return AdapterUtils.selectedIndices(data);
+    }
+
+    @Override
+    @Nullable
+    public T firstSelectedItem() {
+        return AdapterUtils.firstSelectedItem(data);
+    }
+
+    @Override
+    @Nullable
+    public T lastSelectedItem() {
+        return AdapterUtils.lastSelectedItem(data);
+    }
+
+    @Override
+    @NonNull
+    public List<T> selectedItems() {
+        return AdapterUtils.selectedItems(data);
+    }
+
+    @NonNull
+    @Override
+    public <R extends T> R get(final int index) {
         if (index >= data.size()) {
             return null;
         }
         return (R) data.get(index);
     }
 
+    @NonNull
     @Override
     public ArrayList<T> getAll() {
         return data;
@@ -238,10 +288,10 @@ public abstract class BasePagerAdapter2<T extends Item, H extends ViewHolder>
                 inflater = LayoutInflater.from(container.getContext());
             }
             convertView = inflater.inflate(item.getLayout(), container, false);
-            holder = createViewHolder(convertView);
-            convertView.setTag(AdapterUtil.ADAPTER_HOLDER, holder);
+            holder = createViewHolder(convertView, item.getLayout());
+            convertView.setTag(AdapterUtils.ADAPTER_HOLDER, holder);
         } else {
-            holder = (H) convertView.getTag(AdapterUtil.ADAPTER_HOLDER);
+            holder = (H) convertView.getTag(AdapterUtils.ADAPTER_HOLDER);
         }
         holder.setCurrentPosition(position);
         holder.setSize(getCount());
@@ -256,7 +306,7 @@ public abstract class BasePagerAdapter2<T extends Item, H extends ViewHolder>
         if (object instanceof View) {
             View view = (View) object;
             T item = get(position);
-            ViewHolder holder = (ViewHolder) view.getTag(AdapterUtil.ADAPTER_HOLDER);
+            ViewHolder holder = (ViewHolder) view.getTag(AdapterUtils.ADAPTER_HOLDER);
             item.unbind(holder);
             container.removeView(view);
             cacheViews.add(view);
@@ -274,14 +324,8 @@ public abstract class BasePagerAdapter2<T extends Item, H extends ViewHolder>
     @Override
     public void notifyDataSetChanged() {
         super.notifyDataSetChanged();
-        if (getCount() == 0) {
-            if (onDataSetChanged != null) {
-                onDataSetChanged.onEmptyData();
-            }
-        } else {
-            if (onDataSetChanged != null) {
-                onDataSetChanged.onHasData();
-            }
+        if (onDataSetChanged != null) {
+            onDataSetChanged.apply(data.size());
         }
     }
 
@@ -289,7 +333,7 @@ public abstract class BasePagerAdapter2<T extends Item, H extends ViewHolder>
         return onDataSetChanged;
     }
 
-    public void setOnDataSetChanged(OnDataSetChanged onDataSetChanged) {
+    public void setOnDataSetChanged(@Nullable OnDataSetChanged onDataSetChanged) {
         this.onDataSetChanged = onDataSetChanged;
     }
 
@@ -302,18 +346,13 @@ public abstract class BasePagerAdapter2<T extends Item, H extends ViewHolder>
     }
 
     @Override
-    public void setOnClickListener(View.OnClickListener listener) {
-        provider.setOnClickListener(listener);
-    }
-
-    @Override
     public View.OnClickListener getOnClickListener() {
         return provider.getOnClickListener();
     }
 
     @Override
-    public void setOnTouchListener(View.OnTouchListener listener) {
-        provider.setOnTouchListener(listener);
+    public void setOnClickListener(@Nullable View.OnClickListener listener) {
+        provider.setOnClickListener(listener);
     }
 
     @Override
@@ -322,8 +361,8 @@ public abstract class BasePagerAdapter2<T extends Item, H extends ViewHolder>
     }
 
     @Override
-    public void setOnLongClickListener(View.OnLongClickListener listener) {
-        provider.setOnLongClickListener(listener);
+    public void setOnTouchListener(@Nullable View.OnTouchListener listener) {
+        provider.setOnTouchListener(listener);
     }
 
     @Override
@@ -332,8 +371,8 @@ public abstract class BasePagerAdapter2<T extends Item, H extends ViewHolder>
     }
 
     @Override
-    public void setOnCheckedChangeListener(CompoundButton.OnCheckedChangeListener listener) {
-        provider.setOnCheckedChangeListener(listener);
+    public void setOnLongClickListener(@Nullable View.OnLongClickListener listener) {
+        provider.setOnLongClickListener(listener);
     }
 
     @Override
@@ -341,14 +380,19 @@ public abstract class BasePagerAdapter2<T extends Item, H extends ViewHolder>
         return provider.getOnCheckedChangeListener();
     }
 
-    /**
-     * add image loader to load image
-     *
-     * @param imageLoader
-     */
     @Override
-    public void setImageLoader(ImageLoader imageLoader) {
-        provider.setImageLoader(imageLoader);
+    public void setOnCheckedChangeListener(@Nullable CompoundButton.OnCheckedChangeListener listener) {
+        provider.setOnCheckedChangeListener(listener);
+    }
+
+    @Override
+    public AdapterTextWatcher getTextChangedListener() {
+        return provider.getTextChangedListener();
+    }
+
+    @Override
+    public void setTextChangedListener(@Nullable AdapterTextWatcher textWatcher) {
+        provider.setTextChangedListener(textWatcher);
     }
 
     /**
@@ -362,10 +406,29 @@ public abstract class BasePagerAdapter2<T extends Item, H extends ViewHolder>
     }
 
     /**
+     * add image loader to load image
+     *
+     * @param imageLoader
+     */
+    @Override
+    public void setImageLoader(@Nullable ImageLoader imageLoader) {
+        provider.setImageLoader(imageLoader);
+    }
+
+    @NonNull
+    public OnCreateViewHolder getOnCreateViewHolder() {
+        return onCreateViewHolder;
+    }
+
+    public void setOnCreateViewHolder(@NonNull OnCreateViewHolder onCreateViewHolder) {
+        this.onCreateViewHolder = onCreateViewHolder;
+    }
+
+    /**
      * create ViewHolder
      *
      * @param convertView item view
      * @return ViewHolder
      */
-    protected abstract H createViewHolder(View convertView);
+    protected abstract H createViewHolder(@NonNull View convertView, int viewType);
 }

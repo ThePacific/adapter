@@ -19,6 +19,8 @@ package com.pacific.adapter;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
+
 import java.util.List;
 
 public final class RecyclerAdapter extends BaseRecyclerAdapter<RecyclerItem, ViewHolder> {
@@ -32,10 +34,17 @@ public final class RecyclerAdapter extends BaseRecyclerAdapter<RecyclerItem, Vie
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         if (inflater == null) {
             inflater = LayoutInflater.from(parent.getContext());
         }
-        return new ViewHolder(inflater.inflate(viewType, parent, false), this);
+        ViewHolder holder = new ViewHolder(
+                inflater.inflate(viewType, parent, false),
+                this
+        );
+        if (onCreateViewHolder != null) {
+            onCreateViewHolder.onCreateViewHolder(holder, viewType);
+        }
+        return holder;
     }
 }

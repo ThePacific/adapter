@@ -16,16 +16,17 @@
 
 package com.pacific.adapter;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import java.util.List;
 
 /**
- * insert,remove,replace,get data
+ * insert, remove, replace, get
  *
  * @param <T> type of data
  */
-public interface DataIO<T extends Item> {
+public interface DataIO<T extends RecyclerItem> {
 
     /**
      * clean data
@@ -43,7 +44,7 @@ public interface DataIO<T extends Item> {
      * @param element item
      * @return true or false
      */
-    boolean contains(T element);
+    boolean contains(@NonNull T element);
 
     /**
      * if containing the list
@@ -58,7 +59,7 @@ public interface DataIO<T extends Item> {
      *
      * @param element item
      */
-    void add(T element);
+    void add(@NonNull T element);
 
     /**
      * add item at special index
@@ -66,7 +67,7 @@ public interface DataIO<T extends Item> {
      * @param index   index
      * @param element item
      */
-    void add(int index, T element);
+    void add(final int index, @NonNull T element);
 
     /**
      * append list
@@ -81,7 +82,7 @@ public interface DataIO<T extends Item> {
      * @param index index
      * @param list  data list
      */
-    void addAll(int index, @NonNull List<T> list);
+    void addAll(final int index, @NonNull List<T> list);
 
     /**
      * remove item from index
@@ -89,14 +90,14 @@ public interface DataIO<T extends Item> {
      * @param index target index
      * @return item removed
      */
-    T remove(int index);
+    T remove(final int index);
 
     /**
      * remove item
      *
      * @param element item
      */
-    void remove(T element);
+    void remove(@NonNull T element);
 
     /**
      * clean items contained by list
@@ -118,12 +119,12 @@ public interface DataIO<T extends Item> {
      * @param oldElement old item
      * @param newElement new item
      */
-    void replace(T oldElement, T newElement);
+    void replace(@NonNull T oldElement, @NonNull T newElement);
 
     /**
      * replace special item
      */
-    void replaceAt(int index, T element);
+    void replaceAt(final int index, @NonNull T element);
 
     /**
      * clean source data list and then add new list
@@ -138,7 +139,7 @@ public interface DataIO<T extends Item> {
      * @param element item
      * @return first position of item
      */
-    int indexOf(T element);
+    int indexOf(@NonNull T element);
 
     /**
      * get last position of item
@@ -146,7 +147,7 @@ public interface DataIO<T extends Item> {
      * @param element item
      * @return last position of item
      */
-    int lastIndexOf(T element);
+    int lastIndexOf(@NonNull T element);
 
     /**
      * get data item from index
@@ -154,11 +155,13 @@ public interface DataIO<T extends Item> {
      * @param index item index
      * @return data item
      */
-    <R extends T> R get(int index);
+    @NonNull
+    <R extends T> R get(final int index);
 
     /**
      * @return the whole data list
      */
+    @NonNull
     List<T> getAll();
 
     /**
@@ -168,12 +171,30 @@ public interface DataIO<T extends Item> {
      * @param toIndex   exclude index
      * @return sub lists
      */
+    @NonNull
     List<T> subList(int fromIndex, int toIndex);
 
-    /***
+    /**
      * clean source data list and then add new list
+     *
      * @param index from index
-     * @param list new list
+     * @param list  new list
      */
-    void replaceAll(int index, @NonNull List<T> list);
+    void replaceAll(final int index, @NonNull List<T> list);
+
+    int firstSelectedIndex();
+
+    int lastSelectedIndex();
+
+    @NonNull
+    List<Integer> selectedIndices();
+
+    @Nullable
+    T firstSelectedItem();
+
+    @Nullable
+    T lastSelectedItem();
+
+    @NonNull
+    List<T> selectedItems();
 }

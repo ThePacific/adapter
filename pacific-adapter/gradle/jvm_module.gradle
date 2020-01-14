@@ -1,0 +1,79 @@
+import com.square.buildsrc.BuildPlugins
+import com.square.buildsrc.Libs
+
+apply plugin: BuildPlugins.kotlin
+apply plugin: BuildPlugins.kotlinxSerialization
+apply plugin: BuildPlugins.kotlinKapt
+apply plugin: BuildPlugins.mavenPublishPlugin
+
+mavenPublish {
+    targets {
+        uploadArchives {
+            // releaseRepositoryUrl = "http://172.18.3.118:8081/repository/AndroidLibrary/"
+            // snapshotRepositoryUrl = "http://172.18.3.118:8081/repository/AndroidLibrary/"
+            releaseRepositoryUrl = "file://C:\\Users\\Administrator\\.m2\\repository\\"
+            snapshotRepositoryUrl = "file://C:\\Users\\Administrator\\.m2\\repository\\"
+            repositoryUsername = "admin" // This defaults to either the SONATYPE_NEXUS_USERNAME Gradle property or the system environment variable.
+            repositoryPassword = "1~#@TYGHbn" // This defaults to either the SONATYPE_NEXUS_PASSWORD Gradle property or the system environment variable.
+            signing = false // This defaults to true. GPG signing is required by mavenCentral. If you are deploying elsewhere, you can set this to false.
+        }
+    }
+}
+
+kapt {
+    correctErrorTypes = true
+    useBuildCache = true
+
+    javacOptions {
+        option("-Xmaxerrs", 1000)
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    compileOnly Libs.injectAnnotation
+    compileOnly Libs.errorProne
+    compileOnly Libs.jetAnnotation
+    compileOnly Libs.javaxAnnotation
+    compileOnly Libs.findBugsJrs305
+
+    implementation Libs.Kotlin.stdlibJdk8
+    implementation Libs.Kotlin.stdlibJdk7
+    implementation Libs.Kotlin.reflect
+    implementation Libs.Kotlin.serializationRuntime
+    implementation Libs.Coroutines.core
+    implementation Libs.Coroutines.rxJava
+
+    implementation Libs.OkHttp.okHttp
+    implementation Libs.OkHttp.loggingInterceptor
+    implementation Libs.okio
+    implementation Libs.Retrofit.retrofit
+    implementation Libs.Retrofit.rxJavaAdapter
+    implementation Libs.Retrofit.moshiConverter
+    implementation Libs.Moshi.moshi
+    implementation Libs.Moshi.kotlin
+    kapt Libs.Moshi.codegen
+
+    implementation Libs.RxJava.rxJava
+    implementation Libs.RxJava.stream
+
+    compileOnly Libs.AutoValue.autoValue
+    kapt Libs.AutoValue.compiler
+    implementation Libs.Dagger.dagger
+    kapt Libs.Dagger.compiler
+
+    implementation Libs.threeTenBpNoTzdb
+
+    implementation Libs.AndroidX.annotation
+    implementation Libs.AndroidX.Collection.collection
+    implementation Libs.AndroidX.Collection.ktx
+    implementation Libs.AndroidX.Room.common
+    implementation Libs.AndroidX.Room.migration
+
+    testImplementation Libs.Kotlin.test
+    testImplementation Libs.Kotlin.testJunit
+    testImplementation Libs.junit
+    testImplementation Libs.mockito
+    testImplementation Libs.truth
+    testImplementation Libs.threeTenBp
+}

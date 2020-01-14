@@ -9,6 +9,6 @@ class RecyclerItem : SimpleRecyclerItem() {
         return R.layout.item_list
     }
 
-    override fun bind(holder: ViewHolder?) {
+    override fun bind(holder: ViewHolder) {
     }
 }

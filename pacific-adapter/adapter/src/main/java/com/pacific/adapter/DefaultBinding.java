@@ -22,14 +22,8 @@ import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
-import android.support.annotation.ColorInt;
-import android.support.annotation.ColorRes;
-import android.support.annotation.DrawableRes;
-import android.support.annotation.FloatRange;
-import android.support.annotation.StringRes;
 import android.util.SparseArray;
 import android.view.View;
-import android.view.animation.AlphaAnimation;
 import android.widget.Checkable;
 import android.widget.CheckedTextView;
 import android.widget.CompoundButton;
@@ -38,17 +32,24 @@ import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import androidx.annotation.ColorInt;
+import androidx.annotation.ColorRes;
+import androidx.annotation.DrawableRes;
+import androidx.annotation.FloatRange;
+import androidx.annotation.NonNull;
+import androidx.annotation.StringRes;
+
 public final class DefaultBinding {
 
     /**
-     * View SparseArray, to cache views
+     * view SparseArray, to cache views
      */
-    private SparseArray<View> views;
+    private final SparseArray<View> views;
 
     /**
      * item view
      */
-    private View itemView;
+    public final View itemView;
 
     public DefaultBinding(View itemView) {
         this.itemView = itemView;
@@ -65,7 +66,7 @@ public final class DefaultBinding {
     public <V extends View> V findView(int viewId) {
         View view = views.get(viewId);
         if (view == null) {
-            view = AdapterUtil.findView(itemView, viewId);
+            view = AdapterUtils.findView(itemView, viewId);
             views.put(viewId, view);
         }
         return (V) view;
@@ -200,14 +201,7 @@ public final class DefaultBinding {
      * @return DefaultBinding itself
      */
     public DefaultBinding setAlpha(int viewId, @FloatRange(from = 0.0, to = 1.0) float value) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-            findView(viewId).setAlpha(value);
-        } else {
-            AlphaAnimation alpha = new AlphaAnimation(value, value);
-            alpha.setDuration(0);
-            alpha.setFillAfter(true);
-            findView(viewId).startAnimation(alpha);
-        }
+        findView(viewId).setAlpha(value);
         return this;
     }
 
@@ -219,8 +213,7 @@ public final class DefaultBinding {
      * @return DefaultBinding itself
      */
     public DefaultBinding setVisible(int viewId, int visibility) {
-        View view = findView(viewId);
-        view.setVisibility(visibility);
+        findView(viewId).setVisibility(visibility);
         return this;
     }
 
@@ -369,11 +362,18 @@ public final class DefaultBinding {
         return this;
     }
 
+    public DefaultBinding setSelect(int viewId, boolean selected) {
+        View view = findView(viewId);
+        view.setSelected(selected);
+        return this;
+    }
+
     /**
      * get Context of the item view
      *
      * @return context
      */
+    @NonNull
     public Context context() {
         return itemView.getContext();
     }

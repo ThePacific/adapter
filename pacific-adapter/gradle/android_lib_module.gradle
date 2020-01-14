@@ -1,0 +1,33 @@
+import com.square.buildsrc.BuildPlugins
+
+apply plugin: BuildPlugins.androidLibrary
+apply from: "../gradle/android_module.gradle"
+apply plugin: BuildPlugins.mavenPublishPlugin
+
+mavenPublish {
+    targets {
+        uploadArchives {
+            // releaseRepositoryUrl = "http://172.18.3.118:8081/repository/AndroidLibrary/"
+            // snapshotRepositoryUrl = "http://172.18.3.118:8081/repository/AndroidLibrary/"
+            releaseRepositoryUrl = "file://C:\\Users\\Administrator\\.m2\\repository\\"
+            snapshotRepositoryUrl = "file://C:\\Users\\Administrator\\.m2\\repository\\"
+            repositoryUsername = "admin" // This defaults to either the SONATYPE_NEXUS_USERNAME Gradle property or the system environment variable.
+            repositoryPassword = "1~#@TYGHbn" // This defaults to either the SONATYPE_NEXUS_PASSWORD Gradle property or the system environment variable.
+            signing = false // This defaults to true. GPG signing is required by mavenCentral. If you are deploying elsewhere, you can set this to false.
+        }
+    }
+}
+
+android {
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    libraryVariants.all {
+        it.generateBuildConfig.enabled = false
+    }
+}

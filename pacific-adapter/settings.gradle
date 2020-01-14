@@ -1,2 +1,3 @@
+include ':buildSrc'
 include ':demo'
-include 'adapter'
+include ':adapter'

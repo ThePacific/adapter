@@ -19,38 +19,38 @@ package com.pacific.adapter;
 import android.view.View;
 import android.widget.CompoundButton;
 
+import androidx.annotation.Nullable;
+
 public final class ListenerProviderImpl implements ListenerProvider {
     /**
      * OnClickListener
      */
+    @Nullable
     private View.OnClickListener onClickListener;
 
     /**
      * OnTouchListener
      */
+    @Nullable
     private View.OnTouchListener onTouchListener;
 
     /**
      * OnLongClickListener
      */
+    @Nullable
     private View.OnLongClickListener onLongClickListener;
 
     /**
      * CompoundButton.OnCheckedChangeListener
      */
+    @Nullable
     private CompoundButton.OnCheckedChangeListener onCheckedChangeListener;
 
+    @Nullable
     private ImageLoader imageLoader;
 
-    /**
-     * set OnClickListener
-     *
-     * @param listener
-     */
-    @Override
-    public void setOnClickListener(View.OnClickListener listener) {
-        this.onClickListener = listener;
-    }
+    @Nullable
+    private AdapterTextWatcher adapterTextWatcher;
 
     /**
      * get OnClickListener
@@ -58,18 +58,19 @@ public final class ListenerProviderImpl implements ListenerProvider {
      * @return
      */
     @Override
+    @Nullable
     public View.OnClickListener getOnClickListener() {
         return this.onClickListener;
     }
 
     /**
-     * set OnTouchListener
+     * set OnClickListener
      *
      * @param listener
      */
     @Override
-    public void setOnTouchListener(View.OnTouchListener listener) {
-        this.onTouchListener = listener;
+    public void setOnClickListener(@Nullable View.OnClickListener listener) {
+        this.onClickListener = listener;
     }
 
     /**
@@ -78,18 +79,19 @@ public final class ListenerProviderImpl implements ListenerProvider {
      * @return
      */
     @Override
+    @Nullable
     public View.OnTouchListener getOnTouchListener() {
         return this.onTouchListener;
     }
 
     /**
-     * set OnLongClickListener
+     * set OnTouchListener
      *
      * @param listener
      */
     @Override
-    public void setOnLongClickListener(View.OnLongClickListener listener) {
-        this.onLongClickListener = listener;
+    public void setOnTouchListener(@Nullable View.OnTouchListener listener) {
+        this.onTouchListener = listener;
     }
 
     /**
@@ -98,18 +100,19 @@ public final class ListenerProviderImpl implements ListenerProvider {
      * @return
      */
     @Override
+    @Nullable
     public View.OnLongClickListener getOnLongClickListener() {
         return this.onLongClickListener;
     }
 
     /**
-     * set CompoundButton.OnCheckedChangeListener
+     * set OnLongClickListener
      *
      * @param listener
      */
     @Override
-    public void setOnCheckedChangeListener(CompoundButton.OnCheckedChangeListener listener) {
-        this.onCheckedChangeListener = listener;
+    public void setOnLongClickListener(@Nullable View.OnLongClickListener listener) {
+        this.onLongClickListener = listener;
     }
 
     /**
@@ -118,18 +121,19 @@ public final class ListenerProviderImpl implements ListenerProvider {
      * @return
      */
     @Override
+    @Nullable
     public CompoundButton.OnCheckedChangeListener getOnCheckedChangeListener() {
         return this.onCheckedChangeListener;
     }
 
     /**
-     * set image loader to load image
+     * set CompoundButton.OnCheckedChangeListener
      *
-     * @param imageLoader
+     * @param listener
      */
     @Override
-    public void setImageLoader(ImageLoader imageLoader) {
-        this.imageLoader = imageLoader;
+    public void setOnCheckedChangeListener(@Nullable CompoundButton.OnCheckedChangeListener listener) {
+        this.onCheckedChangeListener = listener;
     }
 
     /**
@@ -138,7 +142,29 @@ public final class ListenerProviderImpl implements ListenerProvider {
      * @return
      */
     @Override
+    @Nullable
     public ImageLoader getImageLoader() {
         return this.imageLoader;
+    }
+
+    /**
+     * set image loader to load image
+     *
+     * @param imageLoader
+     */
+    @Override
+    public void setImageLoader(@Nullable ImageLoader imageLoader) {
+        this.imageLoader = imageLoader;
+    }
+
+    @Override
+    @Nullable
+    public AdapterTextWatcher getTextChangedListener() {
+        return this.adapterTextWatcher;
+    }
+
+    @Override
+    public void setTextChangedListener(@Nullable AdapterTextWatcher textWatcher) {
+        this.adapterTextWatcher = textWatcher;
     }
 }

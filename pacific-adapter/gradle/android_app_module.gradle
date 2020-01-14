@@ -1,0 +1,17 @@
+import com.square.buildsrc.BuildPlugins
+
+apply plugin: BuildPlugins.androidApplication
+apply from: "../gradle/android_module.gradle"
+
+android {
+    buildTypes {
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+}

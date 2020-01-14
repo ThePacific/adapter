@@ -16,26 +16,32 @@
 
 package com.pacific.adapter;
 
-import android.support.annotation.IdRes;
-import android.view.MotionEvent;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.TextView;
+
+import androidx.annotation.IdRes;
+import androidx.annotation.NonNull;
 
 final class ListenerAttachImpl implements ListenerAttach {
     /**
      * listeners provider
      */
-    private final ListenerProvider provider;
+    final ListenerProvider provider;
 
     /**
      * holder
      */
     private final ViewHolder holder;
 
-    public ListenerAttachImpl(ListenerProvider provider, ViewHolder holder) {
-        this.provider = provider;
+    private TextWatcher mTextWatcher;
+
+    public ListenerAttachImpl(@NonNull ViewHolder holder, @NonNull ListenerProvider provider) {
         this.holder = holder;
+        this.provider = provider;
     }
 
     /**
@@ -46,15 +52,9 @@ final class ListenerAttachImpl implements ListenerAttach {
     @Override
     public void attachOnClickListener(@IdRes int viewId) {
         final View.OnClickListener l = provider.getOnClickListener();
-        if (l == null) return;
-        View view = AdapterUtil.findView(holder.itemView, viewId);
-        view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                v.setTag(AdapterUtil.ADAPTER_HOLDER, holder);
-                l.onClick(v);
-            }
-        });
+        View view = AdapterUtils.findView(holder.itemView, viewId);
+        view.setTag(AdapterUtils.ADAPTER_HOLDER, holder);
+        view.setOnClickListener(l);
     }
 
     /**
@@ -65,15 +65,9 @@ final class ListenerAttachImpl implements ListenerAttach {
     @Override
     public void attachOnTouchListener(@IdRes int viewId) {
         final View.OnTouchListener l = provider.getOnTouchListener();
-        if (l == null) return;
-        View view = AdapterUtil.findView(holder.itemView, viewId);
-        view.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                v.setTag(AdapterUtil.ADAPTER_HOLDER, holder);
-                return l.onTouch(v, event);
-            }
-        });
+        View view = AdapterUtils.findView(holder.itemView, viewId);
+        view.setTag(AdapterUtils.ADAPTER_HOLDER, holder);
+        view.setOnTouchListener(l);
     }
 
     /**
@@ -84,15 +78,9 @@ final class ListenerAttachImpl implements ListenerAttach {
     @Override
     public void attachOnLongClickListener(@IdRes int viewId) {
         final View.OnLongClickListener l = provider.getOnLongClickListener();
-        if (l == null) return;
-        View view = AdapterUtil.findView(holder.itemView, viewId);
-        view.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                v.setTag(AdapterUtil.ADAPTER_HOLDER, holder);
-                return l.onLongClick(v);
-            }
-        });
+        View view = AdapterUtils.findView(holder.itemView, viewId);
+        view.setTag(AdapterUtils.ADAPTER_HOLDER, holder);
+        view.setOnLongClickListener(l);
     }
 
     /**
@@ -103,15 +91,9 @@ final class ListenerAttachImpl implements ListenerAttach {
     @Override
     public void attachOnCheckedChangeListener(@IdRes int viewId) {
         final CompoundButton.OnCheckedChangeListener l = provider.getOnCheckedChangeListener();
-        if (l == null) return;
-        CompoundButton view = AdapterUtil.findView(holder.itemView, viewId);
-        view.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                buttonView.setTag(AdapterUtil.ADAPTER_HOLDER, holder);
-                l.onCheckedChanged(buttonView, isChecked);
-            }
-        });
+        CompoundButton view = AdapterUtils.findView(holder.itemView, viewId);
+        view.setTag(AdapterUtils.ADAPTER_HOLDER, holder);
+        view.setOnCheckedChangeListener(l);
     }
 
     /**
@@ -122,8 +104,49 @@ final class ListenerAttachImpl implements ListenerAttach {
     @Override
     public void attachImageLoader(@IdRes int viewId) {
         ImageLoader loader = provider.getImageLoader();
-        if (loader == null) return;
-        ImageView view = AdapterUtil.findView(holder.itemView, viewId);
-        loader.load(view, holder);
+        if (loader != null) {
+            ImageView view = AdapterUtils.findView(holder.itemView, viewId);
+            loader.onImageLoad(view, holder);
+        }
+    }
+
+    @Override
+    public void attachTextChangedListener(@IdRes int viewId) {
+        final AdapterTextWatcher l = provider.getTextChangedListener();
+        if (l == null) {
+            detachTextChangedListener(viewId);
+            return;
+        }
+
+        final TextView view = AdapterUtils.findView(holder.itemView, viewId);
+        view.setTag(AdapterUtils.ADAPTER_HOLDER, holder);
+        if (mTextWatcher == null) {
+            mTextWatcher = new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                    l.beforeTextChanged(view, s, start, count, after);
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    l.onTextChanged(view, s, start, before, count);
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+                    l.afterTextChanged(view, s);
+                }
+            };
+        }
+        view.addTextChangedListener(mTextWatcher);
+    }
+
+
+    @Override
+    public void detachTextChangedListener(@IdRes int viewId) {
+        final TextView view = AdapterUtils.findView(holder.itemView, viewId);
+        if (mTextWatcher != null) {
+            view.removeTextChangedListener(mTextWatcher);
+        }
     }
 }
