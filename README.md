@@ -25,7 +25,7 @@ compile 'com.github.thepacific:adapter:{lastestVersion}'
 ```
 
 # Item
-Extend [SimpleRecylcerItem](https://github.com/thepacific/adapter/blob/master/pacific-adapter/adapter/src/main/java/com/pacific/adapter/SimpleRecyclerItem.java). Optionally, you may implement [Item](https://github.com/thepacific/adapter/blob/master/pacific-adapter/adapter/src/main/java/com/pacific/adapter/RecyclerItem.java)
+Extend [SimpleRecylcerItem](https://github.com/thepacific/adapter/blob/master/pacific-adapter/adapter/src/main/java/com/pacific/adapter/SimpleRecyclerItem.java). Optionally, you may implement [RecyclerItem](https://github.com/thepacific/adapter/blob/master/pacific-adapter/adapter/src/main/java/com/pacific/adapter/RecyclerItem.java)
 
 ```java
 public class YourItem extends SimpleRecyclerItem {
