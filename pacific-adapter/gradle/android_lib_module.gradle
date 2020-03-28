@@ -2,22 +2,6 @@ import com.square.buildsrc.BuildPlugins
 
 apply plugin: BuildPlugins.androidLibrary
 apply from: "../gradle/android_module.gradle"
-apply plugin: BuildPlugins.mavenPublishPlugin
-
-mavenPublish {
-    targets {
-        // Modify the existing uploadArchives task
-        uploadArchives {
-            releaseRepositoryUrl = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
-            snapshotRepositoryUrl = "https://oss.sonatype.org/content/repositories/snapshots/"
-            // releaseRepositoryUrl = "file://C:\\Users\\Administrator\\.m2\\repository\\"
-            // snapshotRepositoryUrl = "file://C:\\Users\\Administrator\\.m2\\repository\\"
-            repositoryUsername = null// This defaults to either the SONATYPE_NEXUS_USERNAME Gradle property or the system environment variable.
-            repositoryPassword = null// This defaults to either the SONATYPE_NEXUS_PASSWORD Gradle property or the system environment variable.
-            signing = false// This defaults to true. GPG signing is required by mavenCentral. If you are deploying elsewhere, you can set this to false.
-        }
-    }
-}
 
 android {
 
@@ -31,4 +15,8 @@ android {
     libraryVariants.all {
         it.generateBuildConfig.enabled = false
     }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
 }

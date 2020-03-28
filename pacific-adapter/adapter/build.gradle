@@ -1,8 +1,76 @@
 import com.square.buildsrc.BuildPlugins
 import com.square.buildsrc.Libs
 
-apply from: "../gradle/android_lib_module.gradle"
+apply plugin: BuildPlugins.androidLibrary
+apply plugin: BuildPlugins.mavenPlugin
+apply plugin: BuildPlugins.bintrayPlugin
+
+android {
+    compileSdkVersion Libs.AndroidSdk.compileSdkVersion
+    buildToolsVersion Libs.AndroidSdk.buildToolsVersion
+    defaultConfig {
+        minSdkVersion Libs.AndroidSdk.minSdkVersion
+        targetSdkVersion Libs.AndroidSdk.targetSdkVersion
+        versionCode Libs.AndroidSdk.versionCode
+        versionName Libs.AndroidSdk.versionName
+        multiDexEnabled true
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    dataBinding {
+        enabled = true
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    libraryVariants.all {
+        it.generateBuildConfig.enabled = false
+    }
+}
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation Libs.AndroidX.annotation
+    implementation Libs.AndroidX.Collection.collection
+    implementation Libs.AndroidX.Collection.ktx
+    implementation Libs.AndroidX.Recyclerview.recyclerview
+    implementation Libs.AndroidX.Recyclerview.selection
+    implementation Libs.AndroidX.viewpager
+}
+
+
+Properties properties = new Properties()
+properties.load(project.rootProject.file('local.properties').newDataInputStream())
+
+bintray {
+    user = properties.getProperty("bintray.user")
+    key = properties.getProperty("bintray.apikey")
+    configurations = ['archives']
+
+    pkg {
+        repo = "maven"
+        name = POM_ARTIFACT_ID
+        labels = ['Android', 'ThePacific']
+        websiteUrl = WEB_SITE_URL
+        issueTrackerUrl = ISSUE_TRACKER_URL
+        vcsUrl = VCS_URL
+        licenses = ["Apache-2.0"]
+        publicDownloadNumbers = true
+        publish true
+        version {
+            name = VERSION_NAME
+            desc = POM_DESCRIPTION
+            vcsTag = VERSION_NAME
+
+            gpg {
+                sign = false
+                passphrase = properties.getProperty("bintray.gpg.password")
+            }
+        }
+    }
 }

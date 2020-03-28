@@ -23,7 +23,7 @@ buildscript {
         classpath BuildPlugins.androidGradle
         classpath BuildPlugins.kotlinGradle
         classpath BuildPlugins.kSerializationGradle
-        classpath BuildPlugins.mavenPublishPluginGradle
+        classpath BuildPlugins.bintrayPluginGradle
         classpath Libs.AndroidX.Navigation.safeArgsGradle
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }

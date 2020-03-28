@@ -2,8 +2,6 @@ import com.square.buildsrc.BuildPlugins
 import com.square.buildsrc.Libs
 
 apply from: "../gradle/android_app_module.gradle"
-apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
 
 android {
     defaultConfig {
