@@ -1,8 +1,6 @@
 import com.square.buildsrc.BuildPlugins
 import com.square.buildsrc.Libs
 
-// apply plugin: BuildPlugins.androidApplication
-// apply plugin: BuildPlugins.androidLibrary
 apply plugin: BuildPlugins.kotlinAndroid
 apply plugin: BuildPlugins.kotlinAndroidExtensions
 apply plugin: BuildPlugins.jetbrainsAndroidExtensions
@@ -41,13 +39,6 @@ kapt {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-
-    // implementation project(':guava')
-    // implementation project(':guava-android')
-    // implementation project(':data')
-    // implementation project(':data-android')
-    // implementation project(':core')
-    // implementation project(':core')
 
     compileOnly Libs.injectAnnotation
     compileOnly Libs.errorProne
