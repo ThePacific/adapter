@@ -12,7 +12,7 @@ A quick adapter library for RecyclerView, GridView, ListView, ViewPager, Spinner
 
 # Setup
 ```groovy
-compile 'com.github.thepacific:adapter:{lastestVersion}' // version 2.2.0
+compile 'com.github.thepacific:adapter:{lastestVersion}'
 ```
 # Proguard
 ```groovy
