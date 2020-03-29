@@ -19,10 +19,8 @@ object BuildPlugins {
     const val jetbrainsAndroidExtensions = "org.jetbrains.kotlin.android.extensions"
     const val kotlinKapt = "kotlin-kapt"
     const val kotlinxSerialization = "kotlinx-serialization"
-
-    const val bintrayPluginGradle = "com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.4"
-    const val bintrayPlugin = "com.jfrog.bintray"
-    const val mavenPlugin = "maven-publish"
+    const val mavenPublishPluginGradle = "com.vanniktech:gradle-maven-publish-plugin:0.10.0"
+    const val mavenPublishPlugin = "com.vanniktech.maven.publish"
 }
 
 object Libs {

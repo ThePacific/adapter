@@ -2,8 +2,7 @@ import com.square.buildsrc.BuildPlugins
 import com.square.buildsrc.Libs
 
 apply plugin: BuildPlugins.androidLibrary
-apply plugin: BuildPlugins.mavenPlugin
-apply plugin: BuildPlugins.bintrayPlugin
+apply plugin: BuildPlugins.mavenPublishPlugin
 
 android {
     compileSdkVersion Libs.AndroidSdk.compileSdkVersion
@@ -39,38 +38,25 @@ dependencies {
     implementation Libs.AndroidX.Collection.collection
     implementation Libs.AndroidX.Collection.ktx
     implementation Libs.AndroidX.Recyclerview.recyclerview
-    implementation Libs.AndroidX.Recyclerview.selection
     implementation Libs.AndroidX.viewpager
 }
-
 
 Properties properties = new Properties()
 properties.load(project.rootProject.file('local.properties').newDataInputStream())
 
-bintray {
-    user = properties.getProperty("bintray.user")
-    key = properties.getProperty("bintray.apikey")
-    configurations = ['archives']
+mavenPublish {
+    releaseSigningEnabled = true
+    targets {
+        uploadArchives {
+            releaseRepositoryUrl = properties.getProperty("RELEASE_REPOSITORY_URL")
+            snapshotRepositoryUrl = properties.getProperty("SNAPSHOT_REPOSITORY_URL")
+            repositoryUsername = properties.getProperty("SONATYPE_NEXUS_USERNAME")
+            repositoryPassword = properties.getProperty("SONATYPE_NEXUS_PASSWORD")
+        }
 
-    pkg {
-        repo = "maven"
-        name = POM_ARTIFACT_ID
-        labels = ['Android', 'ThePacific']
-        websiteUrl = WEB_SITE_URL
-        issueTrackerUrl = ISSUE_TRACKER_URL
-        vcsUrl = VCS_URL
-        licenses = ["Apache-2.0"]
-        publicDownloadNumbers = true
-        publish true
-        version {
-            name = VERSION_NAME
-            desc = POM_DESCRIPTION
-            vcsTag = VERSION_NAME
-
-            gpg {
-                sign = false
-                passphrase = properties.getProperty("bintray.gpg.password")
-            }
+        installArchives {
+            releaseRepositoryUrl = file("${rootProject.buildDir}/localMaven").toURI().toString()
+            snapshotRepositoryUrl = file("${rootProject.buildDir}/localMaven").toURI().toString()
         }
     }
 }
