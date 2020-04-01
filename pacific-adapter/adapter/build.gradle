@@ -16,10 +16,6 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
-    dataBinding {
-        enabled = true
-    }
-
     buildTypes {
         release {
             minifyEnabled false
@@ -35,6 +31,7 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation Libs.AndroidX.annotation
+    implementation Libs.AndroidX.annotationExperimental
     implementation Libs.AndroidX.Collection.collection
     implementation Libs.AndroidX.Collection.ktx
     implementation Libs.AndroidX.Recyclerview.recyclerview

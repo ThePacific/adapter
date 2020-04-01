@@ -1,9 +1,9 @@
 # Adapter
-A quick adapter library for RecyclerView, GridView, ListView, ViewPager, Spinner. It abstracts the boilerplate of item view types, item layouts, viewholders, span sizes , and more, in order to simplify building complex screens with multiple view types. [1.x](https://github.com/thepacific/adapter/blob/master/README-old.md) is deprecated and please upgrade to 2.x
+A quick adapter library for RecyclerView, GridView, ListView, ViewPager, Spinner. It abstracts the boilerplate of item view types, item layouts, viewholders, span sizes , and more, in order to simplify building complex screens with multiple view types. [1.x]is deprecated and please upgrade to [2.x]
 
 [ ![Download](https://api.bintray.com/packages/thepacific/maven/adapter/images/download.svg) ](https://bintray.com/thepacific/maven/adapter/_latestVersion)[![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-Adapter-green.svg?style=true)](https://android-arsenal.com/details/1/3449)
 
-![](https://github.com/thepacific/adapter/blob/master/art/exam.gif)
+![](https://github.com/thepacific/adapter/blob/master/previews/preview01.gif)
 
 # Features
 + Support DataBinding.
@@ -12,7 +12,7 @@ A quick adapter library for RecyclerView, GridView, ListView, ViewPager, Spinner
 
 # Setup
 ```groovy
-compile 'com.github.thepacific:adapter:{lastestVersion}'
+compile 'com.github.thepacific:adapter:2.2.0'
 ```
 # Proguard
 ```groovy

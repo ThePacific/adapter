@@ -1,4 +1,5 @@
 import com.square.buildsrc.Libs
+import com.square.buildsrc.BuildPlugins
 
 apply plugin: BuildPlugins.kotlin
 apply plugin: BuildPlugins.kotlinxSerialization

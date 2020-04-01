@@ -2,12 +2,12 @@ package com.square.buildsrc
 
 object Versions {
     const val ktLint = "0.31.0"
-    const val kotlin = "1.3.61"
+    const val kotlin = "1.3.71"
 }
 
 object BuildPlugins {
 
-    const val androidGradle = "com.android.tools.build:gradle:3.6.1"
+    const val androidGradle = "com.android.tools.build:gradle:3.6.2"
     const val kotlinGradle = "org.jetbrains.kotlin:kotlin-gradle-plugin:${Versions.kotlin}"
     const val kSerializationGradle = "org.jetbrains.kotlin:kotlin-serialization:${Versions.kotlin}"
     const val androidApplication = "com.android.application"
@@ -37,7 +37,6 @@ object Libs {
     val threeTenAbp = "com.jakewharton.threetenabp:threetenabp:1.2.0"
 
     val gravitySnapHelper = "com.github.rubensousa:gravitysnaphelper:2.0"
-    val rxLint = "nl.littlerobots.rxlint:rxlint:1.7.3"
 
     val leakcanary = "com.squareup.leakcanary:leakcanary-android:2.0-beta-3"
 
@@ -88,10 +87,9 @@ object Libs {
     }
 
     object RxJava {
-        val rxJava = "io.reactivex.rxjava2:rxjava:2.2.12"
-        val rxKotlin = "io.reactivex.rxjava2:rxkotlin:2.3.0"
+        val rxJava = "io.reactivex.rxjava2:rxjava:2.2.19"
         val rxAndroid = "io.reactivex.rxjava2:rxandroid:2.1.1"
-        val stream = "org.reactivestreams:reactive-streams:1.0.2"
+        val stream = "org.reactivestreams:reactive-streams:1.0.3"
     }
 
     object Dagger {
@@ -103,7 +101,7 @@ object Libs {
     }
 
     object AutoValue {
-        const val version = "1.6.5"
+        const val version = "1.7"
         val autoValue = "com.google.auto.value:auto-value-annotations:$version"
         val compiler = "com.google.auto.value:auto-value:$version"
     }
@@ -211,14 +209,16 @@ object Libs {
             private const val version = "1.0.0"
             val concurrentFutures = "androidx.concurrent:concurrent-futures:$version"
             val listenablefuture = "androidx.concurrent:concurrent-listenablefuture:$version"
-            val listenablefutureCallback = "androidx.concurrent:concurrent-listenablefuture-callback:$version"
+            val listenablefutureCallback =
+                "androidx.concurrent:concurrent-listenablefuture-callback:$version"
             val futures = "androidx.concurrent:futures:$version"
         }
 
         object Constraintlayout {
             private const val version = "2.0.0-beta4"
             val constraintlayout = "androidx.constraintlayout:constraintlayout:$version"
-            val constraintlayoutSolver = "androidx.constraintlayout:constraintlayout-solver:$version"
+            val constraintlayoutSolver =
+                "androidx.constraintlayout:constraintlayout-solver:$version"
         }
 
         val contentpager = "androidx.contentpager:contentpager:1.0.0"
@@ -461,12 +461,10 @@ object Libs {
         }
     }
 
-    object Square {
-        private const val version = "0.0.5"
-        val guava = "com.square:guava:$version"
-        val guavaAndroid = "com.square:guava-android:$version"
-        val domain = "com.square:domain:$version"
-        val data = "com.square:data:$version"
-        val core = "com.square:core:$version"
+    object Pacific {
+        private const val version = "1.0.0"
+        val guava = "com.github.thepacific:guava:$version"
+        val guavaAndroid = "com.github.thepacific:guava-android:$version"
+        val core = "com.github.thepacific:core:$version"
     }
 }

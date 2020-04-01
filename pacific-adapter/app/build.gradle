@@ -1,11 +1,8 @@
-import com.square.buildsrc.BuildPlugins
-import com.square.buildsrc.Libs
-
 apply from: "../gradle/android_app_module.gradle"
 
 android {
     defaultConfig {
-        applicationId "com.example.adapter"
+        applicationId "com.pacific.app.adapter"
     }
 }
 
