@@ -52,19 +52,17 @@ allprojects {
                 if (group == 'org.jetbrains.kotlin' && name.startsWith('kotlin-stdlib')) {
                     details.useVersion Versions.kotlin
                 } else if (group == 'org.jetbrains' && name.startsWith('annotations')) {
-                    details.useVersion "17.0.0"
+                    details.useVersion "19.0.0"
                 } else if (group == 'com.google.code.findbugs' && name.startsWith('jsr305')) {
                     details.useVersion "3.0.2"
                 } else if (group == 'org.reactivestreams' && name.startsWith('reactive-streams')) {
-                    details.useVersion "1.0.2"
+                    details.useVersion "1.0.3"
                 } else if (group == 'com.google.errorprone' && name.startsWith('error_prone_annotations')) {
                     details.useVersion "2.3.3"
                 } else if (group == 'com.google.auto.value') {
                     details.useVersion Libs.AutoValue.version
                 } else if (group == 'androidx.fragment') {
                     details.useVersion Libs.AndroidX.Fragment.version
-                } else if (group == 'com.square') {
-                    details.useVersion Libs.Square.version
                 }
             }
         }
