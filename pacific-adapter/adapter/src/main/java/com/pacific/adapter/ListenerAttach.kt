@@ -13,59 +13,57 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package com.pacific.adapter
 
-package com.pacific.adapter;
+import androidx.annotation.IdRes
 
-import androidx.annotation.IdRes;
-
-interface ListenerAttach {
+internal interface ListenerAttach {
     /**
      * attach OnClickListener for view
      *
      * @param viewId view id
      */
-    void attachOnClickListener(@IdRes int viewId);
+    fun attachOnClickListener(@IdRes viewId: Int)
 
     /**
      * attach OnTouchListener for view
      *
      * @param viewId view id
      */
-    void attachOnTouchListener(@IdRes int viewId);
+    fun attachOnTouchListener(@IdRes viewId: Int)
 
     /**
      * attach OnLongClickListener for view
      *
      * @param viewId view id
      */
-    void attachOnLongClickListener(@IdRes int viewId);
+    fun attachOnLongClickListener(@IdRes viewId: Int)
 
     /**
      * attach CompoundButton.OnCheckedChangeListener for CompoundButton
      *
      * @param viewId CompoundButton view id
      */
-    void attachOnCheckedChangeListener(@IdRes int viewId);
+    fun attachOnCheckedChangeListener(@IdRes viewId: Int)
 
     /**
      * load image
      *
      * @param viewId
      */
-    void attachImageLoader(@IdRes int viewId);
+    fun attachImageLoader(@IdRes viewId: Int)
 
     /**
      * attach TextChangedListener for TextView or EditText
      *
      * @param viewId
      */
-    void attachTextChangedListener(@IdRes int viewId);
-
+    fun attachTextChangedListener(@IdRes viewId: Int)
 
     /**
      * detach TextChangedListener for TextView or EditText
      *
      * @param viewId
      */
-    void detachTextChangedListener(@IdRes int viewId);
+    fun detachTextChangedListener(@IdRes viewId: Int)
 }

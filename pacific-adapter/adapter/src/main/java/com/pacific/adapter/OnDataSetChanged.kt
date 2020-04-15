@@ -13,18 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package com.pacific.adapter
 
-package com.pacific.adapter;
-
-/**
- * data set changed callback
- * It's useful to show or hide empty view
- */
-public interface OnDataSetChanged {
+interface OnDataSetChanged {
     /**
      * called when data source changed
      *
      * @param count current data source size
      */
-    void apply(int count);
+    fun apply(count: Int)
 }

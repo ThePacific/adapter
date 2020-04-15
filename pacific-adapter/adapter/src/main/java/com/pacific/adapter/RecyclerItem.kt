@@ -13,34 +13,35 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package com.pacific.adapter
 
-package com.pacific.adapter;
+import androidx.annotation.LayoutRes
 
-import androidx.annotation.LayoutRes;
-import androidx.annotation.NonNull;
+interface RecyclerItem<T : ViewHolder> {
 
-import java.util.List;
+    var isSelected: Boolean
 
-public interface RecyclerItem<T extends ViewHolder> {
+    var isEnable: Boolean
+
     /**
      * @return item view layout resource id
      */
-    @LayoutRes
-    int getLayout();
+    @get:LayoutRes
+    val layout: Int
 
     /**
      * bind data callback
      *
      * @param holder view holder
      */
-    void bind(@NonNull T holder);
+    fun bind(holder: T)
 
     /**
      * unbind data callback
      *
      * @param holder view holder
      */
-    void unbind(@NonNull T holder);
+    fun unbind(holder: T)
 
     /**
      * bind pay loads
@@ -48,7 +49,7 @@ public interface RecyclerItem<T extends ViewHolder> {
      * @param holder   view holder
      * @param payloads data
      */
-    void bindPayloads(@NonNull T holder, @NonNull List<Object> payloads);
+    fun bindPayloads(holder: T, payloads: List<Any>?)
 
     /**
      * get span size , for GridLayoutManager
@@ -57,29 +58,24 @@ public interface RecyclerItem<T extends ViewHolder> {
      * @param position  adapter position
      * @return
      */
-    int getSpanSize(int spanCount, int position);
+    fun getSpanSize(spanCount: Int, position: Int): Int
 
     /**
      * onViewAttachedToWindow callback
      *
      * @param holder
      */
-    void onViewAttachedToWindow(@NonNull T holder);
+    fun onViewAttachedToWindow(holder: T)
 
     /**
      * onViewDetachedFromWindow callback
      *
      * @param holder
      */
-    void onViewDetachedFromWindow(@NonNull T holder);
+    fun onViewDetachedFromWindow(holder: T)
 
-    boolean isSelected();
-
-    boolean isEnable();
-
-    void setSelected(boolean selected);
-
-    void setEnable(boolean isEnable);
-
-    void onDestroy();
+    /**
+     * do some cleaning works
+     */
+    fun onDestroy()
 }
