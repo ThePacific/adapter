@@ -61,7 +61,7 @@ abstract class BaseRecyclerAdapter<H : ViewHolder, T : RecyclerItem<H>>(
         val item = get<T>(position)
         holder.itemPosition = position
         holder.size = itemCount
-        holder.setItem(item)
+        holder.item = item
         item.bind(holder)
     }
 
@@ -72,7 +72,7 @@ abstract class BaseRecyclerAdapter<H : ViewHolder, T : RecyclerItem<H>>(
             val item = get<T>(position)
             holder.itemPosition = position
             holder.size = itemCount
-            holder.setItem(item)
+            holder.item = item
             item.bindPayloads(holder, payloads)
         }
     }

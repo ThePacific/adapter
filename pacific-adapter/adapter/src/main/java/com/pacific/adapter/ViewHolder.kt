@@ -46,7 +46,8 @@ class ViewHolder(
     var itemPosition: Int = -1
         internal set
 
-    private lateinit var item: RecyclerItem<*>
+    lateinit var item: RecyclerItem<*>
+        internal set
 
     val isFirstItem: Boolean
         get() = itemPosition == 0
@@ -82,12 +83,8 @@ class ViewHolder(
         listenerAttach.detachTextChangedListener(viewId)
     }
 
-    fun setItem(item: RecyclerItem<*>) {
-        this.item = item
-    }
-
     @Suppress("UNCHECKED_CAST")
-    fun <T : RecyclerItem<*>> getItem(): T = item as T
+    fun <T : RecyclerItem<*>> item(): T = item as T
 
     @Suppress("UNCHECKED_CAST")
     fun <T : Any> binding(): T = binding as T
