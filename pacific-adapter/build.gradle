@@ -63,6 +63,8 @@ allprojects {
                     details.useVersion Libs.AutoValue.version
                 } else if (group == 'androidx.fragment') {
                     details.useVersion Libs.AndroidX.Fragment.version
+                }else if (group == 'com.google.android.material') {
+                    details.useVersion "1.2.0-alpha06"
                 }
             }
         }

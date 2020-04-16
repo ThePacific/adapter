@@ -8,6 +8,6 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation project(':adapter')
-    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    // implementation project(':adapter')
 }
+

@@ -19,8 +19,17 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    dataBinding {
+        enabled = false
+    }
+
     viewBinding {
         enabled = true
+    }
+
+    lintOptions {
+        disable "UnsafeExperimentalUsageError", "UnsafeExperimentalUsageWarning"
+        disable 'TypographyFractions','TypographyQuotes'
     }
 }
 

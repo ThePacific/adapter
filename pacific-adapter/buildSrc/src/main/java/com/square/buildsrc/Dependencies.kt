@@ -2,12 +2,12 @@ package com.square.buildsrc
 
 object Versions {
     const val ktLint = "0.31.0"
-    const val kotlin = "1.3.71"
+    const val kotlin = "1.3.72"
 }
 
 object BuildPlugins {
 
-    const val androidGradle = "com.android.tools.build:gradle:3.6.2"
+    const val androidGradle = "com.android.tools.build:gradle:3.6.1"
     const val kotlinGradle = "org.jetbrains.kotlin:kotlin-gradle-plugin:${Versions.kotlin}"
     const val kSerializationGradle = "org.jetbrains.kotlin:kotlin-serialization:${Versions.kotlin}"
     const val androidApplication = "com.android.application"
@@ -63,7 +63,7 @@ object Libs {
     }
 
     object Google {
-        val material = "com.google.android.material:material:1.1.0"
+        val material = "com.google.android.material:material:1.2.0-alpha06"
         val firebaseCore = "com.google.firebase:firebase-core:16.0.8"
         val crashlytics = "com.crashlytics.sdk.android:crashlytics:2.9.9"
         val gmsGoogleServices = "com.google.gms:google-services:4.2.0"
@@ -223,7 +223,7 @@ object Libs {
 
         val contentpager = "androidx.contentpager:contentpager:1.0.0"
 
-        val coordinatorlayout = "androidx.coordinatorlayout:coordinatorlayout:1.1.0-beta01"
+        val coordinatorlayout = "androidx.coordinatorlayout:coordinatorlayout:1.1.0"
 
         object Core {
             private const val version = "1.3.0-beta01"
