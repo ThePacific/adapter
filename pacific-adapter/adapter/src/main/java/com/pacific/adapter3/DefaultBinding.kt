@@ -19,11 +19,11 @@ import android.graphics.Bitmap
 import android.graphics.Paint
 import android.graphics.Typeface
 import android.graphics.drawable.Drawable
-import android.os.Build
 import android.util.SparseArray
 import android.view.View
 import android.widget.*
 import androidx.annotation.*
+import androidx.core.content.res.ResourcesCompat
 
 class DefaultBinding(private val itemView: View) {
 
@@ -77,11 +77,13 @@ class DefaultBinding(private val itemView: View) {
 
     fun setTextColorRes(@IdRes viewId: Int, @ColorRes textColorRes: Int): DefaultBinding {
         val view = findViewById<TextView>(viewId)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            view.setTextColor(itemView.context.resources.getColor(textColorRes, null))
-        } else {
-            view.setTextColor(itemView.context.resources.getColor(textColorRes))
-        }
+        view.setTextColor(
+            ResourcesCompat.getColor(
+                itemView.context.resources,
+                textColorRes,
+                itemView.context.theme
+            )
+        )
         return this
     }
 

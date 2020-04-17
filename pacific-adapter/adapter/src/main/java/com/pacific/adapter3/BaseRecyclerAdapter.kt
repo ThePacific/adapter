@@ -20,9 +20,9 @@ import android.view.View
 import android.widget.CompoundButton
 import androidx.recyclerview.widget.RecyclerView
 
-abstract class BaseRecyclerAdapter<H : ViewHolder, T : RecyclerItem<H>>(
+abstract class BaseRecyclerAdapter<T : RecyclerItem>(
     private val data: ArrayList<T>
-) : RecyclerView.Adapter<H>(), DataIO<T>, ListenerProvider {
+) : RecyclerView.Adapter<AdapterViewHolder>(), DataIO<T>, ListenerProvider {
 
     private val provider: ListenerProviderImpl = ListenerProviderImpl()
     protected var inflater: LayoutInflater? = null
@@ -34,7 +34,7 @@ abstract class BaseRecyclerAdapter<H : ViewHolder, T : RecyclerItem<H>>(
 
     override fun getItemViewType(position: Int): Int = get<T>(position).getLayout()
 
-    override fun onViewRecycled(holder: H) {
+    override fun onViewRecycled(holder: AdapterViewHolder) {
         val position = holder.adapterPosition
         if (position != RecyclerView.NO_POSITION) {
             get<T>(position).unbind(holder)
@@ -43,21 +43,21 @@ abstract class BaseRecyclerAdapter<H : ViewHolder, T : RecyclerItem<H>>(
         super.onViewRecycled(holder)
     }
 
-    override fun onViewAttachedToWindow(holder: H) {
+    override fun onViewAttachedToWindow(holder: AdapterViewHolder) {
         val position = holder.adapterPosition
         if (position != RecyclerView.NO_POSITION) {
             get<T>(position).onViewAttachedToWindow(holder)
         }
     }
 
-    override fun onViewDetachedFromWindow(holder: H) {
+    override fun onViewDetachedFromWindow(holder: AdapterViewHolder) {
         val position = holder.adapterPosition
         if (position != RecyclerView.NO_POSITION) {
             get<T>(position).onViewDetachedFromWindow(holder)
         }
     }
 
-    override fun onBindViewHolder(holder: H, position: Int) {
+    override fun onBindViewHolder(holder: AdapterViewHolder, position: Int) {
         val item = get<T>(position)
         holder.itemPosition = position
         holder.size = itemCount
@@ -65,7 +65,7 @@ abstract class BaseRecyclerAdapter<H : ViewHolder, T : RecyclerItem<H>>(
         item.bind(holder)
     }
 
-    override fun onBindViewHolder(holder: H, position: Int, payloads: List<Any>) {
+    override fun onBindViewHolder(holder: AdapterViewHolder, position: Int, payloads: List<Any>) {
         if (payloads == null || payloads.isEmpty()) {
             super.onBindViewHolder(holder, position, payloads)
         } else {

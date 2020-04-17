@@ -15,7 +15,9 @@
  */
 package com.pacific.adapter3
 
-internal interface DataIO<T : RecyclerItem<*>> {
+internal interface DataIO<T : RecyclerItem> {
+
+    fun <T2 : T> get(index: Int): T2
 
     fun getAll(): List<T>
 
@@ -52,8 +54,6 @@ internal interface DataIO<T : RecyclerItem<*>> {
     fun indexOf(element: T): Int
 
     fun lastIndexOf(element: T): Int
-
-    fun <T2 : T> get(index: Int): T2
 
     fun subList(fromIndex: Int, toIndex: Int): List<T>
 

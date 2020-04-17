@@ -21,16 +21,16 @@ import android.view.ViewGroup
 import androidx.annotation.IdRes
 import androidx.recyclerview.widget.RecyclerView
 
-class ViewHolder(
+class AdapterViewHolder(
     itemView: View,
-    private val adapter: BaseRecyclerAdapter<*, *>
+    private val adapter: BaseRecyclerAdapter<*>
 ) : RecyclerView.ViewHolder(itemView), ListenerAttach {
 
     private val listenerAttach: ListenerAttachImpl = ListenerAttachImpl(this, adapter)
 
     private var binding: Any? = null
 
-    internal lateinit var item: RecyclerItem<*>
+    internal lateinit var item: RecyclerItem
 
     var size: Int = -1
         internal set
@@ -73,10 +73,10 @@ class ViewHolder(
     }
 
     @Suppress("UNCHECKED_CAST")
-    fun <T : RecyclerItem<*>> item(): T = item as T
+    fun <T : RecyclerItem> item(): T = item as T
 
     @Suppress("UNCHECKED_CAST")
-    fun <T : BaseRecyclerAdapter<*, *>> adapter(): T = adapter as T
+    fun <T : BaseRecyclerAdapter<*>> adapter(): T = adapter as T
 
     @Suppress("UNCHECKED_CAST")
     fun <T : ViewGroup> parentViewGroup(): T = itemView.parent as T

@@ -17,7 +17,7 @@ package com.pacific.adapter3
 
 import androidx.annotation.LayoutRes
 
-interface RecyclerItem<T : ViewHolder> {
+interface RecyclerItem {
 
     var isSelected: Boolean
 
@@ -34,14 +34,14 @@ interface RecyclerItem<T : ViewHolder> {
      *
      * @param holder view holder
      */
-    fun bind(holder: T)
+    fun bind(holder: AdapterViewHolder)
 
     /**
      * unbind data callback
      *
      * @param holder view holder
      */
-    fun unbind(holder: T)
+    fun unbind(holder: AdapterViewHolder)
 
     /**
      * bind pay loads
@@ -49,7 +49,7 @@ interface RecyclerItem<T : ViewHolder> {
      * @param holder   view holder
      * @param payloads data
      */
-    fun bindPayloads(holder: T, payloads: List<Any>?)
+    fun bindPayloads(holder: AdapterViewHolder, payloads: List<Any>?)
 
     /**
      * get span size , for GridLayoutManager
@@ -65,14 +65,14 @@ interface RecyclerItem<T : ViewHolder> {
      *
      * @param holder
      */
-    fun onViewAttachedToWindow(holder: T)
+    fun onViewAttachedToWindow(holder: AdapterViewHolder)
 
     /**
      * onViewDetachedFromWindow callback
      *
      * @param holder
      */
-    fun onViewDetachedFromWindow(holder: T)
+    fun onViewDetachedFromWindow(holder: AdapterViewHolder)
 
     /**
      * do some cleaning works

@@ -15,21 +15,21 @@
  */
 package com.pacific.adapter3
 
-abstract class SimpleRecyclerItem : RecyclerItem<ViewHolder> {
+abstract class SimpleRecyclerItem : RecyclerItem {
 
     override var isSelected = false
 
     override var isEnable = false
 
-    override fun bindPayloads(holder: ViewHolder, payloads: List<Any>?) {}
+    override fun bindPayloads(holder: AdapterViewHolder, payloads: List<Any>?) {}
 
     override fun getSpanSize(spanCount: Int, position: Int): Int = spanCount
 
-    override fun onViewAttachedToWindow(holder: ViewHolder) {}
+    override fun onViewAttachedToWindow(holder: AdapterViewHolder) {}
 
-    override fun onViewDetachedFromWindow(holder: ViewHolder) {}
+    override fun onViewDetachedFromWindow(holder: AdapterViewHolder) {}
 
-    override fun unbind(holder: ViewHolder) {}
+    override fun unbind(holder: AdapterViewHolder) {}
 
     override fun onDestroy() {}
 }

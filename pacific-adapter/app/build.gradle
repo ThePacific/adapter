@@ -8,6 +8,6 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    // implementation project(':adapter')
+    implementation project(':adapter')
 }
 

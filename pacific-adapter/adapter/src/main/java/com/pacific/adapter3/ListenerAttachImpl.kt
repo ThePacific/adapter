@@ -24,7 +24,7 @@ import android.widget.TextView
 import androidx.annotation.IdRes
 
 internal class ListenerAttachImpl(
-    private val holder: ViewHolder,
+    private val holder: AdapterViewHolder,
     private val provider: ListenerProvider
 ) : ListenerAttach {
 

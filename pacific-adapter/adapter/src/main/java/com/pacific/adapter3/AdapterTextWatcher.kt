@@ -11,7 +11,7 @@ interface AdapterTextWatcher {
         start: Int,
         count: Int,
         after: Int,
-        holder: ViewHolder
+        holder: AdapterViewHolder
     )
 
     fun onTextChanged(
@@ -20,8 +20,8 @@ interface AdapterTextWatcher {
         start: Int,
         before: Int,
         count: Int,
-        holder: ViewHolder
+        holder: AdapterViewHolder
     )
 
-    fun afterTextChanged(v: TextView, s: Editable, holder: ViewHolder)
+    fun afterTextChanged(v: TextView, s: Editable, holder: AdapterViewHolder)
 }

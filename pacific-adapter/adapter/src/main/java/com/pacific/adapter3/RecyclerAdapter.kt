@@ -19,14 +19,14 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 
 class RecyclerAdapter(
-    data: ArrayList<RecyclerItem<ViewHolder>> = ArrayList()
-) : BaseRecyclerAdapter<ViewHolder, RecyclerItem<ViewHolder>>(data) {
+    data: ArrayList<RecyclerItem> = ArrayList()
+) : BaseRecyclerAdapter<RecyclerItem>(data) {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AdapterViewHolder {
 
         if (inflater == null) {
             inflater = LayoutInflater.from(parent.context)
         }
-        return ViewHolder(inflater!!.inflate(viewType, parent, false), this)
+        return AdapterViewHolder(inflater!!.inflate(viewType, parent, false), this)
     }
 }

@@ -7,7 +7,7 @@ object Versions {
 
 object BuildPlugins {
 
-    const val androidGradle = "com.android.tools.build:gradle:3.6.1"
+    const val androidGradle = "com.android.tools.build:gradle:3.6.2"
     const val kotlinGradle = "org.jetbrains.kotlin:kotlin-gradle-plugin:${Versions.kotlin}"
     const val kSerializationGradle = "org.jetbrains.kotlin:kotlin-serialization:${Versions.kotlin}"
     const val androidApplication = "com.android.application"
