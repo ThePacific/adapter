@@ -4,7 +4,7 @@ Change Log
 Version 3.0.0 *(2020-04-26)*
 ----------------------------
 
-**This release ships with kotlin
+**This release ships with kotlin**
 
 * Kotlin version 1.3.72
 
