@@ -1,4 +1,4 @@
-package com.pacific.adapter3
+package com.pacific.adapter
 
 import android.text.Editable
 import android.widget.TextView

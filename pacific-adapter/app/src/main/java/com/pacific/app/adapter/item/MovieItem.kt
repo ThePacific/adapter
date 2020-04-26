@@ -1,7 +1,7 @@
 package com.pacific.app.adapter.item
 
-import com.pacific.adapter3.AdapterViewHolder
-import com.pacific.adapter3.SimpleRecyclerItem
+import com.pacific.adapter.AdapterViewHolder
+import com.pacific.adapter.SimpleRecyclerItem
 import com.pacific.app.adapter.R
 import com.pacific.app.adapter.databinding.ItemMovieBinding
 

@@ -13,22 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.pacific.adapter3
+package com.pacific.adapter
 
-import android.view.View
-import android.widget.CompoundButton
+abstract class SimpleRecyclerItem : RecyclerItem {
 
-internal interface ListenerProvider {
+    override var isSelected = false
 
-    var onClickListener: View.OnClickListener?
+    override var isEnable = false
 
-    var onTouchListener: View.OnTouchListener?
+    override fun bindPayloads(holder: AdapterViewHolder, payloads: List<Any>?) {}
 
-    var onLongClickListener: View.OnLongClickListener?
+    override fun getSpanSize(spanCount: Int, position: Int): Int = spanCount
 
-    var onCheckedChangeListener: CompoundButton.OnCheckedChangeListener?
+    override fun onViewAttachedToWindow(holder: AdapterViewHolder) {}
 
-    var imageLoader: AdapterImageLoader?
+    override fun onViewDetachedFromWindow(holder: AdapterViewHolder) {}
 
-    var textChangedListener: AdapterTextWatcher?
+    override fun unbind(holder: AdapterViewHolder) {}
+
+    override fun onDestroy() {}
 }

@@ -13,20 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.pacific.adapter3
+package com.pacific.adapter
 
-import android.view.LayoutInflater
-import android.view.ViewGroup
-
-class RecyclerAdapter(
-    data: ArrayList<RecyclerItem> = ArrayList()
-) : BaseRecyclerAdapter<RecyclerItem>(data) {
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AdapterViewHolder {
-
-        if (inflater == null) {
-            inflater = LayoutInflater.from(parent.context)
-        }
-        return AdapterViewHolder(inflater!!.inflate(viewType, parent, false), this)
-    }
+interface OnDataSetChanged {
+    /**
+     * called when data source changed
+     *
+     * @param count current data source size
+     */
+    fun apply(count: Int)
 }

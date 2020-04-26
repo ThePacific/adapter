@@ -9,7 +9,7 @@ import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
-import com.pacific.adapter3.*
+import com.pacific.adapter.*
 import com.pacific.app.adapter.base.Data
 import com.pacific.app.adapter.base.GlideApp
 import com.pacific.app.adapter.databinding.FragmentAboutBinding

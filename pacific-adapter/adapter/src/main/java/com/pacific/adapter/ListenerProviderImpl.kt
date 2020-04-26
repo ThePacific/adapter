@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.pacific.adapter3
+package com.pacific.adapter
 
 import android.view.View
 import android.view.View.OnLongClickListener

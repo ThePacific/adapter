@@ -9,10 +9,10 @@ import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
-import com.pacific.adapter3.AdapterImageLoader
-import com.pacific.adapter3.AdapterViewHolder
-import com.pacific.adapter3.RecyclerAdapter
-import com.pacific.adapter3.SimpleRecyclerItem
+import com.pacific.adapter.AdapterImageLoader
+import com.pacific.adapter.AdapterViewHolder
+import com.pacific.adapter.RecyclerAdapter
+import com.pacific.adapter.SimpleRecyclerItem
 import com.pacific.app.adapter.base.Data
 import com.pacific.app.adapter.base.GlideApp
 import com.pacific.app.adapter.databinding.FragmentHomeBinding

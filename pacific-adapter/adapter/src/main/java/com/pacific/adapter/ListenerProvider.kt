@@ -13,13 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.pacific.adapter3
+package com.pacific.adapter
 
-interface OnDataSetChanged {
-    /**
-     * called when data source changed
-     *
-     * @param count current data source size
-     */
-    fun apply(count: Int)
+import android.view.View
+import android.widget.CompoundButton
+
+internal interface ListenerProvider {
+
+    var onClickListener: View.OnClickListener?
+
+    var onTouchListener: View.OnTouchListener?
+
+    var onLongClickListener: View.OnLongClickListener?
+
+    var onCheckedChangeListener: CompoundButton.OnCheckedChangeListener?
+
+    var imageLoader: AdapterImageLoader?
+
+    var textChangedListener: AdapterTextWatcher?
 }

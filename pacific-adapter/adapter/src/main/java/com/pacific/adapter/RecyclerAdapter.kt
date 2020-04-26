@@ -13,23 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.pacific.adapter3
+package com.pacific.adapter
 
-abstract class SimpleRecyclerItem : RecyclerItem {
+import android.view.LayoutInflater
+import android.view.ViewGroup
 
-    override var isSelected = false
+class RecyclerAdapter(
+    data: ArrayList<RecyclerItem> = ArrayList()
+) : BaseRecyclerAdapter<RecyclerItem>(data) {
 
-    override var isEnable = false
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AdapterViewHolder {
 
-    override fun bindPayloads(holder: AdapterViewHolder, payloads: List<Any>?) {}
-
-    override fun getSpanSize(spanCount: Int, position: Int): Int = spanCount
-
-    override fun onViewAttachedToWindow(holder: AdapterViewHolder) {}
-
-    override fun onViewDetachedFromWindow(holder: AdapterViewHolder) {}
-
-    override fun unbind(holder: AdapterViewHolder) {}
-
-    override fun onDestroy() {}
+        if (inflater == null) {
+            inflater = LayoutInflater.from(parent.context)
+        }
+        return AdapterViewHolder(inflater!!.inflate(viewType, parent, false), this)
+    }
 }
