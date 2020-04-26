@@ -1,7 +1,7 @@
 # Adapter
 A quick adapter library for RecyclerView, GridView, ListView, ViewPager, Spinner. It abstracts the boilerplate of item view types, item layouts, viewholders, span sizes , and more, in order to simplify building complex screens with multiple view types.
 
-If you are using version 2.x please check ![here](https://github.com/thepacific/adapter/blob/master/README-2x.md)
+If you are using version 2.x please check [here](https://github.com/thepacific/adapter/blob/master/README-2x.md)
 
 [![Download](https://img.shields.io/maven-central/v/com.github.thepacific/adapter.svg)](https://search.maven.org/artifact/com.github.thepacific/adapter)[![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-Adapter-green.svg?style=true)](https://android-arsenal.com/details/1/3449)
 
