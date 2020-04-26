@@ -59,7 +59,6 @@ abstract class BaseRecyclerAdapter<T : RecyclerItem>(
 
     override fun onBindViewHolder(holder: AdapterViewHolder, position: Int) {
         val item = get<T>(position)
-        holder.itemPosition = position
         holder.size = itemCount
         holder.item = item
         item.bind(holder)
@@ -70,7 +69,6 @@ abstract class BaseRecyclerAdapter<T : RecyclerItem>(
             super.onBindViewHolder(holder, position, payloads)
         } else {
             val item = get<T>(position)
-            holder.itemPosition = position
             holder.size = itemCount
             holder.item = item
             item.bindPayloads(holder, payloads)

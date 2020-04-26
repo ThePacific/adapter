@@ -1,8 +1,8 @@
 package com.pacific.app.adapter.item;
 
+import com.pacific.adapter3.AdapterViewHolder;
 import com.pacific.adapter3.DefaultBinding;
 import com.pacific.adapter3.SimpleRecyclerItem;
-import com.pacific.adapter3.AdapterViewHolder;
 import com.pacific.app.adapter.R;
 
 import org.jetbrains.annotations.NotNull;
