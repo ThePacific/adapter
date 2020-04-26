@@ -62,8 +62,6 @@ class HomeFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-        }
 
         // adapter.setOnTouchListener(OnTouchListener listener);
         // adapter.setOnLongClickListener(OnLongClickListener listener);
@@ -123,8 +121,9 @@ class HomeFragment : Fragment() {
 ```
 
 # Others
+
+data set changed callback , it's useful to show or hide empty view
 ```kotlin
-// data set changed callback , it's useful to show or hide empty view
 adapter.setOnDataSetChanged(OnDataSetChanged onDataSetChanged);
 ```
 
