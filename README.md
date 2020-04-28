@@ -18,17 +18,26 @@ implementation 'com.github.thepacific:adapter:3.0.0'
 ```
 
 # Usage
-Extend [SimpleRecylcerItem](https://github.com/thepacific/adapter/blob/master/pacific-adapter/adapter/src/main/java/com/pacific/adapter/SimpleRecyclerItem.kt). Optionally, you may implement [RecyclerItem](https://github.com/thepacific/adapter/blob/master/pacific-adapter/adapter/src/main/java/com/pacific/adapter/RecyclerItem.kt)
 
 ```kotlin
-class MyItem(val data: Any) : SimpleRecyclerItem()
+class MyItem1(val data: Any) : SimpleRecyclerItem()
+
+class MyItem2(val data: Any) : SimpleRecyclerItem()
+
+class MyItem3(val data: Any) : SimpleRecyclerItem()
 
 val adapter = RecyclerAdapter()
-val item = MyItem(Any())
-val items = mutableListOf<MyItem>()
 
-adapter.add(item)
-adapter.addAll(items.toList())
+adapter.onClickListener = View.OnClickListener { }
+adapter.imageLoader = adapter.imageLoader = object : AdapterImageLoader {}
+
+val item1 = MyItem1(Any())
+val list2 = mutableListOf<MyItem2>()
+val list3 = mutableListOf<MyItem3>()
+
+adapter.add(item1)
+adapter.addAll(list2.toList())
+adapter.addAll(list3.toList())
 ```
 
 # Item
