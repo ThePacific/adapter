@@ -20,20 +20,20 @@ implementation 'com.github.thepacific:adapter:3.0.0'
 # Usage
 
 ```kotlin
-class MyItem1(val data: Any) : SimpleRecyclerItem()
+class MyType1(val data: Any) : SimpleRecyclerItem()
 
-class MyItem2(val data: Any) : SimpleRecyclerItem()
+class MyType2(val data: Any) : SimpleRecyclerItem()
 
-class MyItem3(val data: Any) : SimpleRecyclerItem()
+class MyType3(val data: Any) : SimpleRecyclerItem()
 
 val adapter = RecyclerAdapter()
 
 adapter.onClickListener = View.OnClickListener { }
 adapter.imageLoader = adapter.imageLoader = object : AdapterImageLoader {}
 
-val item1 = MyItem1(Any())
-val list2 = mutableListOf<MyItem2>()
-val list3 = mutableListOf<MyItem3>()
+val item1 = MyType1(Any())
+val list2 = mutableListOf<MyType2>()
+val list3 = mutableListOf<MyType3>()
 
 adapter.add(item1)
 adapter.addAll(list2.toList())
