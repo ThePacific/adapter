@@ -14,7 +14,7 @@ If you are using version 2.x please check [here](https://github.com/thepacific/a
 
 # Setup
 ```groovy
-compile 'com.github.thepacific:adapter:3.0.0'
+implementation 'com.github.thepacific:adapter:3.0.0'
 ```
 
 # Item
