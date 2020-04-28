@@ -18,7 +18,7 @@ compile 'com.github.thepacific:adapter:3.0.0'
 ```
 
 # Item
-Extend [SimpleRecylcerItem](https://github.com/thepacific/adapter/blob/master/pacific-adapter/adapter/src/main/java/com/pacific/adapter3/SimpleRecyclerItem.kt). Optionally, you may implement [RecyclerItem](https://github.com/thepacific/adapter/blob/master/pacific-adapter/adapter/src/main/java/com/pacific/adapter3/RecyclerItem.kt)
+Extend [SimpleRecylcerItem](https://github.com/thepacific/adapter/blob/master/pacific-adapter/adapter/src/main/java/com/pacific/adapter/SimpleRecyclerItem.kt). Optionally, you may implement [RecyclerItem](https://github.com/thepacific/adapter/blob/master/pacific-adapter/adapter/src/main/java/com/pacific/adapter/RecyclerItem.kt)
 
 ```kotlin
 class MovieItem(val data: Movie) : SimpleRecyclerItem() {
