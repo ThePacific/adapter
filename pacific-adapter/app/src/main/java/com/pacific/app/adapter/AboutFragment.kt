@@ -9,7 +9,10 @@ import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
-import com.pacific.adapter.*
+import com.pacific.adapter.AdapterImageLoader
+import com.pacific.adapter.AdapterViewHolder
+import com.pacific.adapter.RecyclerAdapter
+import com.pacific.adapter.RecyclerItem
 import com.pacific.app.adapter.base.Data
 import com.pacific.app.adapter.base.GlideApp
 import com.pacific.app.adapter.databinding.FragmentAboutBinding
@@ -31,11 +34,11 @@ class AboutFragment : Fragment() {
         arguments?.let {
         }
         adapter.imageLoader = object : AdapterImageLoader {
-            override fun onImageLoad(imageView: ImageView, holder: AdapterViewHolder) {
+            override fun load(view: ImageView, holder: AdapterViewHolder) {
                 GlideApp.with(this@AboutFragment)
                     //.load(holder.item<MovieItem>().data.img)
                     .load(Uri.parse("file:///android_asset/img.jpg"))
-                    .into(imageView)
+                    .into(view)
             }
         }
     }

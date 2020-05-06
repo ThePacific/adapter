@@ -58,7 +58,7 @@ internal class ListenerAttachImpl(
         provider.imageLoader?.let {
             val view = holder.itemView.findViewById<ImageView>(viewId)
             view.setTag(ADAPTER_HOLDER, holder)
-            it.onImageLoad(view, holder)
+            it.load(view, holder)
         }
     }
 

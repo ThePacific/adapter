@@ -4,5 +4,5 @@ import android.widget.ImageView
 
 interface AdapterImageLoader {
 
-    fun onImageLoad(imageView: ImageView, holder: AdapterViewHolder)
+    fun load(view: ImageView, holder: AdapterViewHolder)
 }

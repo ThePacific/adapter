@@ -1,6 +1,5 @@
 package com.pacific.app.adapter.base
 
-import com.pacific.app.adapter.base.DataHttpModule
 import okhttp3.OkHttpClient
 import java.util.concurrent.TimeUnit
 import javax.net.ssl.HostnameVerifier

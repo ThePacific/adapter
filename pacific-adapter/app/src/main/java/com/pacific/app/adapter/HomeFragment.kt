@@ -36,11 +36,11 @@ class HomeFragment : Fragment() {
         arguments?.let {
         }
         adapter.imageLoader = object : AdapterImageLoader {
-            override fun onImageLoad(imageView: ImageView, holder: AdapterViewHolder) {
+            override fun load(view: ImageView, holder: AdapterViewHolder) {
                 GlideApp.with(this@HomeFragment)
                     //.load(holder.item<MovieItem>().data.img)
                     .load(Uri.parse("file:///android_asset/img.jpg"))
-                    .into(imageView)
+                    .into(view)
             }
         }
     }
