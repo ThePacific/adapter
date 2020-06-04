@@ -1,5 +1,5 @@
-import com.square.buildsrc.BuildPlugins
-import com.square.buildsrc.Libs
+import com.pacific.buildsrc.BuildPlugins
+import com.pacific.buildsrc.Libs
 
 apply plugin: BuildPlugins.kotlinAndroid
 apply plugin: BuildPlugins.kotlinAndroidExtensions
@@ -17,10 +17,6 @@ android {
         versionName Libs.AndroidSdk.versionName
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-    }
-
-    dataBinding {
-        enabled = true
     }
 }
 

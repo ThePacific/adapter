@@ -1,4 +1,4 @@
-import com.square.buildsrc.BuildPlugins
+import com.pacific.buildsrc.BuildPlugins
 
 apply plugin: BuildPlugins.androidLibrary
 apply from: "../gradle/android_module.gradle"

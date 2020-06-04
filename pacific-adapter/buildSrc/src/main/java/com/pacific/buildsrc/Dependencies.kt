@@ -1,4 +1,4 @@
-package com.square.buildsrc
+package com.pacific.buildsrc
 
 object Versions {
     const val ktLint = "0.31.0"
@@ -7,7 +7,7 @@ object Versions {
 
 object BuildPlugins {
 
-    const val androidGradle = "com.android.tools.build:gradle:3.6.3"
+    const val androidGradle = "com.android.tools.build:gradle:4.0.0"
     const val kotlinGradle = "org.jetbrains.kotlin:kotlin-gradle-plugin:${Versions.kotlin}"
     const val kSerializationGradle = "org.jetbrains.kotlin:kotlin-serialization:${Versions.kotlin}"
     const val androidApplication = "com.android.application"
@@ -57,7 +57,8 @@ object Libs {
         const val buildToolsVersion = "29.0.3"
 
         const val minSdkVersion = 21
-        const val targetSdkVersion = compileSdkVersion
+        const val targetSdkVersion =
+            compileSdkVersion
         const val versionCode = 1
         const val versionName = "1.0"
     }

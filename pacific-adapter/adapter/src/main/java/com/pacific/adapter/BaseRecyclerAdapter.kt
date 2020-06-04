@@ -35,7 +35,7 @@ abstract class BaseRecyclerAdapter<T : RecyclerItem>(
     override fun getItemViewType(position: Int): Int = get<T>(position).getLayout()
 
     override fun onViewRecycled(holder: AdapterViewHolder) {
-        val position = holder.adapterPosition
+        val position = holder.bindingAdapterPosition
         if (position != RecyclerView.NO_POSITION) {
             get<T>(position).unbind(holder)
             return
@@ -44,14 +44,14 @@ abstract class BaseRecyclerAdapter<T : RecyclerItem>(
     }
 
     override fun onViewAttachedToWindow(holder: AdapterViewHolder) {
-        val position = holder.adapterPosition
+        val position = holder.bindingAdapterPosition
         if (position != RecyclerView.NO_POSITION) {
             get<T>(position).onViewAttachedToWindow(holder)
         }
     }
 
     override fun onViewDetachedFromWindow(holder: AdapterViewHolder) {
-        val position = holder.adapterPosition
+        val position = holder.bindingAdapterPosition
         if (position != RecyclerView.NO_POSITION) {
             get<T>(position).onViewDetachedFromWindow(holder)
         }
@@ -65,7 +65,7 @@ abstract class BaseRecyclerAdapter<T : RecyclerItem>(
     }
 
     override fun onBindViewHolder(holder: AdapterViewHolder, position: Int, payloads: List<Any>) {
-        if (payloads == null || payloads.isEmpty()) {
+        if (payloads.isEmpty()) {
             super.onBindViewHolder(holder, position, payloads)
         } else {
             val item = get<T>(position)
@@ -172,9 +172,8 @@ abstract class BaseRecyclerAdapter<T : RecyclerItem>(
     }
 
     override fun replaceAt(index: Int, element: T) {
-        if (data.set(index, element) != null) {
-            notifyItemChanged(index)
-        }
+        data[index] = element
+        notifyItemChanged(index)
     }
 
     override fun replace(oldElement: T, newElement: T) {
@@ -217,10 +216,8 @@ abstract class BaseRecyclerAdapter<T : RecyclerItem>(
 
     override fun remove(index: Int): T {
         val obj = data.removeAt(index)
-        if (obj != null) {
-            notifyItemRemoved(index)
-            onDataSetChanged()
-        }
+        notifyItemRemoved(index)
+        onDataSetChanged()
         return obj
     }
 

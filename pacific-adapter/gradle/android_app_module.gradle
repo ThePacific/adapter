@@ -1,4 +1,4 @@
-import com.square.buildsrc.BuildPlugins
+import com.pacific.buildsrc.BuildPlugins
 
 apply plugin: BuildPlugins.androidApplication
 apply from: "../gradle/android_module.gradle"
@@ -9,6 +9,11 @@ android {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+    }
+
+    buildFeatures {
+        dataBinding = true
+        viewBinding = true
     }
 }
 

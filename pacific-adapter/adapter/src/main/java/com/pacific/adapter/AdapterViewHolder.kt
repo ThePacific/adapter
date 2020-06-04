@@ -36,10 +36,10 @@ class AdapterViewHolder(
         internal set
 
     val isFirstItem: Boolean
-        get() = adapterPosition == 0
+        get() = bindingAdapterPosition == 0
 
     val isLastItem: Boolean
-        get() = adapterPosition == size - 1
+        get() = bindingAdapterPosition == size - 1
 
     override fun attachOnClickListener(@IdRes viewId: Int) {
         listenerAttach.attachOnClickListener(viewId)

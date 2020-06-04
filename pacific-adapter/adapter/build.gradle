@@ -1,5 +1,5 @@
-import com.square.buildsrc.BuildPlugins
-import com.square.buildsrc.Libs
+import com.pacific.buildsrc.BuildPlugins
+import com.pacific.buildsrc.Libs
 
 apply plugin: BuildPlugins.androidLibrary
 apply plugin: BuildPlugins.kotlinAndroid
@@ -28,7 +28,7 @@ android {
     }
 
     libraryVariants.all {
-        it.generateBuildConfig.enabled = false
+        it.generateBuildConfigProvider.get().enabled = false
     }
 }
 

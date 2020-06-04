@@ -1,3 +1,2 @@
-include ':buildSrc'
 include ':adapter'
 include ':app'
