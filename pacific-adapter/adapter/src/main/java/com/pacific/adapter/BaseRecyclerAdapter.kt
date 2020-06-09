@@ -229,17 +229,17 @@ abstract class BaseRecyclerAdapter<T : RecyclerItem>(
         }
     }
 
-    override fun firstSelectedIndex(): Int = firstSelectedIndex(data)
+    override fun firstSelectedIndex(): Int = AdapterUtils.firstSelectedIndex(data)
 
-    override fun lastSelectedIndex(): Int = lastSelectedIndex(data)
+    override fun lastSelectedIndex(): Int = AdapterUtils.lastSelectedIndex(data)
 
-    override fun selectedIndices(): List<Int> = selectedIndices(data)
+    override fun selectedIndices(): List<Int> = AdapterUtils.selectedIndices(data)
 
-    override fun firstSelectedItem(): T? = firstSelectedItem(data)
+    override fun firstSelectedItem(): T? = AdapterUtils.firstSelectedItem(data)
 
-    override fun lastSelectedItem(): T? = lastSelectedItem(data)
+    override fun lastSelectedItem(): T? = AdapterUtils.lastSelectedItem(data)
 
-    override fun selectedItems(): List<T> = selectedItems(data)
+    override fun selectedItems(): List<T> = AdapterUtils.selectedItems(data)
 
     override fun getItemCount(): Int = data.size
 

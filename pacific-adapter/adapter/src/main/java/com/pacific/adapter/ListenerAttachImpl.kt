@@ -32,32 +32,32 @@ internal class ListenerAttachImpl(
 
     override fun attachOnClickListener(@IdRes viewId: Int) {
         val view = holder.itemView.findViewById<View>(viewId)
-        view.setTag(ADAPTER_HOLDER, holder)
+        view.setTag(AdapterUtils.ADAPTER_HOLDER, holder)
         view.setOnClickListener(provider.onClickListener)
     }
 
     override fun attachOnTouchListener(@IdRes viewId: Int) {
         val view = holder.itemView.findViewById<View>(viewId)
-        view.setTag(ADAPTER_HOLDER, holder)
+        view.setTag(AdapterUtils.ADAPTER_HOLDER, holder)
         view.setOnTouchListener(provider.onTouchListener)
     }
 
     override fun attachOnLongClickListener(@IdRes viewId: Int) {
         val view = holder.itemView.findViewById<View>(viewId)
-        view.setTag(ADAPTER_HOLDER, holder)
+        view.setTag(AdapterUtils.ADAPTER_HOLDER, holder)
         view.setOnLongClickListener(provider.onLongClickListener)
     }
 
     override fun attachOnCheckedChangeListener(@IdRes viewId: Int) {
         val view = holder.itemView.findViewById<CompoundButton>(viewId)
-        view.setTag(ADAPTER_HOLDER, holder)
+        view.setTag(AdapterUtils.ADAPTER_HOLDER, holder)
         view.setOnCheckedChangeListener(provider.onCheckedChangeListener)
     }
 
     override fun attachImageLoader(@IdRes viewId: Int) {
         provider.imageLoader?.let {
             val view = holder.itemView.findViewById<ImageView>(viewId)
-            view.setTag(ADAPTER_HOLDER, holder)
+            view.setTag(AdapterUtils.ADAPTER_HOLDER, holder)
             it.load(view, holder)
         }
     }
@@ -88,7 +88,7 @@ internal class ListenerAttachImpl(
                 }
             }
         }
-        view.setTag(ADAPTER_HOLDER, holder)
+        view.setTag(AdapterUtils.ADAPTER_HOLDER, holder)
         view.addTextChangedListener(textWatcher)
     }
 
