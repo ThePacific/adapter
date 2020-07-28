@@ -1,77 +1,49 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
-import com.pacific.buildsrc.BuildPlugins
-import com.pacific.buildsrc.Libs
-import com.pacific.buildsrc.Versions
-
 buildscript {
-
+    apply from: file('gradle/dependencies.gradle')
     repositories {
         google()
         jcenter()
         mavenCentral()
-        maven{ url'http://maven.aliyun.com/nexus/content/groups/public/' }
-        maven{ url'http://maven.aliyun.com/nexus/content/repositories/jcenter'}
-        maven { url "https://kotlin.bintray.com/kotlinx" }
-        maven { url 'https://dl.bintray.com/kotlin/kotlin-eap' }
-        maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
         maven { url "https://plugins.gradle.org/m2/" }
+        maven { url "https://kotlin.bintray.com/kotlinx" }
+        maven { url "https://dl.bintray.com/kotlin/kotlin-eap" }
+        maven { url "https://jitpack.io" }
     }
 
     dependencies {
-        classpath BuildPlugins.androidGradle
-        classpath BuildPlugins.kotlinGradle
-        classpath BuildPlugins.kSerializationGradle
-        classpath BuildPlugins.mavenPublishPluginGradle
-        classpath Libs.AndroidX.Navigation.safeArgsGradle
+        classpath 'com.android.tools.build:gradle:4.0.1'
+        classpath "androidx.navigation:navigation-safe-args-gradle-plugin:${versions.androidX.navigation}"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${versions.kotlin}"
+        classpath "org.jetbrains.kotlin:kotlin-serialization:${versions.kotlin}"
+        classpath "org.jlleitschuh.gradle:ktlint-gradle:${versions.ktlint}"
+        classpath "com.vanniktech:gradle-maven-publish-plugin:${versions.mavenPublish}"
     }
 }
 
-allprojects {
-
+allprojects { project ->
+    apply plugin: 'org.jlleitschuh.gradle.ktlint'
     repositories {
         google()
-        mavenCentral()
         jcenter()
-        maven{ url'http://maven.aliyun.com/nexus/content/groups/public/' }
-        maven{ url'http://maven.aliyun.com/nexus/content/repositories/jcenter'}
-        maven { url "https://kotlin.bintray.com/kotlinx" }
-        maven { url 'https://dl.bintray.com/kotlin/kotlin-eap' }
-        maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
+        mavenCentral()
         maven { url "https://plugins.gradle.org/m2/" }
+        maven { url "https://kotlin.bintray.com/kotlinx" }
+        maven { url "https://dl.bintray.com/kotlin/kotlin-eap" }
         maven { url "https://jitpack.io" }
         mavenLocal()
     }
 
-    configurations.all {
-        resolutionStrategy {
-            eachDependency { details ->
-                def group = details.requested.group
-                def name = details.requested.name
-
-                if (group == 'org.jetbrains.kotlin' && name.startsWith('kotlin-stdlib')) {
-                    details.useVersion Versions.kotlin
-                } else if (group == 'org.jetbrains' && name.startsWith('annotations')) {
-                    details.useVersion "19.0.0"
-                } else if (group == 'com.google.code.findbugs' && name.startsWith('jsr305')) {
-                    details.useVersion "3.0.2"
-                } else if (group == 'org.reactivestreams' && name.startsWith('reactive-streams')) {
-                    details.useVersion "1.0.3"
-                } else if (group == 'com.google.errorprone' && name.startsWith('error_prone_annotations')) {
-                    details.useVersion "2.3.3"
-                } else if (group == 'com.google.auto.value') {
-                    details.useVersion Libs.AutoValue.version
-                } else if (group == 'androidx.fragment') {
-                    details.useVersion Libs.AndroidX.Fragment.version
-                }else if (group == 'com.google.android.material') {
-                    details.useVersion "1.2.0-alpha06"
-                }
-            }
+    repositories {
+        flatDir {
+            dirs 'libs'
         }
     }
 
     plugins.withType(com.android.build.gradle.BasePlugin).configureEach { plugin ->
         plugin.extension.compileOptions {
+            coreLibraryDesugaringEnabled true
             sourceCompatibility = JavaVersion.VERSION_1_8
             targetCompatibility = JavaVersion.VERSION_1_8
         }
@@ -82,61 +54,166 @@ allprojects {
         task.targetCompatibility = JavaVersion.VERSION_1_8
     }
 
-    tasks.withType(org.jetbrains.kotlin.gradle.dsl.KotlinJvmCompile).configureEach { task ->
+    tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach { task ->
         task.kotlinOptions {
             jvmTarget = "1.8"
+            suppressWarnings = true
         }
     }
 
-    tasks.withType(org.jetbrains.kotlin.gradle.dsl.KotlinCompile).configureEach { task ->
-        task.kotlinOptions {
-            freeCompilerArgs += [
-                    '-XXLanguage:+NewInference',
-                    '-progressive',
-                    '-Xuse-experimental=kotlinx.coroutines.ExperimentalCoroutinesApi',
-                    '-Xuse-experimental=kotlinx.coroutines.ObsoleteCoroutinesApi',
-                    '-Xuse-experimental=kotlin.time.ExperimentalTime',
-            ]
+    if (project.plugins.hasPlugin('kotlin-android-extensions')) {
+        androidExtensions {
+            experimental = true
         }
     }
 
-    tasks.withType(Test) {
-        testLogging {
-            events "skipped", "failed", "passed"
+    if (project.plugins.hasPlugin('kotlin-kapt')) {
+        kapt {
+            correctErrorTypes = true
+            useBuildCache = true
+
+            javacOptions {
+                option("-Xmaxerrs", 1000)
+            }
         }
     }
+
+    configurations.all {
+        resolutionStrategy {
+            eachDependency { details ->
+                def group = details.requested.group
+                def name = details.requested.name
+
+                if (group == 'org.jetbrains.kotlin' && name.startsWith('kotlin-stdlib')) {
+                    details.useVersion versions.kotlin
+                } else if (group == 'org.jetbrains' && name.startsWith('annotations')) {
+                    details.useVersion versions.jetAnnotation
+                } else if (group == 'com.google.code.findbugs' && name.startsWith('jsr305')) {
+                    details.useVersion versions.findBugsJrs305
+                } else if (group == 'org.reactivestreams' && name.startsWith('reactive-streams')) {
+                    details.useVersion versions.rxStream
+                } else if (group == 'com.google.errorprone' && name.startsWith('error_prone_annotations')) {
+                    details.useVersion versions.errorProne
+                } else if (group == 'com.google.auto.value') {
+                    details.useVersion versions.autoValue
+                } else if (group == 'androidx.fragment') {
+                    details.useVersion versions.androidX.fragment
+                } else if (group == 'com.google.android.material') {
+                    details.useVersion versions.androidX.material
+                } else if (group == 'androidx.core' && name == 'core') {
+                    details.useVersion versions.androidX.core
+                } else if (group == 'androidx.collection' && name == 'collection') {
+                    details.useVersion versions.androidX.collection
+                } else if (group == 'androidx.customview') {
+                    details.useVersion versions.androidX.customview
+                } else if (group == 'androidx.arch.core') {
+                    details.useVersion versions.androidX.arch
+                }
+            }
+        }
+    }
+}
+
+subprojects { project ->
+    afterEvaluate {
+        if (project.plugins.hasPlugin('android') || project.plugins.hasPlugin('android-library')) {
+
+            boolean isAndroidLibrary = project.plugins.hasPlugin('android-library')
+            boolean isRelease = project.gradle.startParameter.taskNames.any {
+                it.toLowerCase().contains('release')
+            }
+
+            android {
+                compileSdkVersion buildConfig.compileSdk
+                buildToolsVersion buildConfig.buildTools
+
+                defaultConfig {
+                    minSdkVersion buildConfig.minSdk
+                    targetSdkVersion buildConfig.targetSdk
+                    versionCode buildConfig.version.code
+                    versionName buildConfig.version.name
+
+                    multiDexEnabled true
+                    testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+                }
+
+                buildFeatures {
+                    viewBinding = true
+                    dataBinding = true
+                }
+
+                buildTypes {
+                    release {
+                        minifyEnabled(isRelease && !isAndroidLibrary)
+                        proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+                    }
+                }
+
+                splits {
+                    abi {
+                        enable true
+                        reset()
+                        include "armeabi-v7a", "x86"
+                        universalApk true
+                    }
+                }
+
+                lintOptions {
+                    textReport true
+                    textOutput 'stdout'
+                    lintConfig rootProject.file('lint.xml')
+                    warning 'UnusedResources'
+                    checkAllWarnings true
+                    warningsAsErrors true
+                    checkReleaseBuilds true
+                    abortOnError false
+                }
+
+                packagingOptions {
+                    exclude 'META-INF/README'
+                    exclude 'META-INF/README.txt'
+                    exclude 'META-INF/readme'
+                    exclude 'META-INF/readme.txt'
+
+                    exclude 'META-INF/LICENSE'
+                    exclude 'META-INF/LICENSE.txt'
+                    exclude 'META-INF/license'
+                    exclude 'META-INF/license.txt'
+
+                    exclude 'META-INF/NOTICE'
+                    exclude 'META-INF/NOTICE.txt'
+                    exclude 'META-INF/notice'
+                    exclude 'META-INF/notice.txt'
+
+                    exclude 'META-INF/*.properties.txt'
+                    exclude 'META-INF/*.DEPENDENCIES.txt'
+                    exclude 'META-INF/dependencies'
+                    exclude 'META-INF/dependencies.txt'
+                    exclude 'META-INF/DEPENDENCIES'
+                    exclude 'META-INF/DEPENDENCIES.txt'
+
+                    exclude 'META-INF/LGPL2.1'
+                    exclude 'META-INF/ASL2.0'
+
+                    exclude 'META-INF/proguard/**'
+                    exclude 'META-INF/*.version'
+
+                    exclude 'version.txt'
+                    exclude 'androidsupportmultidexversion.txt'
+                }
+            }
+        } else {
+            println("JVM project")
+        }
+    }
+}
+
+tasks.named('wrapper') {
+    distributionType = Wrapper.DistributionType.BIN
+    distributionUrl = "https\\://services.gradle.org/distributions/gradle-6.5-all.zip"
+    gradleVersion = "6.5"
 }
 
 task clean(type: Delete) {
     delete rootProject.buildDir
-}
-
-def gitSha() {
-    def f = new File(buildDir, "commit-sha.txt")
-    if (!f.exists()) {
-        def p = 'git rev-parse HEAD'.execute([], project.rootDir)
-        if (p.waitFor() != 0) {
-            throw new RuntimeException(p.errorStream.text)
-        }
-        f.parentFile.mkdirs()
-        f.text = p.text.trim()
-    }
-    return f.text.trim()
-}
-
-def gitTimestamp() {
-    def f = new File(buildDir, "commit-timestamp.txt")
-    if (!f.exists()) {
-        def p = 'git log -n 1 --format=%at'.execute([], rootDir)
-        if (p.waitFor() != 0) {
-            throw new RuntimeException(p.errorStream.text)
-        }
-        f.parentFile.mkdirs()
-        f.text = p.text.trim()
-    }
-    return f.text.trim()
-}
-
-def propertyOrEmpty(String name) {
-    return hasProperty(name) ? getProperty(name) : ''
 }

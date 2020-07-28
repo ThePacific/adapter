@@ -15,6 +15,8 @@
  */
 package com.pacific.adapter
 
+import androidx.recyclerview.widget.DiffUtil
+
 internal interface DataIO<T : RecyclerItem> {
 
     fun <T2 : T> get(index: Int): T2
@@ -51,13 +53,17 @@ internal interface DataIO<T : RecyclerItem> {
 
     fun replaceAll(list: List<T>)
 
+    fun replaceAll(list: List<T>, diffResult: DiffUtil.DiffResult)
+
+    fun replaceAllAt(index: Int, list: List<T>)
+
+    fun replaceAllAt(index: Int, list: List<T>, notifyDataSetChanged: Boolean)
+
     fun indexOf(element: T): Int
 
     fun lastIndexOf(element: T): Int
 
     fun subList(fromIndex: Int, toIndex: Int): List<T>
-
-    fun replaceAll(index: Int, list: List<T>)
 
     fun firstSelectedIndex(): Int
 

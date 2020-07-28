@@ -1,31 +1,11 @@
-import com.pacific.buildsrc.BuildPlugins
-import com.pacific.buildsrc.Libs
-
-apply plugin: BuildPlugins.androidLibrary
-apply plugin: BuildPlugins.kotlinAndroid
-apply plugin: BuildPlugins.kotlinAndroidExtensions
-apply plugin: BuildPlugins.jetbrainsAndroidExtensions
-apply plugin: BuildPlugins.kotlinxSerialization
-apply plugin: BuildPlugins.kotlinKapt
-apply plugin: BuildPlugins.mavenPublishPlugin
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+apply plugin: 'kotlinx-serialization'
+apply plugin: 'com.vanniktech.maven.publish'
 
 android {
-    compileSdkVersion Libs.AndroidSdk.compileSdkVersion
-    buildToolsVersion Libs.AndroidSdk.buildToolsVersion
-    defaultConfig {
-        minSdkVersion Libs.AndroidSdk.minSdkVersion
-        targetSdkVersion Libs.AndroidSdk.targetSdkVersion
-        versionCode Libs.AndroidSdk.versionCode
-        versionName Libs.AndroidSdk.versionName
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-    }
-
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-        }
-    }
 
     libraryVariants.all {
         it.generateBuildConfigProvider.get().enabled = false
@@ -34,8 +14,9 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation Libs.AndroidX.annotation
-    implementation Libs.AndroidX.Recyclerview.recyclerview
+    coreLibraryDesugaring dep.desugaring
+    compileOnly dep.androidX.annotation.annotation
+    implementation dep.androidX.recyclerview.recyclerview
 }
 
 Properties properties = new Properties()

@@ -32,14 +32,14 @@ class AdapterViewHolder(
 
     internal lateinit var item: RecyclerItem
 
-    var size: Int = -1
-        internal set
+    val itemCount: Int
+        get() = adapter.itemCount
 
     val isFirstItem: Boolean
         get() = bindingAdapterPosition == 0
 
     val isLastItem: Boolean
-        get() = bindingAdapterPosition == size - 1
+        get() = bindingAdapterPosition == adapter.itemCount - 1
 
     override fun attachOnClickListener(@IdRes viewId: Int) {
         listenerAttach.attachOnClickListener(viewId)

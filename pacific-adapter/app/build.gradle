@@ -1,4 +1,10 @@
-apply from: "../gradle/android_app_module.gradle"
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+apply plugin: 'kotlinx-serialization'
+
+apply from: "../gradle/android_module.gradle"
 
 android {
     defaultConfig {
@@ -8,6 +14,7 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
+    coreLibraryDesugaring dep.desugaring
     implementation project(':adapter')
 }
 

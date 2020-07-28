@@ -18,6 +18,7 @@ package com.pacific.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.CompoundButton
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 
 abstract class BaseRecyclerAdapter<T : RecyclerItem>(
@@ -59,7 +60,6 @@ abstract class BaseRecyclerAdapter<T : RecyclerItem>(
 
     override fun onBindViewHolder(holder: AdapterViewHolder, position: Int) {
         val item = get<T>(position)
-        holder.size = itemCount
         holder.item = item
         item.bind(holder)
     }
@@ -69,7 +69,6 @@ abstract class BaseRecyclerAdapter<T : RecyclerItem>(
             super.onBindViewHolder(holder, position, payloads)
         } else {
             val item = get<T>(position)
-            holder.size = itemCount
             holder.item = item
             item.bindPayloads(holder, payloads)
         }
@@ -84,9 +83,9 @@ abstract class BaseRecyclerAdapter<T : RecyclerItem>(
     }
 
     override fun add(element: T) {
-        val size = data.size
+        val beforeSize = data.size
         if (data.add(element)) {
-            notifyItemInserted(size)
+            notifyItemInserted(beforeSize)
             onDataSetChanged()
         }
     }
@@ -110,9 +109,9 @@ abstract class BaseRecyclerAdapter<T : RecyclerItem>(
     }
 
     override fun addAll(list: List<T>) {
-        val size = data.size
+        val beforeSize = data.size
         if (data.addAll(list)) {
-            notifyItemRangeInserted(size, list.size)
+            notifyItemRangeInserted(beforeSize, list.size)
             onDataSetChanged()
         }
     }
@@ -150,9 +149,9 @@ abstract class BaseRecyclerAdapter<T : RecyclerItem>(
                 indexes.add(index)
             }
         }
-        val size = data.size
+        val beforeSize = data.size
         if (data.retainAll(list)) {
-            for (i in 0 until size) {
+            for (i in 0 until beforeSize) {
                 if (!indexes.contains(i)) {
                     notifyItemRemoved(i)
                 }
@@ -181,28 +180,38 @@ abstract class BaseRecyclerAdapter<T : RecyclerItem>(
     }
 
     override fun replaceAll(list: List<T>) {
+        val beforeSize = data.size
         if (data.isNotEmpty()) {
             data.clear()
+            notifyItemMoved(0, beforeSize)
         }
-        data.addAll(list)
-        notifyDataSetChanged()
+        if (data.addAll(list)) {
+            notifyItemRangeInserted(0, list.size)
+        }
         onDataSetChanged()
     }
 
-    override fun replaceAll(index: Int, list: List<T>) {
-        replaceAll(index, list, false)
+    override fun replaceAll(list: List<T>, diffResult: DiffUtil.DiffResult) {
+        data.clear()
+        data.addAll(list)
+        diffResult.dispatchUpdatesTo(this)
+        onDataSetChanged()
     }
 
-    fun replaceAll(index: Int, list: List<T>, notifyDataSetChanged: Boolean) {
-        val size = data.size
-        if (index >= size) {
+    override fun replaceAllAt(index: Int, list: List<T>) {
+        replaceAllAt(index, list, false)
+    }
+
+    override fun replaceAllAt(index: Int, list: List<T>, notifyDataSetChanged: Boolean) {
+        val beforeSize = data.size
+        if (index >= beforeSize) {
             addAll(list)
         } else {
-            for (i in index until size) {
+            for (i in index until beforeSize) {
                 data.removeAt(index)
             }
             if (!notifyDataSetChanged) {
-                notifyItemRangeRemoved(index, size - index)
+                notifyItemRangeRemoved(index, beforeSize - index)
             }
             if (data.addAll(list) && !notifyDataSetChanged) {
                 notifyItemRangeInserted(index, list.size)
