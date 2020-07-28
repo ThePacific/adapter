@@ -15,6 +15,7 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     coreLibraryDesugaring dep.desugaring
+
     compileOnly dep.androidX.annotation.annotation
     implementation dep.androidX.recyclerview.recyclerview
 }
