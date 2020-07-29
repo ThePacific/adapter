@@ -5,7 +5,7 @@ If you are using version 2.x please check [here](https://github.com/thepacific/a
 
 [![Download](https://img.shields.io/maven-central/v/com.github.thepacific/adapter.svg)](https://search.maven.org/artifact/com.github.thepacific/adapter)[![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-Adapter-green.svg?style=true)](https://android-arsenal.com/details/1/3449)
 
-![](https://github.com/thepacific/adapter/blob/master/previews/preview0.gif)
+![](https://github.com/thepacific/adapter/blob/master/previews/preview01.png)
 
 # Features
 + Support ViewBinding、DataBinding、DefaultBinding.
@@ -14,7 +14,7 @@ If you are using version 2.x please check [here](https://github.com/thepacific/a
 
 # Setup
 ```groovy
-implementation 'com.github.thepacific:adapter:3.0.0'
+implementation 'com.github.thepacific:adapter:3.0.1'
 ```
 
 # Usage
