@@ -3,13 +3,10 @@ Change Log
 Version 3.0.1 *(2020-07-28)*
 ----------------------------
 
-**This release ships with kotlin**
-
-**New Features**
  * Add support for DiffUtil.
  * Change AdapterUtils to object.
  * Rename AdapterViewHolder.size to AdapterViewHolder.itemCount
- * Improvement for replaceAll function
+ * Improvement for replace* functions
  
 
 Version 3.0.0 *(2020-04-26)*
