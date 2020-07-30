@@ -62,7 +62,7 @@ dependencies {
     kapt dep.dagger.compiler
 
     implementation dep.mmkv
-    // implementation dep.mvRx
+    implementation dep.mvRx
     implementation dep.coordinators
     implementation dep.reflection
     implementation dep.timber
@@ -71,7 +71,6 @@ dependencies {
 
     implementation dep.flexbox
     implementation dep.epoxy.epoxy
-    // implementation dep.epoxy.paging
     kapt dep.epoxy.processor
 
     compileOnly dep.androidX.annotation.annotation
@@ -87,7 +86,6 @@ dependencies {
     implementation dep.androidX.core.animation
     implementation dep.androidX.core.role
     implementation dep.androidX.core.ktx
-
 
     implementation dep.androidX.savedstate.savedstate
     implementation dep.androidX.savedstate.savedstateKtx

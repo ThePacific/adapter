@@ -208,12 +208,6 @@ subprojects { project ->
     }
 }
 
-tasks.named('wrapper') {
-    distributionType = Wrapper.DistributionType.BIN
-    distributionUrl = "https\\://services.gradle.org/distributions/gradle-6.5-all.zip"
-    gradleVersion = "6.5"
-}
-
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
