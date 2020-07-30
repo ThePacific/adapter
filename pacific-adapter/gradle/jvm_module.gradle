@@ -43,7 +43,7 @@ dependencies {
     implementation dep.dagger.dagger
     kapt dep.dagger.compiler
 
-    implementation dep.androidX.annotation.annotation
+    compileOnly dep.androidX.annotation.annotation
     implementation dep.androidX.collection.collection
     implementation dep.androidX.collection.ktx
     implementation dep.androidX.room.common

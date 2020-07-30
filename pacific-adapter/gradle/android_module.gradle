@@ -72,7 +72,6 @@ dependencies {
     implementation dep.flexbox
     implementation dep.epoxy.epoxy
     // implementation dep.epoxy.paging
-    // implementation dep.epoxy.dataBinding
     kapt dep.epoxy.processor
 
     compileOnly dep.androidX.annotation.annotation
