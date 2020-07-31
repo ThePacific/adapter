@@ -82,8 +82,8 @@ class AdapterViewHolder(
     fun <T : Activity> activity(): T = itemView.context as T
 
     @Suppress("UNCHECKED_CAST")
-    fun <T : Any> binding(viewBinding: ((View) -> T)? = null): T {
-        if (binding == null && viewBinding != null) {
+    fun <T : Any> binding(viewBinding: (View) -> T): T {
+        if (binding == null) {
             binding = viewBinding.invoke(itemView)
         }
         return binding as T
