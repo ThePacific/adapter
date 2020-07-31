@@ -28,7 +28,7 @@ class AdapterViewHolder(
 
     private val listenerAttach: ListenerAttachImpl = ListenerAttachImpl(this, adapter)
 
-    private var binding: Any? = null
+    private var _binding: Any? = null
 
     internal lateinit var item: RecyclerItem
 
@@ -83,9 +83,22 @@ class AdapterViewHolder(
 
     @Suppress("UNCHECKED_CAST")
     fun <T : Any> binding(viewBinding: (View) -> T): T {
-        if (binding == null) {
-            binding = viewBinding.invoke(itemView)
+        if (_binding == null) {
+            _binding = viewBinding.invoke(itemView)
         }
-        return binding as T
+        return _binding as T
+    }
+
+    @Suppress("UNCHECKED_CAST")
+    fun <T : Any> binding(): T {
+        requireNotNull(_binding)
+        return _binding as T
+    }
+
+    fun defaultBinding(): DefaultBinding {
+        if (_binding == null) {
+            _binding = DefaultBinding(itemView)
+        }
+        return _binding as DefaultBinding
     }
 }
