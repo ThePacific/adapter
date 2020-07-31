@@ -65,11 +65,11 @@ abstract class BaseRecyclerAdapter<T : RecyclerItem>(
     }
 
     override fun onBindViewHolder(holder: AdapterViewHolder, position: Int, payloads: List<Any>) {
-        if (payloads.isEmpty()) {
-            super.onBindViewHolder(holder, position, payloads)
+        val item = get<T>(position)
+        holder.item = item
+        if (payloads.isNullOrEmpty()) {
+            item.bind(holder)
         } else {
-            val item = get<T>(position)
-            holder.item = item
             item.bindPayloads(holder, payloads)
         }
     }
