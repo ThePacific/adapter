@@ -22,7 +22,6 @@ dependencies {
     implementation dep.kotlinSerialization
     implementation dep.kotlinCoroutines.core
     implementation dep.kotlinCoroutines.rxJava
-    implementation dep.kotlinCoroutines.android
 
     implementation dep.okHttp.okHttp
     implementation dep.okHttp.loggingInterceptor
