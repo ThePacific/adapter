@@ -34,7 +34,6 @@ dependencies {
     kapt dep.moshi.codegen
 
     implementation dep.rxJava.rxJava
-    implementation dep.rxJava.rxAndroid
     implementation dep.rxJava.stream
 
     compileOnly dep.autoValue.autoValue
