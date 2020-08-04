@@ -29,5 +29,4 @@ Version 2.2.0 *(2020-03-28)*
 ----------------------------
 
 * Upgrade to AndroidX
-
 * Add TextWatcher for TextView and EditText
