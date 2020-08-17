@@ -1,0 +1,29 @@
+apply plugin: 'com.android.library'
+apply from: "../gradle/android_module.gradle"
+apply plugin: 'com.vanniktech.maven.publish'
+
+android {
+    libraryVariants.all {
+        it.generateBuildConfigProvider.get().enabled = false
+    }
+}
+
+Properties properties = new Properties()
+properties.load(project.rootProject.file('local.properties').newDataInputStream())
+
+mavenPublish {
+    releaseSigningEnabled = true
+    targets {
+        uploadArchives {
+            releaseRepositoryUrl = properties.getProperty("RELEASE_REPOSITORY_URL")
+            snapshotRepositoryUrl = properties.getProperty("SNAPSHOT_REPOSITORY_URL")
+            repositoryUsername = properties.getProperty("SONATYPE_NEXUS_USERNAME")
+            repositoryPassword = properties.getProperty("SONATYPE_NEXUS_PASSWORD")
+        }
+
+        installArchives {
+            releaseRepositoryUrl = file("${rootProject.buildDir}/localMaven").toURI().toString()
+            snapshotRepositoryUrl = file("${rootProject.buildDir}/localMaven").toURI().toString()
+        }
+    }
+}

@@ -14,7 +14,6 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    coreLibraryDesugaring dep.desugaring
     implementation project(':adapter')
 }
 

@@ -101,7 +101,10 @@ dependencies {
     implementation dep.androidX.viewpager2
     implementation dep.androidX.swiperefreshlayout
     implementation dep.androidX.slidingpanelayout
-    implementation dep.androidX.transition
+    implementation dep.androidX.transition.transition
+    implementation dep.androidX.transition.transitionKtx
+    implementation dep.androidX.window.window
+    implementation dep.androidX.window.windowExt
 
     implementation dep.androidX.dynamicanimation.dynamicanimation
     implementation dep.androidX.dynamicanimation.ktx
@@ -129,7 +132,7 @@ dependencies {
     implementation dep.androidX.navigation.fragmentKtx
     implementation dep.androidX.navigation.ui
     implementation dep.androidX.navigation.uiKtx
-    implementation dep.androidX.lifecycle.extensions
+    implementation dep.androidX.lifecycle.process
     implementation dep.androidX.lifecycle.commonJava8
     implementation dep.androidX.lifecycle.viewmodelKtx
     implementation dep.androidX.lifecycle.runtimeKtx
