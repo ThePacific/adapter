@@ -1,2 +1,3 @@
+include ':adapter-paging'
 include ':adapter'
 include ':app'
