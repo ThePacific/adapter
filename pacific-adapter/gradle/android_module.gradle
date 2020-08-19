@@ -31,10 +31,10 @@ dependencies {
     implementation dep.kotlin.stdlibJdk8
     implementation dep.kotlin.stdlibJdk7
     implementation dep.kotlin.reflect
-    implementation dep.kotlinSerialization
-    implementation dep.kotlinCoroutines.core
-    implementation dep.kotlinCoroutines.rxJava
-    implementation dep.kotlinCoroutines.android
+    implementation dep.ktSerialization
+    implementation dep.ktCoroutines.core
+    implementation dep.ktCoroutines.rxJava
+    implementation dep.ktCoroutines.android
 
     implementation dep.okHttp.okHttp
     implementation dep.okHttp.loggingInterceptor

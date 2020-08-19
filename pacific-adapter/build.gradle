@@ -2,6 +2,9 @@
 
 buildscript {
     apply from: file('gradle/dependencies.gradle')
+    ext {
+        kotlin_version = '1.4.0'
+    }
     repositories {
         google()
         jcenter()
@@ -17,7 +20,7 @@ buildscript {
         classpath "androidx.navigation:navigation-safe-args-gradle-plugin:${versions.androidX.navigation}"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${versions.kotlin}"
         classpath "org.jetbrains.kotlin:kotlin-serialization:${versions.kotlin}"
-        classpath "org.jlleitschuh.gradle:ktlint-gradle:${versions.ktlint}"
+        classpath "org.jlleitschuh.gradle:ktlint-gradle:${versions.ktLint}"
         classpath "com.vanniktech:gradle-maven-publish-plugin:${versions.mavenPublish}"
     }
 }
@@ -108,6 +111,8 @@ allprojects { project ->
                     details.useVersion versions.androidX.customview
                 } else if (group == 'androidx.arch.core') {
                     details.useVersion versions.androidX.arch
+                } else if (group == 'androidx.annotation' && name == 'annotation') {
+                    details.useVersion versions.androidX.annotation
                 }
             }
         }
@@ -153,7 +158,7 @@ subprojects { project ->
                     abi {
                         enable true
                         reset()
-                        include "armeabi-v7a", "x86"
+                        include "armeabi-v7a", 'arm64-v8a', "x86"
                         universalApk true
                     }
                 }
@@ -200,6 +205,7 @@ subprojects { project ->
 
                     exclude 'version.txt'
                     exclude 'androidsupportmultidexversion.txt'
+                    exclude 'META-INF/library_release.kotlin_module'
                 }
             }
         } else {
