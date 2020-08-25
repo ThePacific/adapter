@@ -16,7 +16,7 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     coreLibraryDesugaring dep.desugaring
 
-    implementation 'com.github.thepacific:adapter:3.0.1'
+    implementation 'com.github.thepacific:adapter:3.0.2'
 
     implementation dep.androidX.paging.common
     implementation dep.androidX.paging.commonKtx
