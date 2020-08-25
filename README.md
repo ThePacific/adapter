@@ -1,153 +1,140 @@
 # Adapter
 A quick adapter library for RecyclerView, GridView, ListView, ViewPager, Spinner. It abstracts the boilerplate of item view types, item layouts, viewholders, span sizes , and more, in order to simplify building complex screens with multiple view types.
 
-If you are using version 2.x please check [here](https://github.com/thepacific/adapter/blob/master/README-2x.md)
-
 [![Download](https://img.shields.io/maven-central/v/com.github.thepacific/adapter.svg)](https://search.maven.org/artifact/com.github.thepacific/adapter)[![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-Adapter-green.svg?style=true)](https://android-arsenal.com/details/1/3449)
 
-![](https://github.com/thepacific/adapter/blob/master/previews/preview01.png)
+![](https://github.com/thepacific/adapter/blob/master/previews/preview0.gif)
 
 # Features
-+ Support ViewBinding、DataBinding、DefaultBinding.
++ Support DataBinding.
 + Multiple view types without any ViewHolder
 + Simple, flexible
 
 # Setup
 ```groovy
-implementation 'com.github.thepacific:adapter:3.0.1'
+compile 'com.github.thepacific:adapter:2.2.0'
 ```
-
-# Usage
-
-```kotlin
-class MyType1(val data: Any) : SimpleRecyclerItem()
-
-class MyType2(val data: Any) : SimpleRecyclerItem()
-
-class MyType3(val data: Any) : SimpleRecyclerItem()
-
-val adapter = RecyclerAdapter()
-
-adapter.onClickListener = View.OnClickListener { }
-adapter.imageLoader = adapter.imageLoader = object : AdapterImageLoader {}
-
-val item1 = MyType1(Any())
-val list2 = mutableListOf<MyType2>()
-val list3 = mutableListOf<MyType3>()
-
-adapter.add(item1)
-adapter.addAll(list2.toList())
-adapter.addAll(list3.toList())
+# Proguard
+```groovy
+-keep public class androidx.databinding.DataBindingUtil {
+    public static androidx.databinding.ViewDataBinding bind(android.view.View);
+}
+-keep public class android.databinding.DataBindingUtil {
+    public static android.databinding.ViewDataBinding bind(android.view.View);
+}
 ```
 
 # Item
-Extend [SimpleRecylcerItem](https://github.com/thepacific/adapter/blob/master/pacific-adapter/adapter/src/main/java/com/pacific/adapter/SimpleRecyclerItem.kt). Optionally, you may implement [RecyclerItem](https://github.com/thepacific/adapter/blob/master/pacific-adapter/adapter/src/main/java/com/pacific/adapter/RecyclerItem.kt)
+Extend [SimpleRecylcerItem](https://github.com/thepacific/adapter/blob/master/pacific-adapter/adapter/src/main/java/com/pacific/adapter/SimpleRecyclerItem.java). Optionally, you may implement [RecyclerItem](https://github.com/thepacific/adapter/blob/master/pacific-adapter/adapter/src/main/java/com/pacific/adapter/RecyclerItem.java)
 
-```kotlin
-class MovieItem(val data: Movie) : SimpleRecyclerItem() {
+```java
+public class YourItem extends SimpleRecyclerItem {
+    String name;
+    String description;
+    String imageUrl;
 
-    override fun getLayout(): Int {
-        return R.layout.item_movie
+    @Override
+    public int getLayout() {
+        return R.layout.item_cartoon;
     }
 
-    override fun bind(holder: AdapterViewHolder) {
-        val binding = holder.binding(ItemMovieBinding::bind)
-        binding.itemPosterTitle.text = data.name
-        binding.itemPosterRunningTime.text = data.showTime
+    @Override
+    public void bind(ViewHolder holder) {
+        // bind data
+        DefaultBinding binding = holder.binding();
+        binding.setText(R.id.text_name, name);
+        binding.setText(R.id.text_desc, description);
 
-        // attach UI listeners
-        holder.attachOnClickListener(R.id.item_poster_post)
-        holder.attachOnLongClickListener(R.id.item_poster_post)
-        holder.attachOnCheckedChangeListener(R.id.item_poster_post)
-        holder.attachOnTouchListener(R.id.item_poster_post)
-        holder.attachImageLoader(R.id.item_poster_post)
-        holder.attachTextChangedListener(R.id.item_poster_post)
-        holder.detachTextChangedListener(R.id.item_poster_post)
+        // attach listeners or load image
+        holder.attachImageLoader(R.id.img_header);
+        holder.attachOnClickListener(R.id.layout_root);
+
+        // holder.attachOnLongClickListener(viewId);
+        // holder.attachOnTouchListener(viewId);
+        // holder.attachOnCheckedChangeListener(viewId);
     }
 
-    override fun bindPayloads(holder: AdapterViewHolder, payloads: List<Any>?) {
-    }
+    // You may override any other method
+}
+```
 
-    override fun unbind(holder: AdapterViewHolder) {
-    }
+# DataBinding
+```java
+public class YourItem extends SimpleRecyclerItem {
+    @Override
+    public void bind(ViewHolder holder) {
+        // Without DataBinding, just use DefaultBinding
+        DefaultBinding binding = holder.binding();
 
-    // You may override other methods
+        // With DataBinding, use layout generated Binding instead of DefaultBinding
+        LayoutGeneratedBinding binding = holder.binding();
+    }
 }
 ```
 
 # Listeners
-Set OnClickListener、OnLongClickListener、OnTouchListener、OnCheckedChangeListener、ImageLoader and TextWatcher
+Set OnClickListener, OnLongClickListener, OnTouchListener, OnCheckedChangeListener and ImageLoader:
 
-```kotlin
-class HomeFragment : Fragment() {
+```java
+RecyclerAdapter adapter = new RecyclerAdapter(); // RecyclerView
+AbsAdapter adapter = new AbsAdapter(int viewTypeCount);// GridView, ListView, Spinner
+PagerAdapter2 adapter2 =new PagerAdapter2();// ViewPager
 
-    private val adapter = RecyclerAdapter()
+// set listeners or ImageLoader
+adapter.setOnClickListener(OnClickListener listener);
+adapter.setOnTouchListener(OnTouchListener listener);
+adapter.setOnLongClickListener(OnLongClickListener listener);
+adapter.setOnCheckedChangeListener(OnCheckedChangeListener listener);
+adapter.setImageLoader(ImageLoader imageLoader);
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+adapter.setOnClickListener(new View.OnClickListener() {
+    @Override
+    public void onClick(View v) {
+        // get ViewHolder
+        ViewHolder holder = AdapterUtils.getHolder(v);
 
-        // adapter.setOnTouchListener(OnTouchListener listener);
-        // adapter.setOnLongClickListener(OnLongClickListener listener);
-        // adapter.setOnCheckedChangeListener(OnCheckedChangeListener listener);
-        adapter.onClickListener = View.OnClickListener { v ->
+        // find view in ItemView
+        TextView textName = AdapterUtils.findView(holder.itemView, R.id.text_name);
 
-            // AdapterUtils
-            val holder: AdapterViewHolder = getHolder(v)// get ViewHolder
-            val v = holder.itemView.findViewById<TextView>(R.id.item_poster_title)// find view
-            val item: MovieItem = holder.item()// get Item
-            val size: Int = holder.size// get adapter data size
-            val position = holder.adapterPosition // get item position
-        }
+        // get Item
+        Item item = holder.getItem();
 
-        // load image
-        adapter.imageLoader = object : AdapterImageLoader {
+        // get adapter data size
+        int size = holder.getSize();
 
-            override fun onImageLoad(imageView: ImageView, holder: AdapterViewHolder) {
+        holder.isFirstItem();
+        holder.isLastItem();
 
-                GlideApp.with(this@HomeFragment)
-                    .load(holder.item<MovieItem>().data.img)
-                    .into(imageView)
-            }
-        }
-
-        // TextWatcher
-        adapter.textChangedListener = object : AdapterTextWatcher {
-
-            override fun beforeTextChanged(
-                v: TextView,
-                s: CharSequence?,
-                start: Int,
-                count: Int,
-                after: Int,
-                holder: AdapterViewHolder
-            ) {
-                // AdapterUtils
-            }
-
-            override fun onTextChanged(
-                v: TextView,
-                s: CharSequence?,
-                start: Int,
-                before: Int,
-                count: Int,
-                holder: AdapterViewHolder
-            ) {
-                // AdapterUtils
-            }
-
-            override fun afterTextChanged(v: TextView, s: Editable, holder: AdapterViewHolder) {
-                // AdapterUtils
-            }
-        }
+        // for ListView,GridView, ViewPager, Spinner and RecyclerView
+        int position = holder.getCurrentPosition();
+         
+        // only for RecyclerView
+        int position = holder.getAdapterPosition();
     }
-}
+});
+
+adapter.setImageLoader((imageView, holder) -> {
+    YourItem item = holder.getItem();
+    Glide.with(this)
+                .load(item.imageUrl())
+                .fitCenter()
+                .into(imageView);
+});
 ```
 
 # Others
-
-data set changed callback , it's useful to show or hide empty view
-```kotlin
+```java
 adapter.setOnDataSetChanged(OnDataSetChanged onDataSetChanged);
+
+//  data set changed callback , it's useful to show or hide empty view
+public interface OnDataSetChanged {
+    /**
+     * called when data source changed
+     *
+     * @param count current data source size
+     */
+    void apply(int count);
+}
 ```
 
 # License  
