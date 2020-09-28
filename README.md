@@ -93,10 +93,10 @@ class HomeFragment : Fragment() {
 
             // AdapterUtils
             val holder: AdapterViewHolder = AdapterUtils.getHolder(v)// get ViewHolder
-            val v = holder.itemView.findViewById<TextView>(R.id.item_poster_title)// find view
+            val textView = holder.itemView.findViewById<TextView>(R.id.item_poster_title)// find view
             val item: MovieItem = holder.item()// get Item
-            val size: Int = holder.size// get adapter data size
-            val position = holder.adapterPosition // get item position
+            val itemCount: Int = holder.itemCount// get adapter data size
+            val position = holder.bindingAdapterPosition // get item position
         }
 
         // load image
