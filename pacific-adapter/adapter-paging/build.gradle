@@ -5,6 +5,12 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
+<<<<<<< HEAD
+=======
+    coreLibraryDesugaring dep.desugaring
+
+    implementation 'com.github.thepacific:adapter:3.0.2'
+>>>>>>> fcb2a0afcb94387854eb56e0b881f2771f2644b3
 
     implementation dep.androidX.paging.common
     implementation dep.androidX.paging.commonKtx

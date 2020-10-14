@@ -183,7 +183,7 @@ abstract class BaseRecyclerAdapter<T : RecyclerItem>(
         val beforeSize = data.size
         if (data.isNotEmpty()) {
             data.clear()
-            notifyItemMoved(0, beforeSize)
+            notifyItemRangeRemoved(0, beforeSize)
         }
         if (data.addAll(list)) {
             notifyItemRangeInserted(0, list.size)

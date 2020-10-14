@@ -14,7 +14,7 @@ If you are using version 2.x please check [here](https://github.com/thepacific/a
 
 # Setup
 ```groovy
-implementation 'com.github.thepacific:adapter:3.0.2'
+implementation 'com.github.thepacific:adapter:{lastVersion}'
 ```
 
 # Usage
@@ -92,11 +92,11 @@ class HomeFragment : Fragment() {
         adapter.onClickListener = View.OnClickListener { v ->
 
             // AdapterUtils
-            val holder: AdapterViewHolder = getHolder(v)// get ViewHolder
-            val v = holder.itemView.findViewById<TextView>(R.id.item_poster_title)// find view
+            val holder: AdapterViewHolder = AdapterUtils.getHolder(v)// get ViewHolder
+            val textView = holder.itemView.findViewById<TextView>(R.id.item_poster_title)// find view
             val item: MovieItem = holder.item()// get Item
-            val size: Int = holder.size// get adapter data size
-            val position = holder.adapterPosition // get item position
+            val itemCount: Int = holder.itemCount// get adapter data size
+            val position = holder.bindingAdapterPosition // get item position
         }
 
         // load image
