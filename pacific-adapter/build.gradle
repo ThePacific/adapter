@@ -3,6 +3,7 @@
 buildscript {
     apply from: file('gradle/dependencies.gradle')
     ext {
+        compose_version = '1.0.0-alpha04'
         kotlin_version = '1.4.10'
     }
     repositories {
