@@ -1,10 +1,10 @@
 buildscript {
 
     ext.buildConfig = [
-            'compileSdk': 29,
-            'buildTools': '30.0.1',
+            'compileSdk': 30,
+            'buildTools': '30.0.2',
             'minSdk'    : 21,
-            'targetSdk' : 29,
+            'targetSdk' : 30,
             'version'   : [
                     'major': 1,
                     'minor': 0,
@@ -21,21 +21,20 @@ buildscript {
             buildConfig.version.build
 
     ext.versions = [
-            'mavenPublish'     : '0.12.0',
+            'mavenPublish'     : '0.13.0',
             'desugaring'       : '1.0.9',
             'ktLint'           : '9.1.0',
-            'kotlin'           : '1.4.0',
+            'kotlin'           : '1.4.10',
             'ktCoroutines'     : '1.3.9',
-            'ktSerialization'  : '1.0.0-RC',
+            'ktSerialization'  : '1.0.0',
             'reflection'       : '0.9.12',
-            'dagger'           : '2.28.3',
+            'dagger'           : '2.29.1',
             'autoValue'        : '1.7.3',
             'retrofit'         : '2.9.0',
-            'okhttp'           : '4.8.0',
-            'moshi'            : '1.9.3',
-            'okio'             : '2.7.0',
-            'epoxy'            : '4.0.0-beta4',
-            'assistedInject'   : '0.5.0',
+            'okhttp'           : '4.9.0',
+            'moshi'            : '1.10.0',
+            'okio'             : '2.8.0',
+            'assistedInject'   : '0.6.0',
             'leakcanary'       : '2.3',
             'rxJava'           : '3.0.4',
             'rxAndroid'        : '3.0.0',
@@ -44,9 +43,7 @@ buildscript {
             'threeTenBp'       : '1.4.2',
             'threeTenAbp'      : '1.2.3',
             'glide'            : '4.11.0',
-            'mmkv'             : '1.0.23',
-            'mvRx'             : '1.5.0',
-            'coordinators'     : '0.4',
+            'mmkv'             : '1.2.2',
             'gravitySnapHelper': '2.2.1',
             'javaxAnnotation'  : '1.3.2',
             'errorProne'       : '2.4.0',
@@ -61,14 +58,19 @@ buildscript {
             'paho'             : '1.2.4',
             'flexbox'          : '2.0.1',
             'fabric'           : '1.4.8',
-            'store'            : '4.0.0-alpha06',
+            'store'            : '4.0.0-beta01',
+            'theGuava'         : '0.0.1',
+            'theExt'           : '0.0.1',
+            'theSdk'           : '0.0.1',
+            'exoplayer'        : '2.12.0',
 
             'androidX'         : [
-                    'activity'                  : '1.2.0-alpha07',
+                    'compose'                   : '1.0.0-alpha04',
+                    'activity'                  : '1.2.0-beta01',
                     'annotation'                : '1.2.0-alpha01',
                     'annotationExperimental'    : '1.0.0',
                     'annotationExperimentalLint': '1.0.0',
-                    'appcompat'                 : '1.2.0',
+                    'appcompat'                 : '1.3.0-alpha02',
                     'arch'                      : '2.1.0',
                     'asynclayoutinflater'       : '1.0.0',
                     'autofill'                  : '1.0.0',
@@ -76,51 +78,52 @@ buildscript {
                     'biometric'                 : '1.0.1',
                     'benchmark'                 : '1.1.0-alpha01',
                     // camera diff
-                    'camera'                    : '1.0.0-beta07',
-                    'cameraExt'                 : '1.0.0-alpha14',
-                    'cameraview'                : '1.0.0-alpha14',
+                    'camera'                    : '1.0.0-beta10',
+                    'cameraExt'                 : '1.0.0-alpha17',
+                    'cameraview'                : '1.0.0-alpha17',
 
                     'cardview'                  : '1.0.0',
                     'collection'                : '1.1.0',
-                    'concurrent'                : '1.1.0-rc01',
-                    'constraintlayout'          : '2.0.0-rc1',
+                    'concurrent'                : '1.1.0',
+                    'constraintlayout'          : '2.0.2',
                     'contentpager'              : '1.0.0',
                     'coordinatorlayout'         : '1.1.0',
                     // core diff
-                    'core'                      : '1.3.0',
-                    'coreAnimation'             : '1.0.0-alpha01',
+                    'core'                      : '1.5.0-alpha02',
+                    'coreAnimation'             : '1.0.0-alpha02',
                     'coreRole'                  : '1.0.0-rc01',
 
                     'cursoradapter'             : '1.0.0',
                     'customview'                : '1.1.0',
-                    'drawerlayout'              : '1.1.0',
+                    'datastore'                 : '1.0.0-alpha01',
+                    'drawerlayout'              : '1.1.1',
                     // dynamicanimation diff
                     'dynamicanimation'          : '1.1.0-alpha03',
                     'dynamicanimationKtx'       : '1.0.0-alpha03',
 
                     'emoji'                     : '1.1.0',
                     'exifinterface'             : '1.2.0',
-                    'fragment'                  : '1.3.0-alpha07',
+                    'fragment'                  : '1.3.0-beta01',
                     'interpolator'              : '1.0.0',
-                    'lifecycle'                 : '2.3.0-alpha06',
+                    'lifecycle'                 : '2.3.0-beta01',
                     'loader'                    : '1.1.0',
                     // multidex diff
                     'multidex'                  : '2.0.1',
                     'multidexInstrumentation'   : '2.0.0',
 
                     'navigation'                : '2.3.0',
-                    'paging'                    : '3.0.0-alpha04',
+                    'paging'                    : '3.0.0-alpha07',
                     'palette'                   : '1.0.0',
                     'preference'                : '1.1.1',
                     'recommendation'            : '1.0.0',
                     // recyclerview diff
-                    'recyclerview'              : '1.2.0-alpha05',
-                    'recyclerviewSelection'     : '1.1.0-rc01',
+                    'recyclerview'              : '1.2.0-alpha06',
+                    'recyclerviewSelection'     : '1.1.0-rc03',
 
                     'remotecallback'            : '1.0.0-alpha02',
                     'room'                      : '2.3.0-alpha02',
                     // savedstate diff
-                    'savedstate'                : '1.1.0-alpha01',
+                    'savedstate'                : '1.1.0-beta01',
                     'savedstateBundle'          : '1.0.0-alpha01',
                     'savedstateCommon'          : '1.0.0-alpha01',
 
@@ -132,11 +135,11 @@ buildscript {
                     'transition'                : '1.4.0-beta01',
                     // vectordrawable diff
                     'vectordrawable'            : '1.1.0',
-                    'vectordrawableSeekable'    : '1.0.0-alpha01',
+                    'vectordrawableSeekable'    : '1.0.0-alpha02',
 
                     'viewpager'                 : '1.0.0',
                     'viewpager2'                : '1.1.0-alpha01',
-                    'webkit'                    : '1.3.0-rc02',
+                    'webkit'                    : '1.3.0',
                     'window'                    : '1.0.0-alpha01',
                     'versionedparcelable'       : '1.1.1',
                     'test'                      : '1.3.0-rc03',
@@ -152,68 +155,66 @@ buildscript {
                     'janktesthelperV23'         : '1.0.1-alpha1',
 
                     'uiautomator'               : '2.2.0',
-                    'work'                      : '2.4.0',
+                    'work'                      : '2.5.0-alpha01',
                     'material'                  : '1.3.0-alpha02',
                     'gmsGoogleServices'         : '4.3.3',
             ],
     ]
 
     ext.dep = [
-            'desugaring'         : "com.android.tools:desugar_jdk_libs:${versions.desugaring}",
-            'junit'              : "junit:junit:${versions.junit}",
-            'mockito'            : "org.mockito:mockito-core:${versions.mockito}",
-            'truth'              : "com.google.truth:truth:${versions.truth}",
-            'mmkv'               : "com.tencent:mmkv:${versions.mmkv}",
-            'mvRx'               : "com.airbnb.android:mvrx:${versions.mvRx}",
-            'coordinators'       : "com.squareup.coordinators:coordinators:${versions.coordinators}",
-            'gravitySnapHelper'  : "com.github.rubensousa:gravitysnaphelper:${versions.gravitySnapHelper}",
-            'leakcanary'         : "com.squareup.leakcanary:leakcanary-android:${versions.leakcanary}",
-            'javaxAnnotation'    : "javax.annotation:javax.annotation-api:${versions.javaxAnnotation}",
-            'errorProne'         : "com.google.errorprone:error_prone_annotations:${versions.errorProne}",
-            'jetAnnotation'      : "org.jetbrains:annotations:${versions.jetAnnotation}",
-            'injectAnnotation'   : "javax.inject:javax.inject:${versions.injectAnnotation}",
-            'findBugsJrs305'     : "com.google.code.findbugs:jsr305:${versions.findBugsJrs305}",
-            'reflection'         : "org.jooq:joor-java-6:${versions.reflection}",
-            'matisse'            : "com.zhihu.android:matisse:${versions.matisse}",
-            'lubanTurbo'         : "top.zibin:Luban-turbo:${versions.lubanTurbo}",
-            'paho'               : "org.eclipse.paho:org.eclipse.paho.client.mqttv3:${versions.paho}",
-            'flexbox'            : "com.google.android:flexbox:${versions.flexbox}",
-            'fabric'             : "io.fabric.sdk.android:gradle:${versions.fabric}",
-            'store'              : "com.dropbox.mobile.store:store4:${versions.store}",
-            'kotlin'             : [
+            'desugaring'       : "com.android.tools:desugar_jdk_libs:${versions.desugaring}",
+            'junit'            : "junit:junit:${versions.junit}",
+            'mockito'          : "org.mockito:mockito-core:${versions.mockito}",
+            'truth'            : "com.google.truth:truth:${versions.truth}",
+            'mmkv'             : "com.tencent:mmkv-static:${versions.mmkv}",
+            'gravitySnapHelper': "com.github.rubensousa:gravitysnaphelper:${versions.gravitySnapHelper}",
+            'leakcanary'       : "com.squareup.leakcanary:leakcanary-android:${versions.leakcanary}",
+            'javaxAnnotation'  : "javax.annotation:javax.annotation-api:${versions.javaxAnnotation}",
+            'errorProne'       : "com.google.errorprone:error_prone_annotations:${versions.errorProne}",
+            'jetAnnotation'    : "org.jetbrains:annotations:${versions.jetAnnotation}",
+            'injectAnnotation' : "javax.inject:javax.inject:${versions.injectAnnotation}",
+            'findBugsJrs305'   : "com.google.code.findbugs:jsr305:${versions.findBugsJrs305}",
+            'reflection'       : "org.jooq:joor-java-6:${versions.reflection}",
+            'matisse'          : "com.zhihu.android:matisse:${versions.matisse}",
+            'lubanTurbo'       : "top.zibin:Luban-turbo:${versions.lubanTurbo}",
+            'paho'             : "org.eclipse.paho:org.eclipse.paho.client.mqttv3:${versions.paho}",
+            'flexbox'          : "com.google.android:flexbox:${versions.flexbox}",
+            'fabric'           : "io.fabric.sdk.android:gradle:${versions.fabric}",
+            'store'            : "com.dropbox.mobile.store:store4:${versions.store}",
+            'kotlin'           : [
                     'stdlibJdk8': "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${versions.kotlin}",
                     'stdlibJdk7': "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${versions.kotlin}",
                     'reflect'   : "org.jetbrains.kotlin:kotlin-reflect:${versions.kotlin}",
                     'test'      : "org.jetbrains.kotlin:kotlin-test:${versions.kotlin}",
                     'testJunit' : "org.jetbrains.kotlin:kotlin-test-junit:${versions.kotlin}"
             ],
-            'ktSerialization': "org.jetbrains.kotlinx:kotlinx-serialization-core:${versions.ktSerialization}",
-            'ktCoroutines'   : [
+            'ktSerialization'  : "org.jetbrains.kotlinx:kotlinx-serialization-core:${versions.ktSerialization}",
+            'ktCoroutines'     : [
                     'core'   : "org.jetbrains.kotlinx:kotlinx-coroutines-core:${versions.ktCoroutines}",
                     'rxJava' : "org.jetbrains.kotlinx:kotlinx-coroutines-rx3:${versions.ktCoroutines}",
                     'android': "org.jetbrains.kotlinx:kotlinx-coroutines-android:${versions.ktCoroutines}"
             ],
-            'rxJava'             : [
+            'rxJava'           : [
                     'rxJava'   : "io.reactivex.rxjava3:rxjava:${versions.rxJava}",
                     'rxAndroid': "io.reactivex.rxjava3:rxandroid:${versions.rxAndroid}",
                     'stream'   : "org.reactivestreams:reactive-streams:${versions.rxStream}"
             ],
-            'dagger'             : [
+            'dagger'           : [
                     'dagger'          : "com.google.dagger:dagger:${versions.dagger}",
                     'androidSupport'  : "com.google.dagger:dagger-android-support:${versions.dagger}",
                     'compiler'        : "com.google.dagger:dagger-compiler:${versions.dagger}",
                     'androidProcessor': "com.google.dagger:dagger-android-processor:${versions.dagger}"
             ],
-            'autoValue'          : [
+            'autoValue'        : [
                     'autoValue': "com.google.auto.value:auto-value-annotations:${versions.autoValue}",
                     'compiler' : "com.google.auto.value:auto-value:${versions.autoValue}"
             ],
-            'glide'              : [
+            'glide'            : [
                     'glide'             : "com.github.bumptech.glide:glide:${versions.glide}",
                     'compiler'          : "com.github.bumptech.glide:compiler:${versions.glide}",
                     'okhttp3Integration': "com.github.bumptech.glide:okhttp3-integration:${versions.glide}"
             ],
-            'retrofit'           : [
+            'retrofit'         : [
                     'retrofit'          : "com.squareup.retrofit2:retrofit:${versions.retrofit}",
                     'rxJavaAdapter'     : "com.squareup.retrofit2:adapter-rxjava3:${versions.retrofit}",
                     'gsonConverter'     : "com.squareup.retrofit2:converter-gson:${versions.retrofit}",
@@ -224,28 +225,46 @@ buildscript {
                     'jaxbConverter'     : "com.squareup.retrofit2:converter-jaxb:${versions.retrofit}",
                     'scalarsConverter'  : "com.squareup.retrofit2:converter-scalars:${versions.retrofit}"
             ],
-            'okHttp'             : [
+            'okHttp'           : [
                     'okHttp'            : "com.squareup.okhttp3:okhttp:${versions.okhttp}",
                     'loggingInterceptor': "com.squareup.okhttp3:logging-interceptor:${versions.okhttp}"
             ],
-            'moshi'              : [
+            'moshi'            : [
                     'moshi'  : "com.squareup.moshi:moshi:${versions.moshi}",
                     'kotlin' : "com.squareup.moshi:moshi-kotlin:${versions.moshi}",
                     'codegen': "com.squareup.moshi:moshi-kotlin-codegen:${versions.moshi}"
             ],
-            'okio'               : "com.squareup.okio:okio:${versions.okio}",
-            'epoxy'              : [
-                    'epoxy'      : "com.airbnb.android:epoxy:${versions.epoxy}",
-                    'paging'     : "com.airbnb.android:epoxy-paging:${versions.epoxy}",
-                    'dataBinding': "com.airbnb.android:epoxy-databinding:${versions.epoxy}",
-                    'processor'  : "com.airbnb.android:epoxy-processor:${versions.epoxy}"
-            ],
-            'assistedInject'     : [
+            'okio'             : "com.squareup.okio:okio:${versions.okio}",
+            'assistedInject'   : [
                     'annotation': "com.squareup.inject:assisted-inject-annotations-dagger2:${versions.assistedInject}",
                     'processor' : "com.squareup.inject:assisted-inject-processor-dagger2:${versions.assistedInject}"
             ],
-            'timber'             : "com.jakewharton.timber:timber:${versions.timber}",
-            'androidX'           : [
+            'timber'           : "com.jakewharton.timber:timber:${versions.timber}",
+            'exoplayer'        : [
+                    'core'           : "com.google.android.exoplayer:exoplayer-core:${versions.exoplayer}",
+                    'dash'           : "com.google.android.exoplayer:exoplayer-dash:${versions.exoplayer}",
+                    'hls'            : "com.google.android.exoplayer:exoplayer-hls:${versions.exoplayer}",
+                    'smoothstreaming': "com.google.android.exoplayer:exoplayer-smoothstreaming:${versions.exoplayer}",
+                    'ui'             : "com.google.android.exoplayer:exoplayer-ui:${versions.exoplayer}",
+                    'okhttp'         : "com.google.android.exoplayer:extension-okhttp:${versions.exoplayer}"
+            ],
+            'company'          : [
+                    'guavaJvm'      : "com.mobile.guava:guava-jvm:${versions.theGuava}",
+                    'guavaAndroid'  : "com.mobile.guava:guava-android:${versions.theGuava}",
+                    'guavaAndroidUi': "com.mobile.guava:guava-android-ui:${versions.theGuava}",
+                    'guavaData'     : "com.mobile.guava:guava-data:${versions.theGuava}",
+                    'guavaMvvm'     : "com.mobile.guava:guava-android-mvvm:${versions.theGuava}",
+                    'extGlide'      : "com.mobile.ext:ext-glide:${versions.theExt}",
+                    'extRxjava3'    : "com.mobile.ext:ext-rxjava3:${versions.theExt}",
+                    'sdkIpv6'       : "com.mobile.sdk:sdk-ipv6:${versions.theSdk}",
+                    'sdkSister'     : "com.mobile.sdk:sdk-sister:${versions.theSdk}"
+            ],
+            'androidX'         : [
+                    'compose'            : [
+                            'ui'       : "androidx.compose.ui:ui:${versions.androidX.compose}",
+                            'material' : "androidx.compose.material:material:${versions.androidX.compose}",
+                            'uiTooling': "androidx.ui:ui-tooling:${versions.androidX.compose}",
+                    ],
                     'activity'           : [
                             'activity': "androidx.activity:activity:${versions.androidX.activity}",
                             'ktx'     : "androidx.activity:activity-ktx:${versions.androidX.activity}",
@@ -305,6 +324,10 @@ buildscript {
                     'dynamicanimation'   : [
                             'dynamicanimation': "androidx.dynamicanimation:dynamicanimation:${versions.androidX.dynamicanimation}",
                             'ktx'             : "androidx.dynamicanimation:dynamicanimation-ktx:${versions.androidX.dynamicanimationKtx}",
+                    ],
+                    'datastore'          : [
+                            'core'       : "androidx.datastore:datastore-core:${versions.androidX.datastore}",
+                            'preferences': "androidx.datastore:datastore-preferences:${versions.androidX.datastore}"
                     ],
                     'emoji'              : [
                             'emoji'    : "androidx.emoji:emoji:${versions.androidX.emoji}",
@@ -475,7 +498,7 @@ buildscript {
                             'testing'   : "androidx.work:work-testing:${versions.androidX.work}",
                     ],
                     'material'           : "com.google.android.material:material:${versions.androidX.material}",
-                    'gmsGoogleServices'  : "com.google.gms:google-services:${versions.androidX.gmsGoogleServices}",
-            ],
+                    'gmsGoogleServices'  : "com.google.gms:google-services:${versions.androidX.gmsGoogleServices}"
+            ]
     ]
 }

@@ -1,11 +1,41 @@
 apply plugin: 'com.android.library'
-apply from: "../gradle/android_module.gradle"
+
+apply plugin: 'kotlin-android'
+// apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+apply plugin: 'kotlinx-serialization'
 apply plugin: 'com.vanniktech.maven.publish'
 
 android {
+
     libraryVariants.all {
         it.generateBuildConfigProvider.get().enabled = false
     }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    coreLibraryDesugaring dep.desugaring
+
+    compileOnly dep.injectAnnotation
+    compileOnly dep.jetAnnotation
+    compileOnly dep.javaxAnnotation
+    compileOnly dep.findBugsJrs305
+
+    testImplementation dep.kotlin.test
+    testImplementation dep.kotlin.testJunit
+    testImplementation dep.junit
+    testImplementation dep.mockito
+    testImplementation dep.truth
+    androidTestImplementation dep.androidX.test.runner
+    androidTestImplementation dep.androidX.testExt.junit
+    androidTestImplementation dep.androidX.testExt.junitKtx
+    androidTestImplementation dep.androidX.espresso.core
+    androidTestImplementation dep.androidX.multidex.multidex
+    androidTestImplementation dep.androidX.multidex.instrumentation
+
+    implementation dep.kotlin.stdlibJdk8
 }
 
 Properties properties = new Properties()

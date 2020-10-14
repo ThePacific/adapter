@@ -3,7 +3,7 @@
 buildscript {
     apply from: file('gradle/dependencies.gradle')
     ext {
-        kotlin_version = '1.4.0'
+        kotlin_version = '1.4.10'
     }
     repositories {
         google()
@@ -16,18 +16,20 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:4.0.1'
+        classpath "com.android.tools.build:gradle:4.2.0-alpha13"
         classpath "androidx.navigation:navigation-safe-args-gradle-plugin:${versions.androidX.navigation}"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${versions.kotlin}"
         classpath "org.jetbrains.kotlin:kotlin-serialization:${versions.kotlin}"
         classpath "org.jlleitschuh.gradle:ktlint-gradle:${versions.ktLint}"
         classpath "com.vanniktech:gradle-maven-publish-plugin:${versions.mavenPublish}"
+        classpath "org.jetbrains.dokka:dokka-gradle-plugin:${versions.kotlin}"
     }
 }
 
 allprojects { project ->
-    apply plugin: 'org.jlleitschuh.gradle.ktlint'
+
     repositories {
+        mavenLocal()
         google()
         jcenter()
         mavenCentral()
@@ -35,50 +37,6 @@ allprojects { project ->
         maven { url "https://kotlin.bintray.com/kotlinx" }
         maven { url "https://dl.bintray.com/kotlin/kotlin-eap" }
         maven { url "https://jitpack.io" }
-        mavenLocal()
-    }
-
-    repositories {
-        flatDir {
-            dirs 'libs'
-        }
-    }
-
-    plugins.withType(com.android.build.gradle.BasePlugin).configureEach { plugin ->
-        plugin.extension.compileOptions {
-            coreLibraryDesugaringEnabled true
-            sourceCompatibility = JavaVersion.VERSION_1_8
-            targetCompatibility = JavaVersion.VERSION_1_8
-        }
-    }
-
-    tasks.withType(JavaCompile).configureEach { task ->
-        task.sourceCompatibility = JavaVersion.VERSION_1_8
-        task.targetCompatibility = JavaVersion.VERSION_1_8
-    }
-
-    tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach { task ->
-        task.kotlinOptions {
-            jvmTarget = "1.8"
-            suppressWarnings = true
-        }
-    }
-
-    if (project.plugins.hasPlugin('kotlin-android-extensions')) {
-        androidExtensions {
-            experimental = true
-        }
-    }
-
-    if (project.plugins.hasPlugin('kotlin-kapt')) {
-        kapt {
-            correctErrorTypes = true
-            useBuildCache = true
-
-            javacOptions {
-                option("-Xmaxerrs", 1000)
-            }
-        }
     }
 
     configurations.all {
@@ -117,17 +75,28 @@ allprojects { project ->
             }
         }
     }
+
+    if (project.plugins.hasPlugin('kotlin-android-extensions')) {
+        androidExtensions {
+            experimental = true
+        }
+    }
+
+    if (project.plugins.hasPlugin('kotlin-kapt')) {
+        kapt {
+            correctErrorTypes = true
+            useBuildCache = true
+
+            javacOptions {
+                option("-Xmaxerrs", 1000)
+            }
+        }
+    }
 }
 
 subprojects { project ->
     afterEvaluate {
         if (project.plugins.hasPlugin('android') || project.plugins.hasPlugin('android-library')) {
-
-            boolean isAndroidLibrary = project.plugins.hasPlugin('android-library')
-            boolean isRelease = project.gradle.startParameter.taskNames.any {
-                it.toLowerCase().contains('release')
-            }
-
             android {
                 compileSdkVersion buildConfig.compileSdk
                 buildToolsVersion buildConfig.buildTools
@@ -142,25 +111,26 @@ subprojects { project ->
                     testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
                 }
 
+                compileOptions {
+                    coreLibraryDesugaringEnabled true
+                    sourceCompatibility JavaVersion.VERSION_1_8
+                    targetCompatibility JavaVersion.VERSION_1_8
+                }
+
+                kotlinOptions {
+                    jvmTarget = '1.8'
+                    useIR = true
+                    freeCompilerArgs += ["-Xallow-jvm-ir-dependencies", "-Xskip-prerelease-check"]
+                }
+
+                composeOptions {
+                    kotlinCompilerExtensionVersion versions.androidX.compose
+                    kotlinCompilerVersion versions.kotlin
+                }
+
                 buildFeatures {
-                    viewBinding = true
                     dataBinding = true
-                }
-
-                buildTypes {
-                    release {
-                        minifyEnabled(isRelease && !isAndroidLibrary)
-                        proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-                    }
-                }
-
-                splits {
-                    abi {
-                        enable true
-                        reset()
-                        include "armeabi-v7a", 'arm64-v8a', "x86"
-                        universalApk true
-                    }
+                    viewBinding = true
                 }
 
                 lintOptions {
@@ -175,6 +145,8 @@ subprojects { project ->
                 }
 
                 packagingOptions {
+                    pickFirst 'lib/*/libc++_shared.so'
+
                     exclude 'META-INF/README'
                     exclude 'META-INF/README.txt'
                     exclude 'META-INF/readme'
@@ -209,7 +181,18 @@ subprojects { project ->
                 }
             }
         } else {
-            println("JVM project")
+            compileJava {
+                targetCompatibility = "1.8"
+                sourceCompatibility = "1.8"
+            }
+
+            compileKotlin {
+                kotlinOptions {
+                    jvmTarget = "1.8"
+                    useIR = true
+                    freeCompilerArgs += ["-Xallow-jvm-ir-dependencies", "-Xskip-prerelease-check"]
+                }
+            }
         }
     }
 }

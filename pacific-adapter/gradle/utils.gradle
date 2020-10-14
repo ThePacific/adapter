@@ -27,3 +27,20 @@ def gitTimestamp() {
 def propertyOrEmpty(String name) {
     return hasProperty(name) ? getProperty(name) : ''
 }
+
+def localProperty(key) {
+    Properties properties = new Properties()
+    properties.load(project.rootProject.file('local.properties').newDataInputStream())
+    def val = properties.getProperty(key, null)
+    if (val == null) {
+        throw new GradleException("""cant find value '${key}' in file 'local.properties'.  """)
+    }
+    return val
+}
+
+ext {
+    gitSha = this.&gitSha
+    gitTimestamp = this.&gitTimestamp
+    propertyOrEmpty = this.&propertyOrEmpty
+    localProperty = this.&localProperty
+}
