@@ -38,6 +38,10 @@ def localProperty(key) {
     return val
 }
 
+def getDate() {
+    new Date().format('yyyyMMddHHmmss')
+}
+
 ext {
     gitSha = this.&gitSha
     gitTimestamp = this.&gitTimestamp

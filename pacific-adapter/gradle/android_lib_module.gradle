@@ -1,10 +1,9 @@
 apply plugin: 'com.android.library'
 
 apply plugin: 'kotlin-android'
-// apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlinx-serialization'
-apply plugin: 'com.vanniktech.maven.publish'
+apply plugin: 'kotlin-parcelize'
 
 android {
 
@@ -14,7 +13,7 @@ android {
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(dir: 'dep', include: ['*.jar'])
 
     coreLibraryDesugaring dep.desugaring
 
@@ -35,20 +34,163 @@ dependencies {
     androidTestImplementation dep.androidX.multidex.multidex
     androidTestImplementation dep.androidX.multidex.instrumentation
 
-    implementation dep.kotlin.stdlibJdk8
+    implementation dep.kotlin.stdlib
+    implementation dep.kotlin.reflect
+    implementation dep.ktSerialization
+    implementation dep.ktCoroutines.core
+    implementation dep.ktCoroutines.rxJava
+    implementation dep.ktCoroutines.android
+
+    implementation dep.okHttp.okHttp
+    implementation dep.okHttp.loggingInterceptor
+    implementation dep.okio
+    implementation dep.retrofit.retrofit
+    implementation dep.retrofit.rxJavaAdapter
+    implementation dep.retrofit.moshiConverter
+    implementation dep.moshi.moshi
+    implementation dep.moshi.kotlin
+    kapt dep.moshi.codegen
+
+    implementation dep.rxJava.rxJava
+    implementation dep.rxJava.rxAndroid
+    implementation dep.rxJava.stream
+
+    implementation dep.store
+
+    implementation dep.glide.glide
+    implementation dep.glide.okhttp3Integration
+    kapt dep.glide.compiler
+
+    compileOnly dep.autoValue.autoValue
+    kapt dep.autoValue.compiler
+    implementation dep.dagger.dagger
+    kapt dep.dagger.compiler
+
+    implementation dep.mmkv
+    implementation dep.reflection
+    implementation dep.timber
+    implementation dep.gravitySnapHelper
+    debugImplementation dep.leakcanary
+
+    implementation dep.flexbox
+    implementation dep.adapter
+    implementation dep.coil
+
+    compileOnly dep.androidX.annotation.annotation
+    implementation dep.androidX.material
+    implementation dep.androidX.collection.collection
+    implementation dep.androidX.collection.ktx
+    implementation dep.androidX.activity.activity
+    implementation dep.androidX.activity.compose
+    implementation dep.androidX.activity.ktx
+    implementation dep.androidX.fragment.fragment
+    implementation dep.androidX.fragment.ktx
+    implementation dep.androidX.appcompat.appcompat
+    implementation dep.androidX.core.core
+    implementation dep.androidX.core.animation
+    implementation dep.androidX.core.role
+    implementation dep.androidX.core.ktx
+
+    implementation dep.androidX.savedstate.savedstate
+    implementation dep.androidX.savedstate.savedstateKtx
+    implementation dep.androidX.constraintlayout.constraintlayout
+    implementation dep.androidX.preference.preference
+    implementation dep.androidX.preference.ktx
+    implementation dep.androidX.palette.palette
+    implementation dep.androidX.palette.ktx
+    implementation dep.androidX.cardview
+    implementation dep.androidX.recyclerview.recyclerview
+    implementation dep.androidX.recyclerview.selection
+    implementation dep.androidX.viewpager
+    implementation dep.androidX.viewpager2
+    implementation dep.androidX.swiperefreshlayout
+    implementation dep.androidX.slidingpanelayout
+    implementation dep.androidX.transition.transition
+    implementation dep.androidX.transition.transitionKtx
+    implementation dep.androidX.window.window
+    implementation dep.androidX.window.java
+    implementation dep.androidX.window.rxjava
+
+    implementation dep.androidX.dynamicanimation.dynamicanimation
+    implementation dep.androidX.dynamicanimation.ktx
+    implementation dep.androidX.sharetarget
+    implementation dep.androidX.webkit
+    implementation dep.androidX.versionedparcelable
+    implementation dep.androidX.interpolator
+    implementation dep.androidX.drawerlayout
+    implementation dep.androidX.coordinatorlayout
+    implementation dep.androidX.customview
+    implementation dep.androidX.asynclayoutinflater
+    implementation dep.androidX.browser
+    implementation dep.androidX.biometric.biometric
+    implementation dep.androidX.biometric.biometricKtx
+    implementation dep.androidX.autofill
+    implementation dep.androidX.contentpager
+    implementation dep.androidX.loader
+    implementation dep.androidX.versionedparcelable
+    implementation dep.androidX.work.runtime
+    implementation dep.androidX.work.runtimeKtx
+    implementation dep.androidX.work.rxJava
+    implementation dep.androidX.concurrent.futures
+    implementation dep.androidX.concurrent.ktx
+    implementation dep.androidX.concurrent.listenablefuture
+    implementation dep.androidX.navigation.fragment
+    implementation dep.androidX.navigation.fragmentKtx
+    implementation dep.androidX.navigation.ui
+    implementation dep.androidX.navigation.uiKtx
+    implementation dep.androidX.lifecycle.process
+    implementation dep.androidX.lifecycle.commonJava8
+    implementation dep.androidX.lifecycle.viewmodelKtx
+    implementation dep.androidX.lifecycle.runtimeKtx
+    implementation dep.androidX.lifecycle.reactive
+    implementation dep.androidX.lifecycle.reactiveKtx
+    implementation dep.androidX.lifecycle.livedataKtx
+    implementation dep.androidX.lifecycle.livedataCoreKtx
+    implementation dep.androidX.lifecycle.viewmodelSavedstate
+    implementation dep.androidX.lifecycle.compose
+    implementation dep.androidX.arch.common
+    implementation dep.androidX.arch.runtime
+    implementation dep.androidX.paging.common
+    implementation dep.androidX.paging.commonKtx
+    implementation dep.androidX.paging.runtime
+    implementation dep.androidX.paging.runtimeKtx
+    implementation dep.androidX.room.common
+    implementation dep.androidX.room.runtime
+    implementation dep.androidX.room.migration
+    implementation dep.androidX.room.ktx
+    kapt dep.androidX.room.compiler
+    implementation dep.androidX.vectordrawable.vectordrawable
+    implementation dep.androidX.vectordrawable.animated
+    implementation dep.androidX.remotecallback.remotecallback
+    kapt dep.androidX.remotecallback.processor
+    implementation dep.androidX.multidex.multidex
+
+    implementation dep.insetter.insetter
+    implementation dep.insetter.widgets
+
+    implementation dep.mavericks
+
+    implementation dep.androidX.compose.ui
+    implementation dep.androidX.compose.material
+    implementation dep.androidX.compose.uiTooling
+    implementation dep.androidX.compose.foundation
+    implementation dep.androidX.compose.theme
+    implementation dep.androidX.compose.livedata
+    implementation dep.androidX.compose.rxjava3
 }
 
-Properties properties = new Properties()
-properties.load(project.rootProject.file('local.properties').newDataInputStream())
+Properties localProperties = new Properties()
+localProperties.load(project.rootProject.file('local.properties').newDataInputStream())
 
+apply plugin: 'com.vanniktech.maven.publish'
 mavenPublish {
     releaseSigningEnabled = true
     targets {
         uploadArchives {
-            releaseRepositoryUrl = properties.getProperty("RELEASE_REPOSITORY_URL")
-            snapshotRepositoryUrl = properties.getProperty("SNAPSHOT_REPOSITORY_URL")
-            repositoryUsername = properties.getProperty("SONATYPE_NEXUS_USERNAME")
-            repositoryPassword = properties.getProperty("SONATYPE_NEXUS_PASSWORD")
+            releaseRepositoryUrl = localProperties.getProperty("RELEASE_REPOSITORY_URL")
+            snapshotRepositoryUrl = localProperties.getProperty("SNAPSHOT_REPOSITORY_URL")
+            repositoryUsername = localProperties.getProperty("SONATYPE_NEXUS_USERNAME")
+            repositoryPassword = localProperties.getProperty("SONATYPE_NEXUS_PASSWORD")
         }
 
         installArchives {

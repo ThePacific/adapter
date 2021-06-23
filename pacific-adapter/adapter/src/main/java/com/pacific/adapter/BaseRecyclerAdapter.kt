@@ -15,6 +15,7 @@
  */
 package com.pacific.adapter
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.CompoundButton
@@ -74,6 +75,8 @@ abstract class BaseRecyclerAdapter<T : RecyclerItem>(
         }
     }
 
+
+    @SuppressLint("NotifyDataSetChanged")
     override fun clear() {
         if (data.isNotEmpty()) {
             data.clear()
@@ -202,6 +205,7 @@ abstract class BaseRecyclerAdapter<T : RecyclerItem>(
         replaceAllAt(index, list, false)
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun replaceAllAt(index: Int, list: List<T>, notifyDataSetChanged: Boolean) {
         val beforeSize = data.size
         if (index >= beforeSize) {
@@ -261,6 +265,14 @@ abstract class BaseRecyclerAdapter<T : RecyclerItem>(
     override fun indexOf(element: T): Int = data.indexOf(element)
 
     override fun lastIndexOf(element: T): Int = data.lastIndexOf(element)
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun forceReplaceAll(list: List<T>) {
+        data.clear()
+        data.addAll(list)
+        notifyDataSetChanged()
+        onDataSetChanged()
+    }
 
     override var onClickListener: View.OnClickListener?
         get() = provider.onClickListener

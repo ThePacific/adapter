@@ -88,13 +88,25 @@ object AdapterUtils {
         selectedPosition: Int,
         adapter: BaseRecyclerAdapter<RecyclerItem>
     ): Boolean {
-        if (unselectedPosition == selectedPosition) {
+        if (adapter.isEmpty()) {
+            return true
+        }
+        if (unselectedPosition == -1 && selectedPosition == -1) {
             return false
         }
-        adapter.get<RecyclerItem>(unselectedPosition).isSelected = false
-        adapter.notifyItemChanged(unselectedPosition, ADAPTER_SELECTED)
-        adapter.get<RecyclerItem>(selectedPosition).isSelected = true
-        adapter.notifyItemChanged(selectedPosition, ADAPTER_SELECTED)
+        require(selectedPosition >= 0 && selectedPosition < adapter.itemCount)
+        if (unselectedPosition == selectedPosition) {
+            val item = adapter.get<RecyclerItem>(unselectedPosition)
+            item.isSelected = !item.isSelected
+            adapter.notifyItemChanged(unselectedPosition, ADAPTER_SELECTED)
+        } else {
+            if (unselectedPosition >= 0) {
+                adapter.get<RecyclerItem>(unselectedPosition).isSelected = false
+                adapter.notifyItemChanged(unselectedPosition, ADAPTER_SELECTED)
+            }
+            adapter.get<RecyclerItem>(selectedPosition).isSelected = true
+            adapter.notifyItemChanged(selectedPosition, ADAPTER_SELECTED)
+        }
         return true
     }
 
@@ -103,14 +115,45 @@ object AdapterUtils {
         enablePosition: Int,
         adapter: BaseRecyclerAdapter<RecyclerItem>
     ): Boolean {
-        if (disablePosition == enablePosition) {
+        if (adapter.isEmpty()) {
+            return true
+        }
+        if (disablePosition == -1 && enablePosition == -1) {
             return false
         }
-        adapter.get<RecyclerItem>(disablePosition).isEnable = false
-        adapter.notifyItemChanged(disablePosition, ADAPTER_ENABLE)
-        adapter.get<RecyclerItem>(enablePosition).isEnable = true
-        adapter.notifyItemChanged(enablePosition, ADAPTER_ENABLE)
+        require(enablePosition >= 0 && enablePosition < adapter.itemCount)
+        if (disablePosition == enablePosition) {
+            val item = adapter.get<RecyclerItem>(disablePosition)
+            item.isEnable = !item.isEnable
+            adapter.notifyItemChanged(disablePosition, ADAPTER_ENABLE)
+        } else {
+            if (disablePosition >= 0) {
+                adapter.get<RecyclerItem>(disablePosition).isEnable = false
+                adapter.notifyItemChanged(disablePosition, ADAPTER_ENABLE)
+            }
+            adapter.get<RecyclerItem>(enablePosition).isEnable = true
+            adapter.notifyItemChanged(enablePosition, ADAPTER_ENABLE)
+        }
         return true
     }
-}
 
+    fun selectAll(adapter: BaseRecyclerAdapter<RecyclerItem>, isSelected: Boolean) {
+        if (adapter.isEmpty()) {
+            return
+        }
+        adapter.getAll().forEach {
+            it.isSelected = isSelected
+        }
+        adapter.notifyItemRangeChanged(0, adapter.itemCount, ADAPTER_SELECTED)
+    }
+
+    fun enableAll(adapter: BaseRecyclerAdapter<RecyclerItem>, isEnable: Boolean) {
+        if (adapter.isEmpty()) {
+            return
+        }
+        adapter.getAll().forEach {
+            it.isEnable = isEnable
+        }
+        adapter.notifyItemRangeChanged(0, adapter.itemCount, ADAPTER_ENABLE)
+    }
+}

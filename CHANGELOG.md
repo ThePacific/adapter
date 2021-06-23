@@ -1,5 +1,15 @@
 Change Log
 ==========
+Version 3.1.0 *(2021-06-23)*
+----------------------------
+
+ * Kotlin version 1.5.10
+ * AdapterUtils.swapIsSelected()
+ * AdapterUtils.swapIsEnable()
+ * AdapterUtils.enableAll()
+ * AdapterUtils.selectAll()
+ 
+ 
 Version 3.0.3 *(2020-09-11)*
 ----------------------------
 

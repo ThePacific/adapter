@@ -1,6 +1,15 @@
-apply from: "../gradle/android_lib_module.gradle"
+apply plugin: 'com.android.library'
+
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
+apply plugin: 'kotlinx-serialization'
+apply plugin: 'kotlin-parcelize'
 
 android {
+
+    libraryVariants.all {
+        it.generateBuildConfigProvider.get().enabled = false
+    }
 }
 
 dependencies {
@@ -10,6 +19,25 @@ dependencies {
     implementation dep.androidX.paging.commonKtx
     implementation dep.androidX.paging.runtime
     implementation dep.androidX.paging.runtimeKtx
-
     implementation 'com.github.thepacific:adapter:3.0.3'
+}
+Properties localProperties = new Properties()
+localProperties.load(project.rootProject.file('local.properties').newDataInputStream())
+
+apply plugin: 'com.vanniktech.maven.publish'
+mavenPublish {
+    releaseSigningEnabled = true
+    targets {
+        uploadArchives {
+            releaseRepositoryUrl = localProperties.getProperty("RELEASE_REPOSITORY_URL")
+            snapshotRepositoryUrl = localProperties.getProperty("SNAPSHOT_REPOSITORY_URL")
+            repositoryUsername = localProperties.getProperty("SONATYPE_NEXUS_USERNAME")
+            repositoryPassword = localProperties.getProperty("SONATYPE_NEXUS_PASSWORD")
+        }
+
+        installArchives {
+            releaseRepositoryUrl = file("${rootProject.buildDir}/localMaven").toURI().toString()
+            snapshotRepositoryUrl = file("${rootProject.buildDir}/localMaven").toURI().toString()
+        }
+    }
 }

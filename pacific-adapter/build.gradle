@@ -1,15 +1,13 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
-
 buildscript {
+
     apply from: file('gradle/dependencies.gradle')
-    ext {
-        compose_version = '1.0.0-alpha04'
-        kotlin_version = '1.4.10'
-    }
+
     repositories {
-        google()
-        jcenter()
         mavenCentral()
+        gradlePluginPortal()
+        google()
+
         maven { url "https://plugins.gradle.org/m2/" }
         maven { url "https://kotlin.bintray.com/kotlinx" }
         maven { url "https://dl.bintray.com/kotlin/kotlin-eap" }
@@ -17,23 +15,22 @@ buildscript {
     }
 
     dependencies {
-        classpath "com.android.tools.build:gradle:4.2.0-alpha13"
-        classpath "androidx.navigation:navigation-safe-args-gradle-plugin:${versions.androidX.navigation}"
+        classpath 'com.android.tools.build:gradle:7.0.0-beta04'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${versions.kotlin}"
         classpath "org.jetbrains.kotlin:kotlin-serialization:${versions.kotlin}"
-        classpath "org.jlleitschuh.gradle:ktlint-gradle:${versions.ktLint}"
+        classpath "org.jetbrains.dokka:dokka-gradle-plugin:${versions.dokka}"
         classpath "com.vanniktech:gradle-maven-publish-plugin:${versions.mavenPublish}"
-        classpath "org.jetbrains.dokka:dokka-gradle-plugin:${versions.kotlin}"
+        classpath "androidx.navigation:navigation-safe-args-gradle-plugin:${versions.androidX.navigation}"
     }
 }
 
 allprojects { project ->
 
     repositories {
-        mavenLocal()
-        google()
-        jcenter()
         mavenCentral()
+        gradlePluginPortal()
+        google()
+
         maven { url "https://plugins.gradle.org/m2/" }
         maven { url "https://kotlin.bintray.com/kotlinx" }
         maven { url "https://dl.bintray.com/kotlin/kotlin-eap" }
@@ -60,7 +57,7 @@ allprojects { project ->
                     details.useVersion versions.autoValue
                 } else if (group == 'androidx.fragment') {
                     details.useVersion versions.androidX.fragment
-                } else if (group == 'com.google.android.material') {
+                } else if (group == 'com.google.android.material' && name.startsWith('material')) {
                     details.useVersion versions.androidX.material
                 } else if (group == 'androidx.core' && name == 'core') {
                     details.useVersion versions.androidX.core
@@ -72,14 +69,10 @@ allprojects { project ->
                     details.useVersion versions.androidX.arch
                 } else if (group == 'androidx.annotation' && name == 'annotation') {
                     details.useVersion versions.androidX.annotation
+                } else if (group.startsWith('androidx.compose')) {
+                    details.useVersion versions.androidX.compose
                 }
             }
-        }
-    }
-
-    if (project.plugins.hasPlugin('kotlin-android-extensions')) {
-        androidExtensions {
-            experimental = true
         }
     }
 
@@ -96,6 +89,7 @@ allprojects { project ->
 }
 
 subprojects { project ->
+
     afterEvaluate {
         if (project.plugins.hasPlugin('android') || project.plugins.hasPlugin('android-library')) {
             android {
@@ -105,44 +99,42 @@ subprojects { project ->
                 defaultConfig {
                     minSdkVersion buildConfig.minSdk
                     targetSdkVersion buildConfig.targetSdk
-                    versionCode buildConfig.version.code
-                    versionName buildConfig.version.name
+                    versionCode buildConfig.code
+                    versionName buildConfig.name + getSuffixVersionName()
 
                     multiDexEnabled true
                     testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
                 }
 
+                buildFeatures {
+                    viewBinding = true
+                    compose false
+                }
+
                 compileOptions {
                     coreLibraryDesugaringEnabled true
+
                     sourceCompatibility JavaVersion.VERSION_1_8
                     targetCompatibility JavaVersion.VERSION_1_8
                 }
 
                 kotlinOptions {
-                    jvmTarget = '1.8'
-                    useIR = true
-                    freeCompilerArgs += ["-Xallow-jvm-ir-dependencies", "-Xskip-prerelease-check"]
+                    jvmTarget = "1.8"
                 }
 
                 composeOptions {
                     kotlinCompilerExtensionVersion versions.androidX.compose
-                    kotlinCompilerVersion versions.kotlin
-                }
-
-                buildFeatures {
-                    dataBinding = true
-                    viewBinding = true
                 }
 
                 lintOptions {
                     textReport true
-                    textOutput 'stdout'
-                    lintConfig rootProject.file('lint.xml')
-                    warning 'UnusedResources'
+                    abortOnError false
                     checkAllWarnings true
                     warningsAsErrors true
                     checkReleaseBuilds true
-                    abortOnError false
+                    textOutput 'stdout'
+                    warning 'UnusedResources'
+                    lintConfig rootProject.file('lint.xml')
                 }
 
                 packagingOptions {
@@ -178,20 +170,26 @@ subprojects { project ->
 
                     exclude 'version.txt'
                     exclude 'androidsupportmultidexversion.txt'
+
+                    exclude 'META-INF/atomicfu.kotlin_module'
+                    exclude 'META-INF/common.kotlin_module'
+                    exclude 'META-INF/android_debug.kotlin_module'
+                    exclude 'META-INF/android_release.kotlin_module'
                     exclude 'META-INF/library_release.kotlin_module'
+                    exclude 'META-INF/library_debug.kotlin_module'
                 }
             }
         } else {
-            compileJava {
-                targetCompatibility = "1.8"
-                sourceCompatibility = "1.8"
+
+            java {
+                sourceCompatibility = JavaVersion.VERSION_1_8
+                targetCompatibility = JavaVersion.VERSION_1_8
             }
 
             compileKotlin {
                 kotlinOptions {
                     jvmTarget = "1.8"
-                    useIR = true
-                    freeCompilerArgs += ["-Xallow-jvm-ir-dependencies", "-Xskip-prerelease-check"]
+                    freeCompilerArgs += '-Xopt-in=kotlin.RequiresOptIn'
                 }
             }
         }
@@ -200,4 +198,9 @@ subprojects { project ->
 
 task clean(type: Delete) {
     delete rootProject.buildDir
+}
+
+static def getSuffixVersionName() {
+    String dTime = new Date().format('yyyyMMddHHmm')
+    return "." + dTime + "-release"
 }
