@@ -27,37 +27,37 @@ object AdapterUtils {
     @Suppress("UNCHECKED_CAST")
     fun getHolder(view: View): AdapterViewHolder = view.getTag(ADAPTER_HOLDER) as AdapterViewHolder
 
-    fun <T : RecyclerItem> firstSelectedIndex(data: List<T>): Int {
+    fun <T : RecyclerItem> firstSelectedIndex(data: List<T>, isSelected: Boolean): Int {
         for (i in data.indices) {
-            if (data[i].isSelected) {
+            if (isSelected == data[i].isSelected) {
                 return i
             }
         }
         return -1
     }
 
-    fun <T : RecyclerItem> lastSelectedIndex(data: List<T>): Int {
+    fun <T : RecyclerItem> lastSelectedIndex(data: List<T>, isSelected: Boolean): Int {
         var index = -1
         for (i in data.indices) {
-            if (data[i].isSelected) {
+            if (isSelected == data[i].isSelected) {
                 index = i
             }
         }
         return index
     }
 
-    fun <T : RecyclerItem> selectedIndices(data: List<T>): List<Int> {
+    fun <T : RecyclerItem> selectedIndices(data: List<T>, isSelected: Boolean): List<Int> {
         val indices: MutableList<Int> = ArrayList()
         for (i in data.indices) {
-            if (data[i].isSelected) {
+            if (isSelected == data[i].isSelected) {
                 indices.add(i)
             }
         }
         return indices
     }
 
-    fun <T : RecyclerItem> firstSelectedItem(data: List<T>): T? {
-        val index = firstSelectedIndex(data)
+    fun <T : RecyclerItem> firstSelectedItem(data: List<T>, isSelected: Boolean): T? {
+        val index = firstSelectedIndex(data, isSelected)
         return if (index < 0) {
             null
         } else {
@@ -65,8 +65,8 @@ object AdapterUtils {
         }
     }
 
-    fun <T : RecyclerItem> lastSelectedItem(data: List<T>): T? {
-        val index = lastSelectedIndex(data)
+    fun <T : RecyclerItem> lastSelectedItem(data: List<T>, isSelected: Boolean): T? {
+        val index = lastSelectedIndex(data, isSelected)
         return if (index < 0) {
             null
         } else {
@@ -74,13 +74,111 @@ object AdapterUtils {
         }
     }
 
-    fun <T : RecyclerItem> selectedItems(data: List<T>): List<T> {
-        val indices = selectedIndices(data)
+    fun <T : RecyclerItem> getSelectedItems(data: List<T>, isSelected: Boolean): List<T> {
+        val indices = selectedIndices(data, isSelected)
         val list: MutableList<T> = ArrayList()
         for (i in indices.indices) {
             list.add(data[indices[i]])
         }
         return list
+    }
+
+    fun <T : RecyclerItem> firstEnableIndex(data: List<T>, isEnable: Boolean): Int {
+        for (i in data.indices) {
+            if (isEnable == data[i].isEnable) {
+                return i
+            }
+        }
+        return -1
+    }
+
+    fun <T : RecyclerItem> lastEnableIndex(data: List<T>, isEnable: Boolean): Int {
+        var index = -1
+        for (i in data.indices) {
+            if (isEnable == data[i].isEnable) {
+                index = i
+            }
+        }
+        return index
+    }
+
+    fun <T : RecyclerItem> enableIndices(data: List<T>, isEnable: Boolean): List<Int> {
+        val indices: MutableList<Int> = ArrayList()
+        for (i in data.indices) {
+            if (isEnable == data[i].isEnable) {
+                indices.add(i)
+            }
+        }
+        return indices
+    }
+
+    fun <T : RecyclerItem> firstEnableItem(data: List<T>, isEnable: Boolean): T? {
+        val index = firstEnableIndex(data, isEnable)
+        return if (index < 0) {
+            null
+        } else {
+            data[index]
+        }
+    }
+
+    fun <T : RecyclerItem> lastEnableItem(data: List<T>, isEnable: Boolean): T? {
+        val index = lastEnableIndex(data, isEnable)
+        return if (index < 0) {
+            null
+        } else {
+            data[index]
+        }
+    }
+
+    fun <T : RecyclerItem> getEnableItems(data: List<T>, isEnable: Boolean): List<T> {
+        val indices = enableIndices(data, isEnable)
+        val list: MutableList<T> = ArrayList()
+        for (i in indices.indices) {
+            list.add(data[indices[i]])
+        }
+        return list
+    }
+
+    fun enableItem(
+        item: RecyclerItem,
+        isEnable: Boolean,
+        adapter: BaseRecyclerAdapter<RecyclerItem>
+    ) {
+        if (adapter.isEmpty()) {
+            return
+        }
+        item.isEnable = isEnable
+        adapter.notifyItemChanged(adapter.indexOf(item), ADAPTER_ENABLE)
+    }
+
+    fun selectItem(
+        item: RecyclerItem,
+        isSelected: Boolean,
+        adapter: BaseRecyclerAdapter<RecyclerItem>
+    ) {
+        if (adapter.isEmpty()) {
+            return
+        }
+        item.isSelected = isSelected
+        adapter.notifyItemChanged(adapter.indexOf(item), ADAPTER_SELECTED)
+    }
+
+    fun swapSelected(position: Int, adapter: BaseRecyclerAdapter<RecyclerItem>) {
+        if (adapter.isEmpty()) {
+            return
+        }
+        val item = adapter.get<RecyclerItem>(position)
+        item.isSelected = !item.isSelected
+        adapter.notifyItemChanged(position, ADAPTER_SELECTED)
+    }
+
+    fun swapEnable(position: Int, adapter: BaseRecyclerAdapter<RecyclerItem>) {
+        if (adapter.isEmpty()) {
+            return
+        }
+        val item = adapter.get<RecyclerItem>(position)
+        item.isEnable = !item.isEnable
+        adapter.notifyItemChanged(position, ADAPTER_ENABLE)
     }
 
     fun swapIsSelected(

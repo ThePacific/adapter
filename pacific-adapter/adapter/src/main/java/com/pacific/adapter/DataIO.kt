@@ -65,15 +65,27 @@ internal interface DataIO<T : RecyclerItem> {
 
     fun subList(fromIndex: Int, toIndex: Int): List<T>
 
-    fun firstSelectedIndex(): Int
+    fun firstSelectedIndex(isSelected: Boolean): Int
 
-    fun lastSelectedIndex(): Int
+    fun lastSelectedIndex(isSelected: Boolean): Int
 
-    fun firstSelectedItem(): T?
+    fun firstSelectedItem(isSelected: Boolean): T?
 
-    fun lastSelectedItem(): T?
+    fun lastSelectedItem(isSelected: Boolean): T?
 
-    fun selectedItems(): List<T>
+    fun getSelectedItems(isSelected: Boolean): List<T>
 
-    fun selectedIndices(): List<Int>
+    fun selectedIndices(isSelected: Boolean): List<Int>
+
+    fun firstEnableIndex(isEnable: Boolean): Int
+
+    fun lastEnableIndex(isEnable: Boolean): Int
+
+    fun firstEnableItem(isEnable: Boolean): T?
+
+    fun lastEnableItem(isEnable: Boolean): T?
+
+    fun getEnableItems(isEnable: Boolean): List<T>
+
+    fun enableIndices(isEnable: Boolean): List<Int>
 }

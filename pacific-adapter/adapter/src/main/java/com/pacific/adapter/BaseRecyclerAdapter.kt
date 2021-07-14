@@ -242,17 +242,53 @@ abstract class BaseRecyclerAdapter<T : RecyclerItem>(
         }
     }
 
-    override fun firstSelectedIndex(): Int = AdapterUtils.firstSelectedIndex(data)
+    override fun firstSelectedIndex(isSelected: Boolean): Int {
+        return AdapterUtils.firstSelectedIndex(data, isSelected)
+    }
 
-    override fun lastSelectedIndex(): Int = AdapterUtils.lastSelectedIndex(data)
+    override fun lastSelectedIndex(isSelected: Boolean): Int {
+        return AdapterUtils.lastSelectedIndex(data, isSelected)
+    }
 
-    override fun selectedIndices(): List<Int> = AdapterUtils.selectedIndices(data)
+    override fun selectedIndices(isSelected: Boolean): List<Int> {
+        return AdapterUtils.selectedIndices(data, isSelected)
+    }
 
-    override fun firstSelectedItem(): T? = AdapterUtils.firstSelectedItem(data)
+    override fun firstSelectedItem(isSelected: Boolean): T? {
+        return AdapterUtils.firstSelectedItem(data, isSelected)
+    }
 
-    override fun lastSelectedItem(): T? = AdapterUtils.lastSelectedItem(data)
+    override fun lastSelectedItem(isSelected: Boolean): T? {
+        return AdapterUtils.lastSelectedItem(data, isSelected)
+    }
 
-    override fun selectedItems(): List<T> = AdapterUtils.selectedItems(data)
+    override fun getSelectedItems(isSelected: Boolean): List<T> {
+        return AdapterUtils.getSelectedItems(data, isSelected)
+    }
+
+    override fun firstEnableIndex(isEnable: Boolean): Int {
+        return AdapterUtils.firstEnableIndex(data, isEnable)
+    }
+
+    override fun lastEnableIndex(isEnable: Boolean): Int {
+        return AdapterUtils.lastEnableIndex(data, isEnable)
+    }
+
+    override fun firstEnableItem(isEnable: Boolean): T? {
+        return AdapterUtils.firstEnableItem(data, isEnable)
+    }
+
+    override fun lastEnableItem(isEnable: Boolean): T? {
+        return AdapterUtils.lastEnableItem(data, isEnable)
+    }
+
+    override fun getEnableItems(isEnable: Boolean): List<T> {
+        return AdapterUtils.getEnableItems(data, isEnable)
+    }
+
+    override fun enableIndices(isEnable: Boolean): List<Int> {
+        return AdapterUtils.enableIndices(data, isEnable)
+    }
 
     override fun getItemCount(): Int = data.size
 
