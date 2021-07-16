@@ -1,5 +1,13 @@
 Change Log
 ==========
+Version 3.1.0 *(2021-07-16)*
+----------------------------
+
+ * Kotlin version 1.5.20
+ * AdapterUtils.getEnableItems()
+ * AdapterUtils.getSelectedItems()
+ 
+ 
 Version 3.1.0 *(2021-06-23)*
 ----------------------------
 

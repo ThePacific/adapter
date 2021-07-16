@@ -37,13 +37,12 @@ object AdapterUtils {
     }
 
     fun <T : RecyclerItem> lastSelectedIndex(data: List<T>, isSelected: Boolean): Int {
-        var index = -1
-        for (i in data.indices) {
+        for (i in data.size - 1 downTo 0) {
             if (isSelected == data[i].isSelected) {
-                index = i
+                return i
             }
         }
-        return index
+        return -1
     }
 
     fun <T : RecyclerItem> selectedIndices(data: List<T>, isSelected: Boolean): List<Int> {
@@ -75,12 +74,9 @@ object AdapterUtils {
     }
 
     fun <T : RecyclerItem> getSelectedItems(data: List<T>, isSelected: Boolean): List<T> {
-        val indices = selectedIndices(data, isSelected)
-        val list: MutableList<T> = ArrayList()
-        for (i in indices.indices) {
-            list.add(data[indices[i]])
+        return data.filter {
+            it.isSelected == isSelected
         }
-        return list
     }
 
     fun <T : RecyclerItem> firstEnableIndex(data: List<T>, isEnable: Boolean): Int {
@@ -93,13 +89,12 @@ object AdapterUtils {
     }
 
     fun <T : RecyclerItem> lastEnableIndex(data: List<T>, isEnable: Boolean): Int {
-        var index = -1
-        for (i in data.indices) {
+        for (i in data.size - 1 downTo 0) {
             if (isEnable == data[i].isEnable) {
-                index = i
+                return i
             }
         }
-        return index
+        return -1
     }
 
     fun <T : RecyclerItem> enableIndices(data: List<T>, isEnable: Boolean): List<Int> {
@@ -131,24 +126,9 @@ object AdapterUtils {
     }
 
     fun <T : RecyclerItem> getEnableItems(data: List<T>, isEnable: Boolean): List<T> {
-        val indices = enableIndices(data, isEnable)
-        val list: MutableList<T> = ArrayList()
-        for (i in indices.indices) {
-            list.add(data[indices[i]])
+        return data.filter {
+            isEnable == it.isEnable
         }
-        return list
-    }
-
-    fun enableItem(
-        item: RecyclerItem,
-        isEnable: Boolean,
-        adapter: BaseRecyclerAdapter<RecyclerItem>
-    ) {
-        if (adapter.isEmpty()) {
-            return
-        }
-        item.isEnable = isEnable
-        adapter.notifyItemChanged(adapter.indexOf(item), ADAPTER_ENABLE)
     }
 
     fun selectItem(
@@ -156,29 +136,51 @@ object AdapterUtils {
         isSelected: Boolean,
         adapter: BaseRecyclerAdapter<RecyclerItem>
     ) {
-        if (adapter.isEmpty()) {
-            return
-        }
+        if (adapter.isEmpty()) return
         item.isSelected = isSelected
         adapter.notifyItemChanged(adapter.indexOf(item), ADAPTER_SELECTED)
     }
 
-    fun swapSelected(position: Int, adapter: BaseRecyclerAdapter<RecyclerItem>) {
-        if (adapter.isEmpty()) {
-            return
-        }
-        val item = adapter.get<RecyclerItem>(position)
-        item.isSelected = !item.isSelected
+    fun selectItem(
+        position: Int,
+        isSelected: Boolean,
+        adapter: BaseRecyclerAdapter<RecyclerItem>
+    ) {
+        if (adapter.isEmpty() || position < 0) return
+        adapter.get<RecyclerItem>(position).isSelected = isSelected
         adapter.notifyItemChanged(position, ADAPTER_SELECTED)
     }
 
-    fun swapEnable(position: Int, adapter: BaseRecyclerAdapter<RecyclerItem>) {
-        if (adapter.isEmpty()) {
-            return
-        }
-        val item = adapter.get<RecyclerItem>(position)
-        item.isEnable = !item.isEnable
+    fun enableItem(
+        item: RecyclerItem,
+        isEnable: Boolean,
+        adapter: BaseRecyclerAdapter<RecyclerItem>
+    ) {
+        if (adapter.isEmpty()) return
+        item.isEnable = isEnable
+        adapter.notifyItemChanged(adapter.indexOf(item), ADAPTER_ENABLE)
+    }
+
+    fun enableItem(
+        position: Int,
+        isEnable: Boolean,
+        adapter: BaseRecyclerAdapter<RecyclerItem>
+    ) {
+        if (adapter.isEmpty() || position < 0) return
+        adapter.get<RecyclerItem>(position).isEnable = isEnable
         adapter.notifyItemChanged(position, ADAPTER_ENABLE)
+    }
+
+    fun swapSelected(position: Int, adapter: BaseRecyclerAdapter<RecyclerItem>) {
+        if (adapter.isEmpty()) return
+        val item = adapter.get<RecyclerItem>(position)
+        selectItem(item, !item.isSelected, adapter)
+    }
+
+    fun swapEnable(position: Int, adapter: BaseRecyclerAdapter<RecyclerItem>) {
+        if (adapter.isEmpty()) return
+        val item = adapter.get<RecyclerItem>(position)
+        enableItem(item, !item.isEnable, adapter)
     }
 
     fun swapIsSelected(
